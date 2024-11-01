@@ -30,11 +30,10 @@ public class App extends Application {
     
     //******test commit DAVID******
     // COUCOU JESPERE QUE CA MARCHE
-<<<<<<< Updated upstream
+
     //****** AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ******
 
-=======
     // hello je m'appelle Wacim
     
->>>>>>> Stashed changes
+
 }
