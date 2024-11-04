@@ -1,18 +1,21 @@
 package fr.isika.cda28.projet1.Annuaire;
 
-import java.time.LocalDate;
-
 public class Stagiaire {
-	
+
 	// Attributs de la classe
 	String nom;
 	String prenom;
+	String departement;
 	String cursus;
-	LocalDate anneePromo;
-	int departement;
-	
+	int anneePromo;
+
 	// Constructor
-	public Stagiaire(String nom, String prenom, String cursus, LocalDate anneePromo, int departement) {
+
+	public Stagiaire() {
+		super();
+	}
+
+	public Stagiaire(String nom, String prenom, String departement, String cursus, int anneePromo) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
@@ -21,8 +24,7 @@ public class Stagiaire {
 		this.departement = departement;
 	}
 
-	
-	//GETTERS ET SETTERS
+	// GETTERS ET SETTERS
 	public String getNom() {
 		return nom;
 	}
@@ -47,19 +49,19 @@ public class Stagiaire {
 		this.cursus = cursus;
 	}
 
-	public LocalDate getAnneePromo() {
+	public int getAnneePromo() {
 		return anneePromo;
 	}
 
-	public void setAnneePromo(LocalDate anneePromo) {
+	public void setAnneePromo(int anneePromo) {
 		this.anneePromo = anneePromo;
 	}
 
-	public int getDepartement() {
+	public String getDepartement() {
 		return departement;
 	}
 
-	public void setDepartement(int departement) {
+	public void setDepartement(String departement) {
 		this.departement = departement;
 	}
 
@@ -69,8 +71,5 @@ public class Stagiaire {
 		return "Stagiaire [nom=" + nom + ", prenom=" + prenom + ", cursus=" + cursus + ", anneePromo=" + anneePromo
 				+ ", departement=" + departement + "]";
 	}
-	
-	
-	
 
 }
