@@ -38,5 +38,7 @@ public class Noeud {
 	public void setNoeudDroit(Noeud noeudDroit) {
 		this.noeudDroit = noeudDroit;
 	}
+	//METHODES AJOUTER/ SUPPRIMER/ METTRE A JOUR/ ....
+	
 
 }
