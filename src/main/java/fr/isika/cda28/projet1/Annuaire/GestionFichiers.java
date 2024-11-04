@@ -40,12 +40,16 @@ public class GestionFichiers {
 
 			for (Stagiaire  stagiaireEcriture : listeStagiaire) {
 
-				raf.writeChars(stagiaireEcriture.getNom());
-				raf.writeChars(stagiaireEcriture.getPrenom());
-				raf.writeChars(stagiaireEcriture.getDepartement());
-				raf.writeChars(stagiaireEcriture.getCursus());
+				raf.writeChars(stagiaireEcriture.getNomLong());
+				raf.writeChars(stagiaireEcriture.getPrenomLong());
+				raf.writeChars(stagiaireEcriture.getDepartementLong());
+				raf.writeChars(stagiaireEcriture.getCursusLong());
 				raf.writeInt(stagiaireEcriture.getAnneePromo());
-			}
+		}
+//			for (Stagiaire stagiaire2 : listeStagiaire) {
+//				raf.writeChars(stagiaire2.getNomLong());
+//				
+//			}
 			
 			br.close();
 			fr.close();
