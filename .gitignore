@@ -3,9 +3,9 @@
 #Fichiers Eclipse
 .classpath
 .project
-.settings/
-.metadata/
+.settings/*
+.metadata/*
 
 #Fichier Maven
-log/
-target/
+log/*
+target/*
