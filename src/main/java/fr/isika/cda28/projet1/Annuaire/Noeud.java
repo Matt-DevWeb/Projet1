@@ -1,19 +1,26 @@
 package fr.isika.cda28.projet1.Annuaire;
 
 public class Noeud {
-	
-	//ATTRIBUTS
+
+	// ATTRIBUTS
 	private Stagiaire stagiaire;
 	private Noeud noeudGauche;
 	private Noeud noeudDroit;
 
-	//CONSTRUCTEUR
-	public Noeud(Stagiaire stagiaire, Noeud noeudGauche, Noeud noeudDroit) {
+	private Noeud racine;
+
+	// CONSTRUCTEUR
+	public Noeud(Stagiaire stagiaire) {
 
 		this.stagiaire = stagiaire;
-		this.noeudGauche = noeudGauche;
-		this.noeudDroit = noeudDroit;
+		this.noeudGauche = null;
+		this.noeudDroit = null;
 	}
+
+	public Noeud() {
+		this.racine = null;
+	}
+
 // GETTERS ET SETTERS
 	public Stagiaire getStagiaire() {
 		return stagiaire;
@@ -38,7 +45,30 @@ public class Noeud {
 	public void setNoeudDroit(Noeud noeudDroit) {
 		this.noeudDroit = noeudDroit;
 	}
-	//METHODES AJOUTER/ SUPPRIMER/ METTRE A JOUR/ ....
-	
 
-}
+	// METHODES AJOUTER/ SUPPRIMER/ METTRE A JOUR/ ....
+
+	public void ajouterRacine(Stagiaire stagiaire) {
+		if (racine == null) {
+			racine = new Noeud(stagiaire);
+		} else {
+			racine.ajouterStagiaire(stagiaire);
+		}
+	}
+
+//	public Noeud supprimerRacine(Stagiaire stagiaire) {
+//		if (racine != null) {
+//
+//			racine.supprimerStagiaire(stagiaire);
+//		}
+//	}
+//
+//	public void ajouterStagiaire(Stagiaire nouveauStagiaire) {
+//		if (nouveauStagiaire) {
+//			nouvelleValeur = new Noeud();
+//
+//		}
+//		return racine;
+//	}
+//
+//}
