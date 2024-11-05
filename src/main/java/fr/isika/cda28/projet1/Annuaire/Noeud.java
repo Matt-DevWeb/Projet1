@@ -1,6 +1,11 @@
 package fr.isika.cda28.projet1.Annuaire;
 
-public class Noeud {
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+public class Noeud extends Stagiaire {
 
 	// ATTRIBUTS
 	private Stagiaire stagiaire;
@@ -46,29 +51,44 @@ public class Noeud {
 		this.noeudDroit = noeudDroit;
 	}
 
-	// METHODES AJOUTER/ SUPPRIMER/ METTRE A JOUR/ ....
+	
+	public void lectureStagiaire(){
+	
+	try
 
-	public void ajouterRacine(Stagiaire stagiaire) {
-		if (racine == null) {
-			racine = new Noeud(stagiaire);
-		} else {
-			racine.ajouterStagiaire(stagiaire);
+	{
+
+		// Ouverture d'un fichier binaire pour écrire les informations des stagiaires
+		RandomAccessFile raf = new RandomAccessFile("src/mesFichiers/ListeStagiaires.bin", "rw");
+
+		// lire le 1er stagiaire
+		raf.seek(0);
+		Stagiaire stagiaireRacine = new Stagiaire();
+
+		// ou est mon curseur
+		System.out.println(raf.getFilePointer());
+
+		char[] nomChar = new char[Stagiaire.TAILLE_MAX_NOM];
+
+		for (int i = 0; i < Stagiaire.TAILLE_MAX_NOM; i++) {
+			//stagiaireRacine.setNom(stagiaireRacine.getNom() + raf.readChar());
+//			stagiaireRacine.setNom(raf.readChar());
+			nomChar[i] = raf.readChar();
 		}
+		
+		String nom = new String(nomChar);
+
+		System.out.println("Stagiaire Racine : " + nom);
+
+		// Fermeture des flux de lecture et d'écriture
+		raf.close();
+
+	}catch(
+	IOException e)
+	{
+		// Gestion des exceptions : affichage de la trace d'erreur
+		e.printStackTrace();
 	}
 
-//	public Noeud supprimerRacine(Stagiaire stagiaire) {
-//		if (racine != null) {
-//
-//			racine.supprimerStagiaire(stagiaire);
-//		}
-//	}
-//
-//	public void ajouterStagiaire(Stagiaire nouveauStagiaire) {
-//		if (nouveauStagiaire) {
-//			nouvelleValeur = new Noeud();
-//
-//		}
-//		return racine;
-//	}
-//
-//}
+}}
+
