@@ -14,6 +14,7 @@ public class GestionFichiers {
 		Stagiaire stagiaire = new Stagiaire();
 		// Création d'une liste pour stocker les objets Stagiaire
 		ArrayList<Stagiaire> listeStagiaire = new ArrayList<>();
+		
 
 		// ********** Lire le fichier texte **********
 		try {
@@ -63,9 +64,9 @@ public class GestionFichiers {
 		try
 
 		{
-			RandomAccessFile raf2 = new RandomAccessFile("src/mesFichiers/ListeStagiaires.bin", "rw");
+			RandomAccessFile raf2 = new RandomAccessFile("src/mesFichiers/ListeStagiaires.bin", "r");
 			// lire le 1er stagiaire
-			raf2.seek(232 * Stagiaire.TAILLE_STAGIAIRE_OCTET);
+//			raf2.seek(232 * Stagiaire.TAILLE_STAGIAIRE_OCTET);
 
 			stagiaire.setNom("");
 			stagiaire.setPrenom("");
@@ -76,14 +77,15 @@ public class GestionFichiers {
 			// ou est mon curseur
 			System.out.println(raf2.getFilePointer());
 			
+			while (raf2.getFilePointer() < raf2.length()) {
 			// Nom
-			
+//			for (Stagiaire stagiaireBinaire : raf2 )
 			for (int i = 0; i < Stagiaire.TAILLE_MAX_NOM; i++) {
 				stagiaire.setNom(stagiaire.getNom() + raf2.readChar());
 
 			}
 			stagiaire.getNom().trim();
-			System.out.println("Stagiaire  : " + stagiaire.getNom());
+			System.out.println("Nom : " + stagiaire.getNom());
 			// Prenom
 			
 			for (int i = 0; i < Stagiaire.TAILLE_MAX_PRENOM; i++) {
@@ -91,7 +93,7 @@ public class GestionFichiers {
 
 			}
 			stagiaire.getPrenom().trim();
-			System.out.println("Stagiaire  : " + stagiaire.getPrenom());
+			System.out.println("Prenom  : " + stagiaire.getPrenom());
 			// Departement
 			
 			for (int i = 0; i < Stagiaire.TAILLE_MAX_DEPARTEMENT; i++) {
@@ -116,6 +118,9 @@ public class GestionFichiers {
 			
 			stagiaire.getAnneePromo();
 			System.out.println("L'annee de promo est  : " + stagiaire.getAnneePromo());
+			
+//			Stagiaire stagiaire = new Stagiaire();
+			}
 
 			// Fermeture des flux de lecture et d'écriture
 			raf2.close();
