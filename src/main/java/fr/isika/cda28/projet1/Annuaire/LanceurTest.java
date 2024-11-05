@@ -4,9 +4,9 @@ public class LanceurTest {
 	
 	public static void main(String[] args) {
 		
-	Noeud noeud = new Noeud();
+	Stagiaire stagiaire = new Stagiaire();
 
-	noeud.lectureStagiaire();
+	stagiaire.lectureStagiaire();
 	
 }
 }

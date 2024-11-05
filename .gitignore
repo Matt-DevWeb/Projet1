@@ -9,3 +9,5 @@
 #Fichier Maven
 log/*
 target/*
+
+.mesFichiers/*
