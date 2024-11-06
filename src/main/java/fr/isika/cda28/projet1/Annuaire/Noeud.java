@@ -79,7 +79,8 @@ public class Noeud extends Annuaire {
 				ecrireNoeud(nouveauNoeud, filsGauche, filsDroit);
 			} else {
 				raf.seek(this.filsGauche*TAILLE_NOEUD_OCTET);
-				Noeud noeudFilsGauche = lireNoeud(nouveauNoeud, -1, -1);
+				Noeud noeudFilsGauche = new Noeud(new Stagiaire(), -1, -1);
+				noeudFilsGauche = lireNoeud(noeudFilsGauche, -1, -1);
 				noeudFilsGauche.ajoutStagiaireRecursif(nouveauNoeud, raf);
 			}
 
@@ -91,7 +92,8 @@ public class Noeud extends Annuaire {
 				ecrireNoeud(nouveauNoeud, filsGauche, filsDroit);
 			} else {
 				raf.seek(this.filsDroit*TAILLE_NOEUD_OCTET);
-				Noeud noeudFilsDroit = lireNoeud(nouveauNoeud, -1, -1);
+				Noeud noeudFilsDroit = new Noeud(new Stagiaire(), -1, -1);
+				noeudFilsDroit = lireNoeud(noeudFilsDroit, -1, -1);
 				noeudFilsDroit.ajoutStagiaireRecursif(nouveauNoeud, raf);
 			}
 		}
