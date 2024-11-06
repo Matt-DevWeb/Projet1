@@ -1,17 +1,18 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import java.io.IOException;
+
 public class LanceurTest {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		// Création d'un objet Annuaire
+		Annuaire annuaire = new Annuaire();
+		Stagiaire stagiaire1 = new Stagiaire("BOB", "Marley", "26", "CDA28", 2024);
+		Noeud stagiaire = new Noeud(stagiaire1, -1, -1);
+		annuaire.ajouterStagiaire(stagiaire);
 		
-		Stagiaire stagiaire1 = new Stagiaire("Lacroix","Pascale","91","BOBI 5", 2008);
-		Stagiaire stagiaire2 = new Stagiaire("Dupond","Jaques","77","CDA 28", 2024);
-		Noeud stagiaireRacine = new Noeud(stagiaire1,null, null);
-	
 		
-		stagiaireRacine.ajouterStagiaire(stagiaire2,stagiaireRacine);
-		
-//		System.out.println(stagiaire1.toString());
-		System.out.println(stagiaireRacine);
-		
+		System.out.println(stagiaire);
+		// L'annuaire contient maintenant tous les stagiaires
+		// Tu peux maintenant utiliser l'annuaire pour d'autres opérations
 	}
 }

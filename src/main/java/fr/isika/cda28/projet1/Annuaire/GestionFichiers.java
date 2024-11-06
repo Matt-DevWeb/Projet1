@@ -9,9 +9,8 @@ import java.util.ArrayList;
 public class GestionFichiers {
 
 	public static void main(String[] args) {
-
-		// Création d'un objet Stagiaire vide avec des valeurs par défaut
-		Stagiaire stagiaire = new Stagiaire();
+		Annuaire annuaire = new Annuaire();
+		
 		// Création d'une liste pour stocker les objets Stagiaire
 		ArrayList<Stagiaire> listeStagiaire = new ArrayList<>();
 
@@ -26,6 +25,8 @@ public class GestionFichiers {
 
 			// Lire chaque ligne du fichier texte et créer les objets Stagiaire
 			while (br.ready()) {
+				// Création d'un objet Stagiaire vide avec des valeurs par défaut
+				Stagiaire stagiaire = new Stagiaire();
 				// Lire et définir le nom, prénom, département, cursus, et l'année de promo
 				stagiaire.setNom(br.readLine());
 				stagiaire.setPrenom(br.readLine());
@@ -36,10 +37,10 @@ public class GestionFichiers {
 				br.readLine();
 				// Ajouter l'objet Stagiaire à la liste
 				listeStagiaire.add(stagiaire);
-				// Créer un nouvel objet Stagiaire pour la prochaine entrée
-				stagiaire = new Stagiaire();
+				
 			}
-
+			// Ajouter un objet à la racine
+			annuaire.ajouterStagiaire(stagiaire, annuaire);
 			// Écrire chaque objet Stagiaire dans le fichier binaire
 			for (Stagiaire stagiaireEcriture : listeStagiaire) {
 				// Écriture des champs de l'objet Stagiaire dans le fichier
@@ -60,72 +61,72 @@ public class GestionFichiers {
 			e.printStackTrace();
 		}
 
-		try
-
-		{
-			RandomAccessFile raf2 = new RandomAccessFile("src/mesFichiers/ListeStagiaires.bin", "r");
-			// lire le 1er stagiaire
-//			raf2.seek(232 * Stagiaire.TAILLE_STAGIAIRE_OCTET);
-
-			stagiaire.setNom("");
-			stagiaire.setPrenom("");
-			stagiaire.setDepartement("");
-			stagiaire.setAnneePromo(0);
-			stagiaire.setCursus("");
-
-			// ou est mon curseur
-			System.out.println(raf2.getFilePointer());
-
-			while (raf2.getFilePointer() < raf2.length()) {
-				// Nom
-//				for (Stagiaire stagiaireBinaire : raf2 )
-				for (int i = 0; i < Stagiaire.TAILLE_MAX_NOM; i++) {
-					stagiaire.setNom(stagiaire.getNom() + raf2.readChar());
-
-				}
-				stagiaire.getNom().trim();
-				System.out.println("Nom : " + stagiaire.getNom());
-				// Prenom
-
-				for (int i = 0; i < Stagiaire.TAILLE_MAX_PRENOM; i++) {
-					stagiaire.setPrenom(stagiaire.getPrenom() + raf2.readChar());
-
-				}
-				stagiaire.getPrenom().trim();
-				System.out.println("Prenom  : " + stagiaire.getPrenom());
-				// Departement
-
-				for (int i = 0; i < Stagiaire.TAILLE_MAX_DEPARTEMENT; i++) {
-					stagiaire.setDepartement(stagiaire.getDepartement() + raf2.readChar());
-
-				}
-				stagiaire.getDepartement().trim();
-				System.out.println("Le departement est  : " + stagiaire.getDepartement());
-				// Cursus
-
-				for (int i = 0; i < Stagiaire.TAILLE_MAX_CURSUS; i++) {
-					stagiaire.setCursus(stagiaire.getCursus() + raf2.readChar());
-
-				}
-				stagiaire.getCursus().trim();
-				System.out.println("Le cursus est  : " + stagiaire.getCursus());
-
-				// AnneePromo
-
-				stagiaire.setAnneePromo(raf2.readInt());
-
-				stagiaire.getAnneePromo();
-				System.out.println("L'annee de promo est  : " + stagiaire.getAnneePromo());
-
-//			Stagiaire stagiaire = new Stagiaire();
-			}
-
-			// Fermeture des flux de lecture et d'écriture
-			raf2.close();
-
-		} catch (IOException e) {
-			// Gestion des exceptions : affichage de la trace d'erreur
-			e.printStackTrace();
-		}
-	}
+//		try
+//
+//		{
+//			RandomAccessFile raf2 = new RandomAccessFile("src/mesFichiers/ListeStagiaires.bin", "r");
+//			// lire le 1er stagiaire
+////			raf2.seek(232 * Stagiaire.TAILLE_STAGIAIRE_OCTET);
+//
+//			stagiaire.setNom("");
+//			stagiaire.setPrenom("");
+//			stagiaire.setDepartement("");
+//			stagiaire.setAnneePromo(0);
+//			stagiaire.setCursus("");
+//
+//			// ou est mon curseur
+//			System.out.println(raf2.getFilePointer());
+//
+//			while (raf2.getFilePointer() < raf2.length()) {
+//				// Nom
+////				for (Stagiaire stagiaireBinaire : raf2 )
+//				for (int i = 0; i < Stagiaire.TAILLE_MAX_NOM; i++) {
+//					stagiaire.setNom(stagiaire.getNom() + raf2.readChar());
+//
+//				}
+//				stagiaire.getNom().trim();
+//				System.out.println("Nom : " + stagiaire.getNom());
+//				// Prenom
+//
+//				for (int i = 0; i < Stagiaire.TAILLE_MAX_PRENOM; i++) {
+//					stagiaire.setPrenom(stagiaire.getPrenom() + raf2.readChar());
+//
+//				}
+//				stagiaire.getPrenom().trim();
+//				System.out.println("Prenom  : " + stagiaire.getPrenom());
+//				// Departement
+//
+//				for (int i = 0; i < Stagiaire.TAILLE_MAX_DEPARTEMENT; i++) {
+//					stagiaire.setDepartement(stagiaire.getDepartement() + raf2.readChar());
+//
+//				}
+//				stagiaire.getDepartement().trim();
+//				System.out.println("Le departement est  : " + stagiaire.getDepartement());
+//				// Cursus
+//
+//				for (int i = 0; i < Stagiaire.TAILLE_MAX_CURSUS; i++) {
+//					stagiaire.setCursus(stagiaire.getCursus() + raf2.readChar());
+//
+//				}
+//				stagiaire.getCursus().trim();
+//				System.out.println("Le cursus est  : " + stagiaire.getCursus());
+//
+//				// AnneePromo
+//
+//				stagiaire.setAnneePromo(raf2.readInt());
+//
+//				stagiaire.getAnneePromo();
+//				System.out.println("L'annee de promo est  : " + stagiaire.getAnneePromo());
+//				annuaire.ajouterRacine(stagiaire);
+////			Stagiaire stagiaire = new Stagiaire();
+//			}
+//
+//			// Fermeture des flux de lecture et d'écriture
+//			raf2.close();
+//
+//		} catch (IOException e) {
+//			// Gestion des exceptions : affichage de la trace d'erreur
+//			e.printStackTrace();
+//		}
+//	}
 }
