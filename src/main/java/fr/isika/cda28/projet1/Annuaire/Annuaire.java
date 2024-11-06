@@ -85,7 +85,7 @@ public class Annuaire {
 //		}
 //	}
 
-	public void lireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {
+	public Noeud lireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {
 
 		// Nom
 		for (int i = 0; i < Stagiaire.TAILLE_MAX_NOM; i++) {
@@ -130,5 +130,7 @@ public class Annuaire {
 		// FilsDroit
 		filsDroit = (raf.readInt());
 		System.out.println("Le fils droit est  : " + filsDroit);
+		
+		return stagiaire;
 	}
 }
