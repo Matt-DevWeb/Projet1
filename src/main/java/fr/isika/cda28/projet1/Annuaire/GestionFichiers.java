@@ -10,7 +10,7 @@ public class GestionFichiers {
 
 	public static void main(String[] args) {
 		Annuaire annuaire = new Annuaire();
-		
+
 		// Création d'une liste pour stocker les objets Stagiaire
 		ArrayList<Stagiaire> listeStagiaire = new ArrayList<>();
 
@@ -37,7 +37,7 @@ public class GestionFichiers {
 				br.readLine();
 				// Ajouter l'objet Stagiaire à la liste
 				listeStagiaire.add(stagiaire);
-				
+
 			}
 			// Ajouter un objet à la racine
 			annuaire.ajouterStagiaire(stagiaire, annuaire);
@@ -129,4 +129,5 @@ public class GestionFichiers {
 //			e.printStackTrace();
 //		}
 //	}
+	}
 }
