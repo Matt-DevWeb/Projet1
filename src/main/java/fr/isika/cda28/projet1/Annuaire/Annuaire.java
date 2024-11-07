@@ -91,7 +91,8 @@ public class Annuaire {
 //		}
 //	}
 
-	public Noeud lireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {// Check si cest Noeud ou Void
+	public Noeud lireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {// Check si cest Noeud ou
+																								// Void
 
 		// Nom
 		for (int i = 0; i < Stagiaire.TAILLE_MAX_NOM; i++) {
@@ -136,10 +137,8 @@ public class Annuaire {
 		// FilsDroit
 		filsDroit = (raf.readInt());
 		System.out.println("Le fils droit est  : " + filsDroit);
-		
+
 		return stagiaire;// voir pour le return
-
-
 
 	}
 }
