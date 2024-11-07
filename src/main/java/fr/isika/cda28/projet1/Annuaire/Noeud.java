@@ -71,12 +71,21 @@ public class Noeud extends Annuaire {
 //	}
 //	
 	public void ajoutStagiaireRecursif(Noeud nouveauNoeud, RandomAccessFile raf) throws IOException {
+<<<<<<< Updated upstream
 		if (this.stagiaire.getNomLong().compareTo(nouveauNoeud.getStagiaire().getNomLong()) < 0) {
 			if (this.filsGauche == -1) {
 				raf.seek(raf.getFilePointer()-8);
 				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET);
 				raf.seek(raf.length());
 				ecrireNoeud(nouveauNoeud, filsGauche, filsDroit);
+=======
+		if (this.stagiaire.getNomLong().compareTo(nouveauNoeud.getStagiaire().getNomLong()) > 0) {
+			if (this.filsGauche == -1) {
+				raf.seek(raf.getFilePointer()-8);// on repositionne pour ecrire l'index
+				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET); // on ecrit l'index dans le parent 
+				raf.seek(raf.length());// retour a la fin 
+				ecrireNoeud(nouveauNoeud, -1, -1);// ecrire le nouveau noeud (fils gauche)
+>>>>>>> Stashed changes
 			} else {
 				raf.seek(this.filsGauche*TAILLE_NOEUD_OCTET);
 				Noeud noeudFilsGauche = lireNoeud(nouveauNoeud, -1, -1);
@@ -88,7 +97,11 @@ public class Noeud extends Annuaire {
 				raf.seek(raf.getFilePointer()-4);
 				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET);
 				raf.seek(raf.length());
+<<<<<<< Updated upstream
 				ecrireNoeud(nouveauNoeud, filsGauche, filsDroit);
+=======
+				ecrireNoeud(nouveauNoeud, -1, -1);
+>>>>>>> Stashed changes
 			} else {
 				raf.seek(this.filsDroit*TAILLE_NOEUD_OCTET);
 				Noeud noeudFilsDroit = lireNoeud(nouveauNoeud, -1, -1);
