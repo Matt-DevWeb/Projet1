@@ -72,9 +72,16 @@ public class Noeud extends Annuaire {
 	public void ajoutStagiaireRecursif(Noeud nouveauNoeud, RandomAccessFile raf) throws IOException {
 		if (this.stagiaire.getNomLong().compareTo(nouveauNoeud.getStagiaire().getNomLong()) > 0) {
 			if (this.filsGauche == -1) {
+<<<<<<< HEAD
+				raf.seek(raf.length());
+				raf.seek(raf.getFilePointer()-8);// on repositionne pour ecrire l'index
+				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET); // on ecrit l'index dans le parent 
+				raf.seek(raf.length());// retour a la fin 
+=======
 				raf.seek(raf.getFilePointer() - 8);// on repositionne pour ecrire l'index
 				raf.writeInt((int) raf.length() / TAILLE_NOEUD_OCTET); // on ecrit l'index dans le parent
 				raf.seek(raf.length());// retour a la fin
+>>>>>>> 2875755e9bc85096ecf8d8a51337f59695756889
 				ecrireNoeud(nouveauNoeud, -1, -1);// ecrire le nouveau noeud (fils gauche)
 			} else {
 				raf.seek(this.filsGauche * TAILLE_NOEUD_OCTET);
@@ -85,8 +92,14 @@ public class Noeud extends Annuaire {
 
 		} else {
 			if (this.filsDroit == -1) {
+<<<<<<< HEAD
+				raf.seek(raf.length());
+				raf.seek(raf.getFilePointer()-4);
+				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET);
+=======
 				raf.seek(raf.getFilePointer() - 4);
 				raf.writeInt((int) raf.length() / TAILLE_NOEUD_OCTET);
+>>>>>>> 2875755e9bc85096ecf8d8a51337f59695756889
 				raf.seek(raf.length());
 				ecrireNoeud(nouveauNoeud, -1, -1);
 			} else {
