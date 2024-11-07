@@ -74,14 +74,9 @@ public class Noeud extends Annuaire {
 			if (this.filsGauche == -1) {
 
 				raf.seek(raf.length());
-				raf.seek(raf.getFilePointer()-8);// on repositionne pour ecrire l'index
-				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET); // on ecrit l'index dans le parent 
-				raf.seek(raf.length());// retour a la fin 
-
 				raf.seek(raf.getFilePointer() - 8);// on repositionne pour ecrire l'index
 				raf.writeInt((int) raf.length() / TAILLE_NOEUD_OCTET); // on ecrit l'index dans le parent
 				raf.seek(raf.length());// retour a la fin
-
 				ecrireNoeud(nouveauNoeud, -1, -1);// ecrire le nouveau noeud (fils gauche)
 			} else {
 				raf.seek(this.filsGauche * TAILLE_NOEUD_OCTET);
@@ -94,12 +89,8 @@ public class Noeud extends Annuaire {
 			if (this.filsDroit == -1) {
 
 				raf.seek(raf.length());
-				raf.seek(raf.getFilePointer()-4);
-				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET);
-
 				raf.seek(raf.getFilePointer() - 4);
 				raf.writeInt((int) raf.length() / TAILLE_NOEUD_OCTET);
-
 				raf.seek(raf.length());
 				ecrireNoeud(nouveauNoeud, -1, -1);
 			} else {
