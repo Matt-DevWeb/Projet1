@@ -21,6 +21,10 @@ public class Stagiaire {
 	// Constructeur par défaut
 	public Stagiaire() {
 		super();
+		nom = "";
+		prenom ="";
+		departement="";
+		cursus="";
 	}
 
 	// Constructeur avec paramètres

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 // Sert à faire la transition entre front et fichier binaire
 import java.io.RandomAccessFile;
+import java.util.List;
 
 public class Annuaire {
 	// Attributs
@@ -33,13 +34,14 @@ public class Annuaire {
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
 
 		if (raf.length() == 0) {
-			ecrireNoeud(stagiaire, -1, -1);
+			raf.seek(0);
+			stagiaire.ecrireNoeud(stagiaire,raf);
 		} else {
 			raf.seek(0);
-			
-			stagiaire.ajoutStagiaireRecursif(stagiaire, raf);
+			Noeud racine = stagiaire.lireNoeud(raf);
+			racine.ajoutStagiaireRecursif(stagiaire, raf);
 		}
-		return;
+
 	}
 
 	public void close() {
@@ -52,19 +54,7 @@ public class Annuaire {
 		}
 	}
 
-	public void ecrireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {
-
-		raf.writeChars(stagiaire.getStagiaire().getNomLong());
-		raf.writeChars(stagiaire.getStagiaire().getPrenomLong());
-		raf.writeChars(stagiaire.getStagiaire().getDepartementLong());
-		raf.writeChars(stagiaire.getStagiaire().getCursusLong());
-		raf.writeInt(stagiaire.getStagiaire().getAnneePromo());
-		raf.writeInt(filsGauche); // Indice du noeud gauche
-		raf.writeInt(filsDroit); // Indice du noeud droit
-		
-		
-
-	}
+	
 //	public void ajouterStagiaire(Stagiaire nouveauStagiaire) {
 //		if (nouveauStagiaire.getNom().compareTo(noeudActuel.getStagiaire().getNom()) < 0) {
 //			// On va à droite
@@ -85,57 +75,5 @@ public class Annuaire {
 //		}
 //	}
 
-	public Noeud lireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {// Check si cest Noeud ou
-																								// Void
-
-		// Nom
-		for (int i = 0; i < Stagiaire.TAILLE_MAX_NOM; i++) {
-			stagiaire.getStagiaire().setNom(stagiaire.getStagiaire().getNom() + raf.readChar());
-		}
-		stagiaire.getStagiaire().getNom().trim();
-		System.out.println("Nom : " + stagiaire.getStagiaire().getNom());
-
-		// Prenom
-		for (int i = 0; i < Stagiaire.TAILLE_MAX_PRENOM; i++) {
-			stagiaire.getStagiaire().setPrenom(stagiaire.getStagiaire().getPrenom() + raf.readChar());
-
-		}
-		stagiaire.getStagiaire().getPrenom().trim();
-		System.out.println("Prenom  : " + stagiaire.getStagiaire().getPrenom());
-
-		// Departement
-		for (int i = 0; i < Stagiaire.TAILLE_MAX_DEPARTEMENT; i++) {
-			stagiaire.getStagiaire().setDepartement(stagiaire.getStagiaire().getDepartement() + raf.readChar());
-
-		}
-		stagiaire.getStagiaire().getDepartement().trim();
-		System.out.println("Le departement est  : " + stagiaire.getStagiaire().getDepartement());
-
-		// Cursus
-		for (int i = 0; i < Stagiaire.TAILLE_MAX_CURSUS; i++) {
-			stagiaire.getStagiaire().setCursus(stagiaire.getStagiaire().getCursus() + raf.readChar());
-
-		}
-		stagiaire.getStagiaire().getCursus().trim();
-		System.out.println("Le cursus est  : " + stagiaire.getStagiaire().getCursus());
-
-		// AnneePromo
-		stagiaire.getStagiaire().setAnneePromo(raf.readInt());
-		stagiaire.getStagiaire().getAnneePromo();
-		System.out.println("L'annee de promo est  : " + stagiaire.getStagiaire().getAnneePromo());
-
-		// FilsGauche
-		filsGauche = (raf.readInt());
-		System.out.println("Le fils gauche est  : " + filsGauche);
-
-		// FilsDroit
-		filsDroit = (raf.readInt());
-		System.out.println("Le fils droit est  : " + filsDroit);
-
-		return  new Noeud(new Stagiaire(stagiaire.getStagiaire().getNomLong(),
-				stagiaire.getStagiaire().getPrenomLong(), stagiaire.getStagiaire().getDepartementLong(),
-				stagiaire.getStagiaire().getCursusLong(), stagiaire.getStagiaire().getAnneePromo()), filsGauche,
-				filsDroit);// voir pour le return
-
-	}
+	
 }
