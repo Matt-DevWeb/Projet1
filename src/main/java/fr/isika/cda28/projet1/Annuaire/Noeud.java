@@ -50,25 +50,6 @@ public class Noeud {
 	public String toString() {
 		return "Noeud [stagiaire=" + stagiaire + ", filsGauche=" + filsGauche + ", filsDroit=" + filsDroit + "]";
 	}
-// Appeller des méthodes recursives 
-
-//	// méthode d'ajout version Vincent
-//	public void ajout(String nouvelleValeur) {
-//		if (this.valeur.compareTo(nouvelleValeur) < 0) { // valeur < nouvelleValeur => on va à droite
-//			if (this.filsDroit == null) { // il n'y a pas de fils gauche
-//				this.filsDroit = new Noeud(nouvelleValeur, null, null);
-//			} else { // s'il y a déjà un fils droit
-//				this.filsDroit.ajout(nouvelleValeur);
-//			}
-//		} else { // valeur > nouvelleValeur => on va à gauche
-//			if (this.filsGauche == null) { // il n'y a pas de fils gauche
-//				this.filsGauche = new Noeud(nouvelleValeur, null, null);
-//			} else { // s'il y a déjà un fils gauche
-//				this.filsGauche.ajout(nouvelleValeur);
-//			}
-//		}
-//	}
-//	
 
 	public void ecrireNoeud(Noeud stagiaire, RandomAccessFile raf) throws IOException {
 
@@ -139,7 +120,7 @@ public class Noeud {
 				raf.writeInt(filsGauche); // on ecrit l'index dans le parent
 				raf.seek(raf.length());// retour a la fin
 				// System.out.println("2 FG: " + raf.getFilePointer());
-				ecrireNoeud(nouveauNoeud,raf);// ecrire le nouveau noeud (fils gauche)
+				ecrireNoeud(nouveauNoeud, raf);// ecrire le nouveau noeud (fils gauche)
 				// System.out.println("3 FG: " + raf.getFilePointer());
 			} else {
 				raf.seek(filsGauche * TAILLE_NOEUD_OCTET);
@@ -159,7 +140,7 @@ public class Noeud {
 				raf.writeInt(filsDroit);
 				raf.seek(raf.length());
 				// System.out.println("2 FD: " + raf.getFilePointer());
-				ecrireNoeud(nouveauNoeud,raf);
+				ecrireNoeud(nouveauNoeud, raf);
 				// System.out.println("3 FD: " + raf.getFilePointer());
 			} else {
 				raf.seek(filsDroit * TAILLE_NOEUD_OCTET);

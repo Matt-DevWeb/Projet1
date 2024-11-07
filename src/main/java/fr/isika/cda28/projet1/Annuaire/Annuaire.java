@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 // Sert à faire la transition entre front et fichier binaire
 import java.io.RandomAccessFile;
-import java.util.List;
 
 public class Annuaire {
 	// Attributs
@@ -35,7 +34,7 @@ public class Annuaire {
 
 		if (raf.length() == 0) {
 			raf.seek(0);
-			stagiaire.ecrireNoeud(stagiaire,raf);
+			stagiaire.ecrireNoeud(stagiaire, raf);
 		} else {
 			raf.seek(0);
 			Noeud racine = stagiaire.lireNoeud(raf);
@@ -54,26 +53,5 @@ public class Annuaire {
 		}
 	}
 
-	
-//	public void ajouterStagiaire(Stagiaire nouveauStagiaire) {
-//		if (nouveauStagiaire.getNom().compareTo(noeudActuel.getStagiaire().getNom()) < 0) {
-//			// On va à droite
-//			if (this.noeudDroit == null) {
-//				// Il n'y a pas de noeud droit donc on écrit le nouveauStagiaire
-//				this.noeudDroit = new Noeud(nouveauStagiaire, null, null);
-//			} else {
-//				this.noeudDroit.ajouterStagiaire(nouveauStagiaire, noeudActuel);
-//			}
-//
-//		} else {
-//			if (this.noeudGauche == null) {
-//				// Il n'y a pas de noeud droit donc on écrit le nouveauStagiaire
-//				this.noeudGauche = new Noeud(nouveauStagiaire, null, null);
-//			} else {
-//				this.noeudGauche.ajouterStagiaire(nouveauStagiaire, noeudActuel);
-//			}
-//		}
-//	}
 
-	
 }
