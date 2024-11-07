@@ -5,13 +5,12 @@ import java.io.RandomAccessFile;
 
 public class Noeud extends Annuaire {
 
-	public final static int TAILLE_NOEUD_OCTET = Stagiaire.TAILLE_STAGIAIRE_OCTET + 4 + 4 ;   
-	
+	public final static int TAILLE_NOEUD_OCTET = Stagiaire.TAILLE_STAGIAIRE_OCTET + 4 + 4;
+
 	// ATTRIBUTS
 	private Stagiaire stagiaire;
 	private int filsGauche;
 	private int filsDroit;
-	
 
 	// CONSTRUCTEUR
 
@@ -71,14 +70,14 @@ public class Noeud extends Annuaire {
 //	}
 //	
 	public void ajoutStagiaireRecursif(Noeud nouveauNoeud, RandomAccessFile raf) throws IOException {
-		if (this.stagiaire.getNomLong().compareTo(nouveauNoeud.getStagiaire().getNomLong()) < 0) {
+		if (this.stagiaire.getNomLong().compareTo(nouveauNoeud.getStagiaire().getNomLong()) > 0) {
 			if (this.filsGauche == -1) {
-				raf.seek(raf.getFilePointer()-8);
-				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET);
-				raf.seek(raf.length());
-				ecrireNoeud(nouveauNoeud, filsGauche, filsDroit);
+				raf.seek(raf.getFilePointer() - 8);// on repositionne pour ecrire l'index
+				raf.writeInt((int) raf.length() / TAILLE_NOEUD_OCTET); // on ecrit l'index dans le parent
+				raf.seek(raf.length());// retour a la fin
+				ecrireNoeud(nouveauNoeud, -1, -1);// ecrire le nouveau noeud (fils gauche)
 			} else {
-				raf.seek(this.filsGauche*TAILLE_NOEUD_OCTET);
+				raf.seek(this.filsGauche * TAILLE_NOEUD_OCTET);
 				Noeud noeudFilsGauche = new Noeud(new Stagiaire(), -1, -1);
 				noeudFilsGauche = lireNoeud(noeudFilsGauche, -1, -1);
 				noeudFilsGauche.ajoutStagiaireRecursif(nouveauNoeud, raf);
@@ -86,12 +85,12 @@ public class Noeud extends Annuaire {
 
 		} else {
 			if (this.filsDroit == -1) {
-				raf.seek(raf.getFilePointer()-4);
-				raf.writeInt((int)raf.length()/TAILLE_NOEUD_OCTET);
+				raf.seek(raf.getFilePointer() - 4);
+				raf.writeInt((int) raf.length() / TAILLE_NOEUD_OCTET);
 				raf.seek(raf.length());
-				ecrireNoeud(nouveauNoeud, filsGauche, filsDroit);
+				ecrireNoeud(nouveauNoeud, -1, -1);
 			} else {
-				raf.seek(this.filsDroit*TAILLE_NOEUD_OCTET);
+				raf.seek(this.filsDroit * TAILLE_NOEUD_OCTET);
 				Noeud noeudFilsDroit = new Noeud(new Stagiaire(), -1, -1);
 				noeudFilsDroit = lireNoeud(noeudFilsDroit, -1, -1);
 				noeudFilsDroit.ajoutStagiaireRecursif(nouveauNoeud, raf);
