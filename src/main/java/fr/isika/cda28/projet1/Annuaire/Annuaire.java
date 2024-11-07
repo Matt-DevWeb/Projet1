@@ -52,7 +52,11 @@ public class Annuaire {
 	}
 
 	public void ecrireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {
+<<<<<<< HEAD
 		Noeud nouveauNoeud = new Noeud(new Stagiaire(),-1,-1);
+=======
+		Noeud noeudStagiaire = new Noeud(new Stagiaire(), -1, -1);
+>>>>>>> 2875755e9bc85096ecf8d8a51337f59695756889
 		raf.writeChars(stagiaire.getStagiaire().getNomLong());
 		raf.writeChars(stagiaire.getStagiaire().getPrenomLong());
 		raf.writeChars(stagiaire.getStagiaire().getDepartementLong());
@@ -60,7 +64,7 @@ public class Annuaire {
 		raf.writeInt(stagiaire.getStagiaire().getAnneePromo());
 		raf.writeInt(filsGauche); // Indice du noeud gauche
 		raf.writeInt(filsDroit); // Indice du noeud droit
-		
+
 		System.out.println("ecrireNoeoud renvoit : " + raf.getFilePointer());
 	}
 //	public void ajouterStagiaire(Stagiaire nouveauStagiaire) {
@@ -83,7 +87,8 @@ public class Annuaire {
 //		}
 //	}
 
-	public Noeud lireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {// Check si cest Noeud ou Void
+	public Noeud lireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {// Check si cest Noeud ou
+																								// Void
 
 		// Nom
 		for (int i = 0; i < Stagiaire.TAILLE_MAX_NOM; i++) {
@@ -128,9 +133,15 @@ public class Annuaire {
 		// FilsDroit
 		filsDroit = (raf.readInt());
 		System.out.println("Le fils droit est  : " + filsDroit);
+<<<<<<< HEAD
 
 		
 		return stagiaire;// voir pour le return
 
+=======
+
+		return stagiaire;// voir pour le return
+
+>>>>>>> 2875755e9bc85096ecf8d8a51337f59695756889
 	}
 }
