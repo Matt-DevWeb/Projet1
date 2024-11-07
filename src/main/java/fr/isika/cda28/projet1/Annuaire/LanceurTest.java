@@ -17,7 +17,7 @@ public class LanceurTest {
 		System.out.println(stagiaire);
 		System.out.println(stagiaire22);
 
-		annuaire.positionCurseur();
+		
 		
 		// L'annuaire contient maintenant tous les stagiaires
 		// Tu peux maintenant utiliser l'annuaire pour d'autres opérations

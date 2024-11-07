@@ -8,6 +8,7 @@ import java.io.RandomAccessFile;
 public class Annuaire {
 	// Attributs
 	private RandomAccessFile raf;
+	public Noeud noeud;
 
 // Constructeur vide qui contient le raf initialisé
 	public Annuaire() {
@@ -28,18 +29,13 @@ public class Annuaire {
 	}
 
 	// Méthodes
-	public void positionCurseur() throws IOException {
-		System.out.println(raf.length());
-
-		long positionCurseur = raf.length() / 124;
-		System.out.println(positionCurseur);
-	}
 
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
 
 		if (raf.length() == 0) {
 			ecrireNoeud(stagiaire, -1, -1);
 		} else {
+			
 			stagiaire.ajoutStagiaireRecursif(stagiaire, raf);
 		}
 		return;
@@ -56,6 +52,7 @@ public class Annuaire {
 	}
 
 	public void ecrireNoeud(Noeud stagiaire, int filsGauche, int filsDroit) throws IOException {
+		Noeud nouveauNoeud = new Noeud(new Stagiaire(),-1,-1);
 		raf.writeChars(stagiaire.getStagiaire().getNomLong());
 		raf.writeChars(stagiaire.getStagiaire().getPrenomLong());
 		raf.writeChars(stagiaire.getStagiaire().getDepartementLong());
@@ -63,6 +60,7 @@ public class Annuaire {
 		raf.writeInt(stagiaire.getStagiaire().getAnneePromo());
 		raf.writeInt(filsGauche); // Indice du noeud gauche
 		raf.writeInt(filsDroit); // Indice du noeud droit
+		
 		System.out.println("ecrireNoeoud renvoit : " + raf.getFilePointer());
 	}
 //	public void ajouterStagiaire(Stagiaire nouveauStagiaire) {
@@ -130,7 +128,9 @@ public class Annuaire {
 		// FilsDroit
 		filsDroit = (raf.readInt());
 		System.out.println("Le fils droit est  : " + filsDroit);
+
 		
 		return stagiaire;// voir pour le return
+
 	}
 }
