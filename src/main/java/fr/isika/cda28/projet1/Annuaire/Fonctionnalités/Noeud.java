@@ -20,6 +20,11 @@ public class Noeud {
 		this.filsGauche = filsGauche;
 		this.filsDroit = filsDroit;
 	}
+	public Noeud () {
+		this.stagiaire = new Stagiaire();
+		this.filsGauche = -1;
+		this.filsDroit = -1;
+	}
 
 	public Noeud getRacine() {
 		return this;
@@ -34,19 +39,19 @@ public class Noeud {
 		this.stagiaire = stagiaire;
 	}
 
-	public int getNoeudGauche() {
+	public int getFilsGauche() {
 		return filsGauche;
-	}
+			}
 
-	public void setNoeudGauche(int filsGauche) {
+	public void setFilsGauche(int filsGauche) {
 		this.filsGauche = filsGauche;
 	}
 
-	public int getNoeudDroit() {
+	public int getFilsDroit() {
 		return filsDroit;
 	}
 
-	public void setNoeudDroit(int filsDroit) {
+	public void setFilsDroit(int filsDroit) {
 		this.filsDroit = filsDroit;
 	}
 
@@ -62,12 +67,12 @@ public class Noeud {
 		raf.writeChars(stagiaire.getStagiaire().getDepartementLong());
 		raf.writeChars(stagiaire.getStagiaire().getCursusLong());
 		raf.writeInt(stagiaire.getStagiaire().getAnneePromo());
-		raf.writeInt(stagiaire.getNoeudGauche()); // Indice du noeud gauche
-		raf.writeInt(stagiaire.getNoeudDroit()); // Indice du noeud droit
+		raf.writeInt(stagiaire.getFilsGauche()); // Indice du noeud gauche
+		raf.writeInt(stagiaire.getFilsDroit()); // Indice du noeud droit
 
 	}
 
-	public static Noeud lireNoeud(RandomAccessFile raf) throws IOException {// Check si cest Noeud ou
+	public Noeud lireNoeud(RandomAccessFile raf) throws IOException {// Check si cest Noeud ou
 		// Void
 		Noeud noeudLu = new Noeud(new Stagiaire(), -1, -1);
 // Nom
@@ -102,18 +107,18 @@ public class Noeud {
 //System.out.println("L'annee de promo est  : " + stagiaire.getStagiaire().getAnneePromo());
 
 // FilsGauche
-		noeudLu.setNoeudGauche(raf.readInt());
+		noeudLu.setFilsGauche(raf.readInt());
 //System.out.println("Le fils gauche est  : " + filsGauche);
 
 // FilsDroit
-		noeudLu.setNoeudDroit(raf.readInt());
+		noeudLu.setFilsDroit(raf.readInt());
 
 		return noeudLu;// voir pour le return
 
 	}
 
 	public void ajoutStagiaireRecursif(Noeud nouveauNoeud, RandomAccessFile raf) throws IOException {
-		if (this.stagiaire.getNomLong().compareTo(nouveauNoeud.getStagiaire().getNomLong()) > 0) {
+		if (this.stagiaire.compareTo(nouveauNoeud.getStagiaire()) > 0) {
 
 			if (filsGauche == -1) {
 				// raf.seek(raf.length());
@@ -174,66 +179,102 @@ public class Noeud {
 		}
 	}
 
-	public static boolean rechercheNoeud(String valeurRechercher, RandomAccessFile raf, long position)
+	public Noeud rechercheNoeud(String valeurRechercher, RandomAccessFile raf, long position)
 			throws IOException {
 		raf.seek(position);
 		Noeud nouveauNoeud = lireNoeud(raf);
 
 		if (nouveauNoeud.getStagiaire().getNomLong().trim().equalsIgnoreCase(valeurRechercher)) {
-			return true;
+			return nouveauNoeud;
 		}
 
 		// Vérifie Fils Gauche
 
-		if (nouveauNoeud.getNoeudGauche() != -1) {
-			if (rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getNoeudGauche() * TAILLE_NOEUD_OCTET)) {
-				return true;
+		if (nouveauNoeud.getFilsGauche() != -1) {
+			if (rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getFilsGauche() * TAILLE_NOEUD_OCTET) != null) {
+				return nouveauNoeud;
 			}
 		}
 
 		// Vérifie Fils Droit
 
-		if (nouveauNoeud.getNoeudDroit() != -1) {
-			return rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getNoeudDroit() * TAILLE_NOEUD_OCTET);
+		if (nouveauNoeud.getFilsDroit() != -1) {
+			return rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getFilsDroit() * TAILLE_NOEUD_OCTET);
 		}
 
-		return false;
+		return null;
 	}
 
-	public void supprimerStagiaire(Noeud noeudASupprimer, RandomAccessFile raf) throws IOException {
-		// Cas 1 : Pas d'enfant (feuille)
-		if (noeudASupprimer.getNoeudGauche() == -1 && noeudASupprimer.getNoeudDroit() == -1) {
-			// Marquer le noeud comme supprimé ou gérer la suppression
-			noeudASupprimer.setStagiaire(null); // Marquer comme supprimé
-		}
-		// Cas 2 : Un seul enfant
-		else if (noeudASupprimer.getNoeudGauche() == -1 || noeudASupprimer.getNoeudDroit() == -1) {
-			int enfant;
-			if (noeudASupprimer.getNoeudGauche() != -1) {
-			    enfant = noeudASupprimer.getNoeudGauche();
+	public void supprimerRacine(RandomAccessFile raf, int indexCourant) throws IOException {
+		
+		Noeud noeudSuccesseur = this.noeudSuccesseur(raf);
+		raf.seek(indexCourant * TAILLE_NOEUD_OCTET);
+		noeudSuccesseur.setFilsGauche(filsGauche);
+		noeudSuccesseur.setFilsDroit(filsDroit);
+		ecrireNoeud(noeudSuccesseur, raf);
+		
+		raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
+		Noeud noeudDroit = lireNoeud(raf);
+		noeudDroit.supprimerNoeud(noeudSuccesseur, raf, indexCourant);
+		
+		System.out.println(this.noeudSuccesseur(raf) + " est le successeur de " + this);
+		
+	}
+
+	
+
+	public void supprimerNoeud(Noeud noeudASupprimer, RandomAccessFile raf, int indexParent) throws IOException {
+		int indexCourant = (int) (raf.getFilePointer() - TAILLE_NOEUD_OCTET) / TAILLE_NOEUD_OCTET;
+
+		if (this.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) == 0) {
+			// Valeur > nouvelleValeur -> on va à droite ajouter une condition else if/ else
+			if (this.filsDroit == -1 && this.filsGauche == -1) {
+				raf.seek(indexParent * TAILLE_NOEUD_OCTET);
+				Noeud noeudParent = lireNoeud(raf);
+				if (noeudParent.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
+					raf.seek(raf.getFilePointer() - 4);
+					raf.writeInt(-1);
+				} else {
+					raf.seek(raf.getFilePointer() - 8);
+					raf.writeInt(-1);
+				}
+
+			} else if (this.filsDroit == -1 || this.filsGauche == -1) {
+
+				raf.seek(indexParent * TAILLE_NOEUD_OCTET);
+				Noeud noeudParent = lireNoeud(raf);
+				if (noeudParent.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
+					raf.seek(raf.getFilePointer() - 4);
+					if (this.filsDroit == -1) {
+						raf.writeInt(this.filsGauche);
+					} else {
+						raf.writeInt(this.filsDroit);
+					}
+
+				} else {
+					raf.seek(raf.getFilePointer() - 8);
+					if (this.filsDroit == -1) {
+						raf.writeInt(this.filsGauche);
+					} else {
+						raf.writeInt(this.filsDroit);
+					}
+				}
 			} else {
-			    enfant = noeudASupprimer.getNoeudDroit();
+				this.supprimerRacine(raf, indexCourant);
 			}
 
-		raf.seek(enfant * TAILLE_NOEUD_OCTET);
-		Noeud enfantNoeud = lireNoeud(raf);
-		noeudASupprimer.setStagiaire(enfantNoeud.getStagiaire());
-		noeudASupprimer.setNoeudGauche(enfantNoeud.getNoeudGauche());
-		noeudASupprimer.setNoeudDroit(enfantNoeud.getNoeudDroit());
-	}
-	// Cas 3 : Deux enfants
-	else
-
-	{
-		Noeud successeur = noeudASupprimer.noeudSuccesseur(raf);
-		if (successeur != null) {
-			noeudASupprimer.setStagiaire(successeur.getStagiaire());
-			// Supprimer le successeur dans le sous-arbre droit
+		} else if (this.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
 			raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
 			Noeud noeudDroit = lireNoeud(raf);
-			noeudDroit.supprimerStagiaire(successeur, raf);
+			noeudDroit.supprimerNoeud(noeudASupprimer, raf, indexCourant);
+		} else {
+
+			raf.seek(filsGauche * TAILLE_NOEUD_OCTET);
+			Noeud noeudGauche = lireNoeud(raf);
+			noeudGauche.supprimerNoeud(noeudASupprimer, raf, indexCourant);
+
 		}
-	}
+
 	}
 
 	public Noeud noeudSuccesseur(RandomAccessFile raf) throws IOException {
@@ -241,8 +282,8 @@ public class Noeud {
 			raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
 			Noeud noeudCourant = lireNoeud(raf);
 
-			while (noeudCourant.getNoeudGauche() != -1) {
-				raf.seek(noeudCourant.getNoeudGauche() * TAILLE_NOEUD_OCTET);
+			while (noeudCourant.getFilsGauche() != -1) {
+				raf.seek(noeudCourant.getFilsGauche() * TAILLE_NOEUD_OCTET);
 				noeudCourant = lireNoeud(raf);
 			}
 			return noeudCourant;

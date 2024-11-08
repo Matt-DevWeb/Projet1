@@ -43,7 +43,27 @@ public class Annuaire {
 		}
 
 	}
+	public Noeud rechercherStagiaire (String stagiaireARechercher) throws IOException {
+		Noeud resultatRecherche = new Noeud();
+		if (raf.length() == 0) {
+			System.out.println(" Nous ne pouvons pas trouver de stagiaire, car celui-ci est vide");
+		} else {
+			raf.seek(0);
+			Noeud racine = new Noeud();
+			racine = racine.lireNoeud(raf);
+			resultatRecherche= racine.rechercheNoeud(stagiaireARechercher, raf, 0);
+		} return resultatRecherche;
+	}
 
+	public void supprimerStagiaire (Noeud stagiaireASupprimer) throws IOException {
+		if (raf.length() == 0 ) {
+			System.out.println("L'annuaire est vide ");
+		} else {
+			raf.seek(0);
+			Noeud racine = stagiaireASupprimer.lireNoeud(raf);
+			racine.supprimerNoeud(stagiaireASupprimer,raf, 0);
+		}
+	}
 	public void afficherListeOrdreAlphabetique() throws IOException {
         if (raf.length() > 0) {
             raf.seek(0);  // Revenir au début du fichier pour lire la racine

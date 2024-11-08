@@ -1,6 +1,6 @@
 package fr.isika.cda28.projet1.Annuaire.Fonctionnalités;
 
-public class Stagiaire {
+public class Stagiaire implements Comparable<Stagiaire> {
 	// Constantes pour la taille maximale des chaînes de caractères
 	public final static int TAILLE_MAX_NOM = 20;
 	public final static int TAILLE_MAX_PRENOM = 20;
@@ -137,5 +137,18 @@ public class Stagiaire {
 			cursusLong = cursusLong.substring(0, TAILLE_MAX_CURSUS);
 		}
 		return cursusLong;
+	}
+
+	@Override
+	public int compareTo(Stagiaire stagiaireAComparer) {
+		int i = this.nom.trim().compareTo(stagiaireAComparer.getNom().trim());
+		if (i == 0 ) {
+			i = this.prenom.trim().compareTo(stagiaireAComparer.getPrenom().trim());
+			if (i == 0 ) {
+				i = this.cursus.trim().compareTo(stagiaireAComparer.getCursus().trim());
+			}
+		}
+		return i;
+		
 	}
 }
