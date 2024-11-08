@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.Fonctionnalités;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +22,7 @@ public class Annuaire {
 
 	}
 
+
 	// Getters et Setters
 
 	public RandomAccessFile getRaf() {
@@ -43,6 +44,18 @@ public class Annuaire {
 
 	}
 
+	public void afficherListeOrdreAlphabetique() throws IOException {
+        if (raf.length() > 0) {
+            raf.seek(0);  // Revenir au début du fichier pour lire la racine
+            Noeud racine = new Noeud(new Stagiaire(), -1, -1);  // Initialiser un noeud pour la racine
+            racine = racine.lireNoeud(raf);  // Lire la racine
+            racine.listeOrdreAlphabetique(raf);  // Lancer la traversée In-Order
+        } else {
+            System.out.println("L'annuaire est vide.");
+        }
+    }
+	
+	
 	public void close() {
 		try {
 			if (raf != null) {
@@ -53,5 +66,9 @@ public class Annuaire {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Annuaire [raf=" + raf + ", noeud=" + noeud + "]";
+	}
 
 }

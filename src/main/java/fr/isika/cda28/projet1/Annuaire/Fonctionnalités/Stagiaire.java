@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.Fonctionnalités;
 
 public class Stagiaire {
 	// Constantes pour la taille maximale des chaînes de caractères
