@@ -19,8 +19,7 @@ public class PageVisiteurs extends BorderPane {
 	private Label listeStagiaire = new Label("Liste des stagiaires de l'entreprise.");
 
 	// On instancie l'image
-	private Image logo = new Image(
-			"file:///C:/Users/coleen/Documents/ISIKA/projet1/Code/Projet1/src/mesFichiers/LogoProjet1.png");
+	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/LogoProjet1.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// On instancie nos boutons

@@ -1,6 +1,7 @@
 package fr.isika.cda28.projet1.Annuaire;
 
 import fr.isika.cda28.projet1.Annuaire.Design.PageAccueil;
+import fr.isika.cda28.projet1.Annuaire.Design.PageVisiteurs;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,11 +26,11 @@ public class App extends Application {
 		
 		stage.getIcons().add(icon);
 //		 On instancie la scène avec ses dimensions.
-		Scene scene = new Scene(root, 800, 450);
+		Scene scene = new Scene(root, 800, 600);
 
 		// On donne un titre à la scène
 		stage.setTitle("DevUp Academy");
-
+		stage.setResizable(false);
 		// On donne notre scene à notre stage
 		stage.setScene(scene);
 		stage.sizeToScene();
