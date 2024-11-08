@@ -64,6 +64,7 @@ public class Annuaire {
 			racine.supprimerNoeud(stagiaireASupprimer,raf, 0);
 		}
 	}
+	
 	public void afficherListeOrdreAlphabetique() throws IOException {
         if (raf.length() > 0) {
             raf.seek(0);  // Revenir au début du fichier pour lire la racine
