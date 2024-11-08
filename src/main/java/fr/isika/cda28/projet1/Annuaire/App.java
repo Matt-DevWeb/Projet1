@@ -25,7 +25,7 @@ public class App extends Application {
 		
 		stage.getIcons().add(icon);
 //		 On instancie la scène avec ses dimensions.
-		Scene scene = new Scene(root, 1000, 800);
+		Scene scene = new Scene(root, 800, 450);
 
 		// On donne un titre à la scène
 		stage.setTitle("DevUp Academy");
