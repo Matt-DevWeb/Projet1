@@ -27,11 +27,11 @@ public class LanceurTest {
 		annuaire.ajouterStagiaire(new Noeud(stagiaire31, -1, -1));
 		annuaire.ajouterStagiaire(new Noeud(stagiaire4, -1, -1));
 		annuaire.ajouterStagiaire(new Noeud(stagiaire5, -1, -1));
-		stagiaire.supprimerStagiaire(stagiaire22, annuaire.getRaf());
-		annuaire.afficherListeOrdreAlphabetique();
+		annuaire.supprimerStagiaire(stagiaire22);
+//		annuaire.afficherListeOrdreAlphabetique();
 		
 		System.out.println("Est ce que DAVID est présent dans l'annuaire ? : "
-				+ Noeud.rechercheNoeud("WACIM", annuaire.getRaf(), 0));
+				+ annuaire.rechercherStagiaire("WACIM"));
 //		for (int i = 0; i < 4; i++) {
 //			annuaire.getRaf().seek(i * Noeud.TAILLE_NOEUD_OCTET);
 //			System.out.println(annuaire.noeud.lireNoeud(annuaire.getRaf()));
