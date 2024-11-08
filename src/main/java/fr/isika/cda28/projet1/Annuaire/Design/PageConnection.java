@@ -11,21 +11,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageConnection extends BorderPane {
 
 	// Initialisation des éléments de la page "connection"
-	private HBox header = new HBox(590);
-	private VBox mainContent = new VBox(50);
+	private HBox header = new HBox(20);
+	private VBox mainContent = new VBox(30);
 
 	// Initialisation des label invitant à se connecter
 	private Label labelTitre = new Label("Connectez-vous");
-	private Label labelEmail = new Label("Email");
-	private Label labelMotDePasse = new Label("Mot de passe");
+	private Label labelEmail = new Label("Email                                         ");
+	private Label labelMotDePasse = new Label("Mot de passe                          ");
 
 	// Initialisation de l'image
-	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/LogoProjet1.png"));
+	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_blanc_ligne.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// Initialisation des boutons
@@ -41,19 +43,32 @@ public class PageConnection extends BorderPane {
 		super();
 
 		// ajout du style au graphe + logos
-		setPrefSize(800, 450);
-		logoImageView.setFitWidth(80);
-		logoImageView.setFitHeight(80);
+		logoImageView.setFitWidth(200);
+		logoImageView.setFitHeight(81);
 
-		setStyle("-fx-background-color:pink");
+		setStyle("-fx-background-color:#172428");
+		labelTitre.setStyle("-fx-text-fill:white ;-fx-font-size:30px ;");
+		labelEmail.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
+		labelMotDePasse.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
+		champEmail.setMaxWidth(200);
+		champEmail.setPrefHeight(30);
+		champMotDePasse.setMaxWidth(200);
+		champMotDePasse.setPrefHeight(30);
+		boutonValider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAccueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+
+		champEmail.setPromptText("Entrez votre Email");
+		champMotDePasse.setPromptText("Entrez votre Mot de Passe");
 
 		// on définit les espaces et positions
 		header.setPadding(new Insets(20, 20, 20, 20));
-		mainContent.setPadding(new Insets(60, 100, 100, 100));
 		mainContent.setAlignment(Pos.CENTER);
-
+		header.setPrefSize(800, 80); // Taille fixe pour le header
+		header.setHgrow(logoImageView, Priority.ALWAYS); // L'image peut s'étirer
+		Region spacer = new Region();
+		HBox.setHgrow(spacer, Priority.ALWAYS);
 		// j'ajoute mon logo et mon bouton accueil au header
-		header.getChildren().addAll(logoImageView, boutonAccueil);
+		header.getChildren().addAll(logoImageView, spacer, boutonAccueil);
 
 		// j'ajoute mes labels, mes champs et mon bouton valider au mainContent
 		mainContent.getChildren().addAll(labelTitre, labelEmail, champEmail, labelMotDePasse, champMotDePasse,
