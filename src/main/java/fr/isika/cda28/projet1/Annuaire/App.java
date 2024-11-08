@@ -21,10 +21,10 @@ public class App extends Application {
 	public void start(Stage stage) throws Exception {
 		PageAccueil root = new PageAccueil();
 		
-		Image icon = new Image(getClass().getResourceAsStream("favicon.jpg"), 32, 32 , true, true);
-		System.out.println(getClass().getResource("favicon.jpg"));
+		Image icon = new Image(getClass().getResourceAsStream("/mesFichiers/favicon.jpg"), 40, 40 , true, true);
+		
 		stage.getIcons().add(icon);
-		// On instancie la scène avec ses dimensions.
+//		 On instancie la scène avec ses dimensions.
 		Scene scene = new Scene(root, 1000, 800);
 
 		// On donne un titre à la scène

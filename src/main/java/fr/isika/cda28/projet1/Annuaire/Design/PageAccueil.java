@@ -16,8 +16,7 @@ public class PageAccueil extends BorderPane {
 	private Label bienvenue = new Label("Bienvenue sur l'annuaire de l'entreprise");
 
 	// On instancie l'image
-	private Image logo = new Image(
-			"file:///C:/Workspace/Isika%20-%20Eclypse/Projet1Annuaire/Projet/Projet1/src/mesFichiers/LogoProjet1.png");
+	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/LogoProjet1.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// On instancie nos boutons
