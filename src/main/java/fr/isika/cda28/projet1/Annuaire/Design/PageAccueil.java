@@ -10,16 +10,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageAccueil extends BorderPane {
-	
-	
+
 	// On instancie notre messsage de bienvenue
 	private Label bienvenue = new Label("Bienvenue sur l'annuaire de l'entreprise");
 
 	// On instancie l'image
-	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/LogoProjet1.png"));
+	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_blanc_ligne.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// On instancie nos boutons
@@ -28,39 +29,49 @@ public class PageAccueil extends BorderPane {
 	private Button consulter = new Button("Consulter l'annuaire");
 
 	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
-	private HBox header = new HBox(590);
-	private VBox mainContent = new VBox(50);
+	private HBox header = new HBox(20);
+	private VBox mainContent = new VBox(20);
 	private VBox buttonContent = new VBox(20);
 
 	public PageAccueil() {
 		super();
 
 		setPrefSize(800, 450);
-		logoImageView.setFitWidth(80);
-		logoImageView.setFitHeight(80);
+		logoImageView.setFitWidth(200);
+		logoImageView.setFitHeight(81);
 
-		setStyle("-fx-background-color:white");
+		setStyle("-fx-background-color:#172428");
+		bienvenue.setStyle("-fx-text-fill:white ;-fx-font-size:30px ;");
 
 		// on initialise les espaces et positions
 		header.setPadding(new Insets(20, 20, 20, 20));
 		mainContent.setAlignment(Pos.CENTER);
 		buttonContent.setAlignment(Pos.CENTER);
 
-		// on initialise la taille du header
-		header.setPrefSize(800, 80);
+		Region spacer = new Region();
+		HBox.setHgrow(spacer, Priority.ALWAYS);
 
+		connexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		recherche.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		consulter.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+
+		// on initialise la taille du header
+
+		header.setPrefSize(800, 80); // Taille fixe pour le header
+		header.setHgrow(logoImageView, Priority.ALWAYS); // L'image peut s'étirer
 		// On ajoute les images et bouton au Header
-		header.getChildren().addAll(logoImageView, connexion);
+		header.getChildren().addAll(logoImageView, spacer, connexion);
 		// on ajoute nos boutons a la VBo buttonContent
 		buttonContent.getChildren().addAll(recherche, consulter);
 
 		// On ajoute VBox et label au maincontent
-		mainContent.getChildren().addAll(bienvenue, buttonContent);
 
+		mainContent.getChildren().addAll(bienvenue, buttonContent);
+		VBox.setVgrow(bienvenue, Priority.ALWAYS); // Le label peut se redimensionner verticalement
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setTop(header);
 		this.setCenter(mainContent);
-		//Ajout du comportement au bouton "connexion"
+		// Ajout du comportement au bouton "connexion"
 		connexion.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -71,7 +82,7 @@ public class PageAccueil extends BorderPane {
 
 		});
 	}
-	
+
 	public Label getBienvenue() {
 		return bienvenue;
 	}
@@ -143,7 +154,5 @@ public class PageAccueil extends BorderPane {
 	public void setButtonContent(VBox buttonContent) {
 		this.buttonContent = buttonContent;
 	}
-
-	
 
 }
