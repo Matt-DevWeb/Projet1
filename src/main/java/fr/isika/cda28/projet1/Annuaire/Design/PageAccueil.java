@@ -1,6 +1,7 @@
 package fr.isika.cda28.projet1.Annuaire.Design;
 
-import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,12 +13,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class PageAccueil extends BorderPane {
+	
+	
 	// On instancie notre messsage de bienvenue
 	private Label bienvenue = new Label("Bienvenue sur l'annuaire de l'entreprise");
 
 	// On instancie l'image
-	private Image logo = new Image(
-			"file:///C:/Workspace/Isika%20-%20Eclypse/Projet1Annuaire/Projet/Projet1/src/mesFichiers/LogoProjet1.png");
+	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/LogoProjet1.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// On instancie nos boutons
@@ -30,6 +32,46 @@ public class PageAccueil extends BorderPane {
 	private VBox mainContent = new VBox(50);
 	private VBox buttonContent = new VBox(20);
 
+	public PageAccueil() {
+		super();
+
+		setPrefSize(800, 450);
+		logoImageView.setFitWidth(80);
+		logoImageView.setFitHeight(80);
+
+		setStyle("-fx-background-color:white");
+
+		// on initialise les espaces et positions
+		header.setPadding(new Insets(20, 20, 20, 20));
+		mainContent.setAlignment(Pos.CENTER);
+		buttonContent.setAlignment(Pos.CENTER);
+
+		// on initialise la taille du header
+		header.setPrefSize(800, 80);
+
+		// On ajoute les images et bouton au Header
+		header.getChildren().addAll(logoImageView, connexion);
+		// on ajoute nos boutons a la VBo buttonContent
+		buttonContent.getChildren().addAll(recherche, consulter);
+
+		// On ajoute VBox et label au maincontent
+		mainContent.getChildren().addAll(bienvenue, buttonContent);
+
+		// On instancie les HBox et VBox dans le BorderPane
+		this.setTop(header);
+		this.setCenter(mainContent);
+		//Ajout du comportement au bouton "connexion"
+		connexion.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				PageConnection pageConnection = new PageConnection();
+				connexion.getScene().setRoot(pageConnection);
+			}
+
+		});
+	}
+	
 	public Label getBienvenue() {
 		return bienvenue;
 	}
@@ -102,35 +144,6 @@ public class PageAccueil extends BorderPane {
 		this.buttonContent = buttonContent;
 	}
 
-	public PageAccueil() {
-		super();
-
-		setPrefSize(800, 450);
-		logoImageView.setFitWidth(80);
-		logoImageView.setFitHeight(80);
-
-		setStyle("-fx-background-color:white");
-
-		// on initialise les espaces et positions
-		header.setPadding(new Insets(20, 20, 20, 20));
-		mainContent.setAlignment(Pos.CENTER);
-		buttonContent.setAlignment(Pos.CENTER);
-
-		// on initialise la taille du header
-		header.setPrefSize(800, 80);
-
-		// On ajoute les images et bouton au Header
-		header.getChildren().addAll(logoImageView, connexion);
-		// on ajoute nos boutons a la VBo buttonContent
-		buttonContent.getChildren().addAll(recherche, consulter);
-
-		// On ajoute VBox et label au maincontent
-		mainContent.getChildren().addAll(bienvenue, buttonContent);
-
-		// On instancie les HBox et VBox dans le BorderPane
-		this.setTop(header);
-		this.setCenter(mainContent);
-
-	}
+	
 
 }
