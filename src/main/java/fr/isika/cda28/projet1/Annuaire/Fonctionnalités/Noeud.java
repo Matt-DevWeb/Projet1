@@ -174,78 +174,80 @@ public class Noeud {
 		}
 	}
 
-	public static boolean rechercheNoeud(String valeurRechercher, RandomAccessFile raf, long position) throws IOException {
-	    raf.seek(position);
-	    Noeud nouveauNoeud = lireNoeud(raf);
+	public static boolean rechercheNoeud(String valeurRechercher, RandomAccessFile raf, long position)
+			throws IOException {
+		raf.seek(position);
+		Noeud nouveauNoeud = lireNoeud(raf);
 
-	    if (nouveauNoeud.getStagiaire().getNomLong().trim().equalsIgnoreCase(valeurRechercher)) {
-	       return true;
-	    }
+		if (nouveauNoeud.getStagiaire().getNomLong().trim().equalsIgnoreCase(valeurRechercher)) {
+			return true;
+		}
 
-	    // Vérifie Fils Gauche
+		// Vérifie Fils Gauche
 
-	    if (nouveauNoeud.getNoeudGauche() != -1) {
-	       if (rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getNoeudGauche() * TAILLE_NOEUD_OCTET)) {
-	          return true;
-	       }
-	    }
-
-	    // Vérifie Fils Droit
-
-	    if (nouveauNoeud.getNoeudDroit() != -1) {
-	           return rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getNoeudDroit() * TAILLE_NOEUD_OCTET);
-	    }
-
-	    return false;
-	}
-
-	public Noeud supprimerStagiaireDirectement(Stagiaire stagiaireASupprimer, RandomAccessFile raf) throws IOException {
-		if (stagiaire.getNomLong().compareTo(stagiaireASupprimer.getNomLong()) > 0) {
-			// Rechercher dans le sous-arbre gauche
-			if (filsGauche != -1) {
-				raf.seek(filsGauche * TAILLE_NOEUD_OCTET);
-				Noeud noeudGauche = lireNoeud(raf);
-				noeudGauche = noeudGauche.supprimerStagiaireDirectement(stagiaireASupprimer, raf);
-				raf.seek(filsGauche * TAILLE_NOEUD_OCTET);
-				noeudGauche.ecrireNoeud(noeudGauche, raf);
-			}
-		} else if (stagiaire.getNomLong().compareTo(stagiaireASupprimer.getNomLong()) < 0) {
-			// Rechercher dans le sous-arbre droit
-			if (filsDroit != -1) {
-				raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
-				Noeud noeudDroit = lireNoeud(raf);
-				noeudDroit = noeudDroit.supprimerStagiaireDirectement(stagiaireASupprimer, raf);
-				raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
-				noeudDroit.ecrireNoeud(noeudDroit, raf);
-			}
-		} else {
-			// Le noeud contenant le stagiaire à supprimer est trouvé
-			if (filsGauche == -1 && filsDroit == -1) {
-				// Cas 1 : Noeud sans enfants
-				return null;
-			} else if (filsGauche == -1) {
-				// Cas 2 : Noeud avec seulement un enfant droit
-				raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
-				return lireNoeud(raf);
-			} else if (filsDroit == -1) {
-				// Cas 2 : Noeud avec seulement un enfant gauche
-				raf.seek(filsGauche * TAILLE_NOEUD_OCTET);
-				return lireNoeud(raf);
-			} else {
-				// Cas 3 : Noeud avec deux enfants
-				raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
-				Noeud successeur = lireNoeud(raf);
-				while (successeur.getNoeudGauche() != -1) {
-					raf.seek(successeur.getNoeudGauche() * TAILLE_NOEUD_OCTET);
-					successeur = lireNoeud(raf);
-				}
-				// Remplace les informations du noeud courant avec celles du successeur
-				this.stagiaire = successeur.getStagiaire();
-				// Supprime le successeur dans le sous-arbre droit
-				this.filsDroit = supprimerStagiaireDirectement(successeur.getStagiaire(), raf).filsDroit;
+		if (nouveauNoeud.getNoeudGauche() != -1) {
+			if (rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getNoeudGauche() * TAILLE_NOEUD_OCTET)) {
+				return true;
 			}
 		}
-		return this;
+
+		// Vérifie Fils Droit
+
+		if (nouveauNoeud.getNoeudDroit() != -1) {
+			return rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getNoeudDroit() * TAILLE_NOEUD_OCTET);
+		}
+
+		return false;
+	}
+
+	public void supprimerStagiaire(Noeud noeudASupprimer, RandomAccessFile raf) throws IOException {
+		// Cas 1 : Pas d'enfant (feuille)
+		if (noeudASupprimer.getNoeudGauche() == -1 && noeudASupprimer.getNoeudDroit() == -1) {
+			// Marquer le noeud comme supprimé ou gérer la suppression
+			noeudASupprimer.setStagiaire(null); // Marquer comme supprimé
+		}
+		// Cas 2 : Un seul enfant
+		else if (noeudASupprimer.getNoeudGauche() == -1 || noeudASupprimer.getNoeudDroit() == -1) {
+			int enfant;
+			if (noeudASupprimer.getNoeudGauche() != -1) {
+			    enfant = noeudASupprimer.getNoeudGauche();
+			} else {
+			    enfant = noeudASupprimer.getNoeudDroit();
+			}
+
+		raf.seek(enfant * TAILLE_NOEUD_OCTET);
+		Noeud enfantNoeud = lireNoeud(raf);
+		noeudASupprimer.setStagiaire(enfantNoeud.getStagiaire());
+		noeudASupprimer.setNoeudGauche(enfantNoeud.getNoeudGauche());
+		noeudASupprimer.setNoeudDroit(enfantNoeud.getNoeudDroit());
+	}
+	// Cas 3 : Deux enfants
+	else
+
+	{
+		Noeud successeur = noeudASupprimer.noeudSuccesseur(raf);
+		if (successeur != null) {
+			noeudASupprimer.setStagiaire(successeur.getStagiaire());
+			// Supprimer le successeur dans le sous-arbre droit
+			raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
+			Noeud noeudDroit = lireNoeud(raf);
+			noeudDroit.supprimerStagiaire(successeur, raf);
+		}
+	}
+	}
+
+	public Noeud noeudSuccesseur(RandomAccessFile raf) throws IOException {
+		if (filsDroit != -1) {
+			raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
+			Noeud noeudCourant = lireNoeud(raf);
+
+			while (noeudCourant.getNoeudGauche() != -1) {
+				raf.seek(noeudCourant.getNoeudGauche() * TAILLE_NOEUD_OCTET);
+				noeudCourant = lireNoeud(raf);
+			}
+			return noeudCourant;
+		}
+		return null;
 	}
 
 }
