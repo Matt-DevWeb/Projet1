@@ -13,7 +13,7 @@ public class Annuaire {
 // Constructeur vide qui contient le raf initialisé
 	public Annuaire() {
 		try {
-			File fichier = new File("src/mesFichiers/ListeStagiaires.bin");
+			File fichier = new File("src/main/resources/mesFichiers/ListeStagiaires.bin");
 			raf = new RandomAccessFile(fichier, "rw");
 		} catch (IOException e) {
 			System.err.println("Le fichier binaire n'a pas été ouvert");

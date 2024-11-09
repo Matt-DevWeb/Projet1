@@ -57,7 +57,7 @@ public class PageVisiteurs extends BorderPane {
 		this.annuaire = annuaire;
 		this.tableViewStagiaire = new TableView<Annuaire>();
 		// taille de la page
-		setPrefSize(1366, 768);
+//		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
 		// logo
 		logoImageView.setFitWidth(140);
