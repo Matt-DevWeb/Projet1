@@ -1,12 +1,16 @@
 package fr.isika.cda28.projet1.Annuaire.Design;
 
 import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Authentification;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,8 +28,8 @@ public class PageConnection extends BorderPane {
 
 	// Initialisation des label invitant à se connecter
 	private Label labelTitre = new Label("Connectez-vous");
-	private Label labelEmail = new Label("Email                                         ");
-	private Label labelMotDePasse = new Label("Mot de passe                          ");
+	private Label labelEmail = new Label("Email");
+	private Label labelMotDePasse = new Label("Mot de passe");
 
 	// Initialisation de l'image
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_blanc_ligne.png"));
@@ -37,7 +41,7 @@ public class PageConnection extends BorderPane {
 
 	// Initialisation des champs à remplir
 	TextField champEmail = new TextField();
-	TextField champMotDePasse = new TextField();
+	PasswordField champMotDePasse = new PasswordField();
 
 	// Constructeur
 	public PageConnection() {
@@ -91,7 +95,29 @@ public class PageConnection extends BorderPane {
 			}
 
 		});
+		// Ajout du comportement au bouton "valider"
+		boutonValider.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Authentification authentifcation = new Authentification();
+				String userID = champEmail.getText();
+				String password = champMotDePasse.getText();
 
+				boolean authenticate = authentifcation.authenticate(userID, password);
+
+				if (authenticate) {
+					PageAccueil pageAccueil = new PageAccueil(annuaire);
+					boutonAccueil.getScene().setRoot(pageAccueil);
+				} else {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Connexion échouée");
+					alert.setHeaderText(null);
+					alert.setContentText("Identifiant ou mot de passe incorrect");
+					alert.showAndWait();
+				}
+			}
+
+		});
 	}
 
 	// Getters et Setters
@@ -164,7 +190,7 @@ public class PageConnection extends BorderPane {
 		return champMotDePasse;
 	}
 
-	public void setChampMotDePasse(TextField champMotDePasse) {
+	public void setChampMotDePasse(PasswordField champMotDePasse) {
 		this.champMotDePasse = champMotDePasse;
 	}
 

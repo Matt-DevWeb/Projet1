@@ -1,4 +1,3 @@
-
 package fr.isika.cda28.projet1.Annuaire.Design;
 
 import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
@@ -43,7 +42,7 @@ public class PageVisiteurs extends BorderPane {
 	private Button trier = new Button("Trier");
 
 	// On instancie le TextField
-	private TextField zoneRecherche = new TextField("Rechercher un stagiaire");
+	private TextField zoneRecherche = new TextField();
 
 	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
 	private VBox coteGauche = new VBox(220);
@@ -58,7 +57,7 @@ public class PageVisiteurs extends BorderPane {
 		this.annuaire = annuaire;
 		this.tableViewStagiaire = new TableView<Annuaire>();
 		// taille de la page
-		setPrefSize(1360, 1080);
+		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
 		// logo
 		logoImageView.setFitWidth(140);
@@ -79,10 +78,21 @@ public class PageVisiteurs extends BorderPane {
 		coteGauche.setStyle("-fx-background-color:#25333F");
 		imprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		accueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+
 		// CENTRE DE PAGE
 		recherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		connexion.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		trier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+
+		// On change la couleur du texte des labels
+		bienvenue.setStyle("-fx-text-fill: white; -fx-font-size:30px;");
+		listeStagiaire.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
+
+		// On stylise le textField zoneRecherche
+		zoneRecherche.setMaxWidth(300);
+		zoneRecherche.setPrefHeight(30);
+		zoneRecherche.setPromptText("Rechercher un stagiaire");
+
 		// On ajoute le label bienvenue et le bouton connexion à la VBox
 		// bienvenueContenu
 		bienvenueContenu.getChildren().addAll(bienvenue, connexion);
@@ -134,19 +144,19 @@ public class PageVisiteurs extends BorderPane {
 		tableViewStagiaire.setStyle("-fx-background-color: #324255");
 		// Changer la couleur du texte dans la colonne nom
 		colonneNom.setCellFactory(col -> {
-		    return new TableCell<Annuaire, String>() {
-		        @Override
-		        protected void updateItem(String item, boolean empty) {
-		            super.updateItem(item, empty);
-		            if (item == null || empty) {
-		                setText(null);
-		                setStyle("");
-		            } else {
-		                setText(item);
-		                setStyle("-fx-text-fill: darkblue;"); // Changer la couleur du texte
-		            }
-		        }
-		    };
+			return new TableCell<Annuaire, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item);
+						setStyle("-fx-text-fill: darkblue;"); // Changer la couleur du texte
+					}
+				}
+			};
 		});
 
 //		tableViewStagiaire.setRowFactory(tv -> {
@@ -161,9 +171,9 @@ public class PageVisiteurs extends BorderPane {
 //		    });
 //		    return row;
 //		});
-		
+
 		tableViewStagiaire.getColumns().forEach(column -> {
-		    column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
+			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
 
 		tableViewStagiaire.setItems(FXCollections.observableArrayList(this.annuaire));

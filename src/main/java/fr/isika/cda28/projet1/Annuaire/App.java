@@ -18,19 +18,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class App extends Application {
-	
+
 	@Override
 	public void start(Stage stage) throws Exception {
-		
+
 		Annuaire annuaire = new Annuaire();
-		
+
 		PageAccueil root = new PageAccueil(annuaire);
 
 		Image icon = new Image(getClass().getResourceAsStream("/mesFichiers/icon.png"), 40, 40, true, true);
 
 		stage.getIcons().add(icon);
 //		 On instancie la scène avec ses dimensions.
-		Scene scene = new Scene(root, 1360, 1080);
+		Scene scene = new Scene(root, 1366, 768);
 
 		// On donne un titre à la scène
 		stage.setTitle("DevUp Academy");
