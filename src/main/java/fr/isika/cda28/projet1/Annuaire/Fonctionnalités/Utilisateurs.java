@@ -1,40 +1,36 @@
 package fr.isika.cda28.projet1.Annuaire.Fonctionnalités;
 
-import java.util.List;
+
 
 public class Utilisateurs {
 	
 	//Attributs
-	private String utilisateurs;
+	private String userID;
 	private String password;
-	private String role; // Admin, editeur ou consultant
-	private List<String> permissions;// Liste des permissions spécifiques
 	
 	//Constructeurs
-	public Utilisateurs(String utilisateurs, String password, String role, List<String> permissions) {
+	public Utilisateurs(String userID, String password) {
 		
-		this.utilisateurs = utilisateurs;
+		this.userID = userID;
 		this.password = password;
-		this.role = role;
-		this.permissions = List.of();// INITIALISER UNE LIST VIDE// A VERIFIER A L'USAGE PARCE QU'INITIALEMENT TIRE DE JS/ 
+
 	}
 	// getters et setters
 
-	public String getUtilisateurs() {
-		return utilisateurs;
+	public String getUserID() {
+		return userID;
 	}
 
-	public String getRole() {
-		return role;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 
-	public List<String> getPermissions() {
-		return permissions;
+	public String getPassword() {
+		return password;
 	}
-	
-	
-	//Methodes
-	// boolean droitDacces 
-	
-	
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 }

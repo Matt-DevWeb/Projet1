@@ -1,5 +1,6 @@
 package fr.isika.cda28.projet1.Annuaire.Design;
 
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,74 +16,109 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageAccueil extends BorderPane {
+	// on instancie la classe annuaire;
+	private Annuaire annuaire;
 
-	// On instancie notre messsage de bienvenue
-	private Label bienvenue = new Label("Bienvenue sur l'annuaire de l'entreprise");
+	// Label pour afficher un message de bienvenue
+	private Label bienvenue = new Label("Bienvenue sur l'annuaire de la Dev'Up academy");
 
-	// On instancie l'image
+	// ImageView pour afficher le logo de l'entreprise
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_blanc_ligne.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
-	// On instancie nos boutons
+	// Boutons pour les différentes actions disponibles sur la page d'accueil
 	private Button connexion = new Button("Se connecter");
 	private Button recherche = new Button("Rechercher");
 	private Button consulter = new Button("Consulter l'annuaire");
 
-	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
+	// Conteneurs HBox et VBox utilisés pour organiser les éléments sur la page
 	private HBox header = new HBox(20);
 	private VBox mainContent = new VBox(20);
 	private VBox buttonContent = new VBox(20);
 
-	public PageAccueil() {
+	// Constructeur de la page d'accueil
+	public PageAccueil(Annuaire annuaire) {
 		super();
+		this.annuaire = annuaire;
+		// Définir la taille de la fenêtre principale
+		setPrefSize(1370, 1080);
 
-		setPrefSize(800, 450);
+		// Définir la taille du logo
 		logoImageView.setFitWidth(200);
 		logoImageView.setFitHeight(81);
 
+		// Définir le style général de la page
 		setStyle("-fx-background-color:#172428");
-		bienvenue.setStyle("-fx-text-fill:white ;-fx-font-size:30px ;");
+		bienvenue.setStyle("-fx-text-fill:white ;-fx-font-size:40px;");
 
-		// on initialise les espaces et positions
+		// Configurer les espaces et l'alignement des conteneurs
 		header.setPadding(new Insets(20, 20, 20, 20));
 		mainContent.setAlignment(Pos.CENTER);
 		buttonContent.setAlignment(Pos.CENTER);
 
+		// Créer un espaceur pour pousser les éléments à gauche ou à droite
 		Region spacer = new Region();
-		HBox.setHgrow(spacer, Priority.ALWAYS);
+		HBox.setHgrow(spacer, Priority.ALWAYS); // Permet au spacer de prendre tout l'espace disponible
 
+		// Style des boutons
 		connexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		recherche.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		consulter.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
-		// on initialise la taille du header
-
+		// Configurer la taille du header (barre supérieure)
 		header.setPrefSize(800, 80); // Taille fixe pour le header
-		header.setHgrow(logoImageView, Priority.ALWAYS); // L'image peut s'étirer
-		// On ajoute les images et bouton au Header
+		HBox.setHgrow(logoImageView, Priority.ALWAYS); // Permet au logo de s'étendre si nécessaire
+
+		// Ajouter le logo et le bouton de connexion au header
 		header.getChildren().addAll(logoImageView, spacer, connexion);
-		// on ajoute nos boutons a la VBo buttonContent
+
+		// Espaces pour ajuster la position verticale du label de bienvenue
+		Region topSpacer = new Region(); // Espace en haut
+		Region bottomSpacer = new Region(); // Espace en bas
+		VBox.setVgrow(topSpacer, Priority.ALWAYS);
+		VBox.setVgrow(bottomSpacer, Priority.ALWAYS);
+
+		// Définir une marge pour remonter le label de bienvenue
+		VBox.setMargin(bienvenue, new Insets(0, 0, 100, 0));
+
+		// Conteneur pour centrer le label de bienvenue verticalement
+		VBox labelContainer = new VBox(20);
+		labelContainer.setAlignment(Pos.CENTER);
+		labelContainer.getChildren().addAll(topSpacer, bienvenue, bottomSpacer);
+
+		// Ajouter les boutons à la VBox buttonContent
 		buttonContent.getChildren().addAll(recherche, consulter);
 
-		// On ajoute VBox et label au maincontent
-
+		// Ajouter le label de bienvenue et les boutons au conteneur principal
 		mainContent.getChildren().addAll(bienvenue, buttonContent);
-		VBox.setVgrow(bienvenue, Priority.ALWAYS); // Le label peut se redimensionner verticalement
-		// On instancie les HBox et VBox dans le BorderPane
+		VBox.setVgrow(bienvenue, Priority.ALWAYS); // Le label peut s'étendre verticalement si nécessaire
+
+		// Ajouter le header (haut de page) et le contenu principal (centre de la page)
 		this.setTop(header);
 		this.setCenter(mainContent);
-		// Ajout du comportement au bouton "connexion"
+
+		// Ajouter le comportement au bouton "connexion" pour changer de page
 		connexion.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
+				PageConnection pageConnection = new PageConnection();
+				connexion.getScene().setRoot(pageConnection);
+			}
+		});
+		consulter.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageConnection pageConnection = new PageConnection();
-				connexion.getScene().setRoot(pageConnection);
+				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire);
+				consulter.getScene().setRoot(pageVisiteurs);
+
 			}
 
 		});
 	}
 
+	// Getters et Setters pour les éléments de la page
 	public Label getBienvenue() {
 		return bienvenue;
 	}
@@ -154,5 +190,4 @@ public class PageAccueil extends BorderPane {
 	public void setButtonContent(VBox buttonContent) {
 		this.buttonContent = buttonContent;
 	}
-
 }

@@ -1,11 +1,16 @@
 package fr.isika.cda28.projet1.Annuaire.Design;
 
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Authentification;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,15 +21,15 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageConnection extends BorderPane {
-
+	private Annuaire annuaire;
 	// Initialisation des éléments de la page "connection"
 	private HBox header = new HBox(20);
 	private VBox mainContent = new VBox(30);
 
 	// Initialisation des label invitant à se connecter
 	private Label labelTitre = new Label("Connectez-vous");
-	private Label labelEmail = new Label("Email                                         ");
-	private Label labelMotDePasse = new Label("Mot de passe                          ");
+	private Label labelEmail = new Label("Email");
+	private Label labelMotDePasse = new Label("Mot de passe");
 
 	// Initialisation de l'image
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_blanc_ligne.png"));
@@ -36,7 +41,7 @@ public class PageConnection extends BorderPane {
 
 	// Initialisation des champs à remplir
 	TextField champEmail = new TextField();
-	TextField champMotDePasse = new TextField();
+	PasswordField champMotDePasse = new PasswordField();
 
 	// Constructeur
 	public PageConnection() {
@@ -47,7 +52,7 @@ public class PageConnection extends BorderPane {
 		logoImageView.setFitHeight(81);
 
 		setStyle("-fx-background-color:#172428");
-		labelTitre.setStyle("-fx-text-fill:white ;-fx-font-size:30px ;");
+		labelTitre.setStyle("-fx-text-fill:white ;-fx-font-size:40px ;");
 		labelEmail.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
 		labelMotDePasse.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
 		champEmail.setMaxWidth(200);
@@ -64,9 +69,11 @@ public class PageConnection extends BorderPane {
 		header.setPadding(new Insets(20, 20, 20, 20));
 		mainContent.setAlignment(Pos.CENTER);
 		header.setPrefSize(800, 80); // Taille fixe pour le header
-		header.setHgrow(logoImageView, Priority.ALWAYS); // L'image peut s'étirer
+		HBox.setHgrow(logoImageView, Priority.ALWAYS); // L'image peut s'étirer
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS);
+		VBox.setMargin(labelTitre, new Insets(0, 0, 50, 0));
+
 		// j'ajoute mon logo et mon bouton accueil au header
 		header.getChildren().addAll(logoImageView, spacer, boutonAccueil);
 
@@ -83,12 +90,34 @@ public class PageConnection extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageAccueil pageAccueil = new PageAccueil();
+				PageAccueil pageAccueil = new PageAccueil(annuaire);
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
 
 		});
+		// Ajout du comportement au bouton "valider"
+		boutonValider.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Authentification authentifcation = new Authentification();
+				String userID = champEmail.getText();
+				String password = champMotDePasse.getText();
 
+				boolean authenticate = authentifcation.authenticate(userID, password);
+
+				if (authenticate) {
+					PageAccueil pageAccueil = new PageAccueil(annuaire);
+					boutonAccueil.getScene().setRoot(pageAccueil);
+				} else {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Connexion échouée");
+					alert.setHeaderText(null);
+					alert.setContentText("Identifiant ou mot de passe incorrect");
+					alert.showAndWait();
+				}
+			}
+
+		});
 	}
 
 	// Getters et Setters
@@ -161,7 +190,7 @@ public class PageConnection extends BorderPane {
 		return champMotDePasse;
 	}
 
-	public void setChampMotDePasse(TextField champMotDePasse) {
+	public void setChampMotDePasse(PasswordField champMotDePasse) {
 		this.champMotDePasse = champMotDePasse;
 	}
 
