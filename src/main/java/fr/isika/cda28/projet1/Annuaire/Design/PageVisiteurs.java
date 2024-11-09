@@ -1,11 +1,21 @@
 
 package fr.isika.cda28.projet1.Annuaire.Design;
 
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -13,6 +23,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class PageVisiteurs extends BorderPane {
+
+	private Annuaire annuaire;
+	public TableView<Annuaire> tableViewStagiaire;
 
 	// On instancie les labels
 	private Label bienvenue = new Label("Bienvenue !");
@@ -40,14 +53,18 @@ public class PageVisiteurs extends BorderPane {
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
 
-	public PageVisiteurs() {
+	public PageVisiteurs(Annuaire annuaire) {
 		super();
+		this.annuaire = annuaire;
+		this.tableViewStagiaire = new TableView<Annuaire>();
+		// taille de la page
+		setPrefSize(1360, 1080);
+		setStyle("-fx-background-color:#172428");
+		// logo
+		logoImageView.setFitWidth(140);
+		logoImageView.setFitHeight(140);
 
-		setPrefSize(800, 450);
-		logoImageView.setFitWidth(80);
-		logoImageView.setFitHeight(80);
-
-		setStyle("-fx-background-color:white");
+		// COTE GAUCHE
 
 		// on initialise la taille de la VBox coteGauche
 		coteGauche.setPrefSize(220, 450);
@@ -59,8 +76,13 @@ public class PageVisiteurs extends BorderPane {
 		coteGaucheBoutons.getChildren().addAll(imprimer, accueil);
 
 		// On chane la change la couleur de fond de la partie gauche
-		coteGauche.setStyle("-fx-background-color:#D9D9D9");
-
+		coteGauche.setStyle("-fx-background-color:#25333F");
+		imprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		accueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		// CENTRE DE PAGE
+		recherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		connexion.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		trier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		// On ajoute le label bienvenue et le bouton connexion à la VBox
 		// bienvenueContenu
 		bienvenueContenu.getChildren().addAll(bienvenue, connexion);
@@ -78,9 +100,77 @@ public class PageVisiteurs extends BorderPane {
 		// On ajoute du padding à la HBox listeTriContenu
 		listeTriContenu.setPadding(new Insets(30, 30, 30, 30));
 
+		// table VIEW
+		tableViewStagiaire.setEditable(false);
+
+		TableColumn<Annuaire, String> colonneNom = new TableColumn<>(" Nom ");
+		colonneNom.setMinWidth(200);
+		colonneNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+
+		TableColumn<Annuaire, String> colonnePrenom = new TableColumn<>(" Prenom ");
+		colonnePrenom.setMinWidth(200);
+		colonnePrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+
+		TableColumn<Annuaire, String> colonneDepartement = new TableColumn<>(" Departement ");
+		colonneDepartement.setMinWidth(50);
+		colonneDepartement.setCellValueFactory(new PropertyValueFactory<>("departement"));
+
+		TableColumn<Annuaire, String> colonneCursus = new TableColumn<>(" Cursus ");
+		colonneCursus.setMinWidth(150);
+		colonneCursus.setCellValueFactory(new PropertyValueFactory<>("cursus"));
+
+		TableColumn<Annuaire, Integer> colonnePromo = new TableColumn<>(" Année de la promo ");
+		colonnePromo.setMinWidth(100);
+		colonnePromo.setCellValueFactory(new PropertyValueFactory<>("anneePromo"));
+
+		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus,
+				colonnePromo);
+
+		tableViewStagiaire.setPlaceholder(new Label("Aucun stagiaire trouvé."));
+		// permet au colonne d'utiliser tout l'espace disponible
+		tableViewStagiaire.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		// permet de selectionner de multiples éléments
+		tableViewStagiaire.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		tableViewStagiaire.setStyle("-fx-background-color: #324255");
+		// Changer la couleur du texte dans la colonne nom
+		colonneNom.setCellFactory(col -> {
+		    return new TableCell<Annuaire, String>() {
+		        @Override
+		        protected void updateItem(String item, boolean empty) {
+		            super.updateItem(item, empty);
+		            if (item == null || empty) {
+		                setText(null);
+		                setStyle("");
+		            } else {
+		                setText(item);
+		                setStyle("-fx-text-fill: darkblue;"); // Changer la couleur du texte
+		            }
+		        }
+		    };
+		});
+
+//		tableViewStagiaire.setRowFactory(tv -> {
+//		    TableRow<Annuaire> row = new TableRow<>();
+//		    row.setStyle("-fx-background-color: #324255;");
+//		    row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+//		        if (isSelected) {
+//		            row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428" );
+//		        } else {
+//		            row.setStyle("-fx-background-color: #172428");
+//		        }
+//		    });
+//		    return row;
+//		});
+		
+		tableViewStagiaire.getColumns().forEach(column -> {
+		    column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
+		});
+
+		tableViewStagiaire.setItems(FXCollections.observableArrayList(this.annuaire));
+
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		// contenuPrincipal
-		contenuPrincipal.getChildren().addAll(bienvenueContenu, rechercheContenu, listeTriContenu);
+		contenuPrincipal.getChildren().addAll(bienvenueContenu, rechercheContenu, listeTriContenu, tableViewStagiaire);
 
 		// on initialise les espaces et positions des VBox et HBox
 		coteGauche.setAlignment(Pos.CENTER);
@@ -89,6 +179,16 @@ public class PageVisiteurs extends BorderPane {
 		bienvenueContenu.setAlignment(Pos.CENTER);
 		rechercheContenu.setAlignment(Pos.CENTER);
 		listeTriContenu.setAlignment(Pos.CENTER);
+
+		accueil.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				PageAccueil pageAccueil = new PageAccueil(annuaire);
+				accueil.getScene().setRoot(pageAccueil);
+			}
+
+		});
 
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);

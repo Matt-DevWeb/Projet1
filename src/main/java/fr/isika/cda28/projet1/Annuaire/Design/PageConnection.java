@@ -1,5 +1,6 @@
 package fr.isika.cda28.projet1.Annuaire.Design;
 
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,7 +17,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageConnection extends BorderPane {
-
+	private Annuaire annuaire;
 	// Initialisation des éléments de la page "connection"
 	private HBox header = new HBox(20);
 	private VBox mainContent = new VBox(30);
@@ -47,7 +48,7 @@ public class PageConnection extends BorderPane {
 		logoImageView.setFitHeight(81);
 
 		setStyle("-fx-background-color:#172428");
-		labelTitre.setStyle("-fx-text-fill:white ;-fx-font-size:30px ;");
+		labelTitre.setStyle("-fx-text-fill:white ;-fx-font-size:40px ;");
 		labelEmail.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
 		labelMotDePasse.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
 		champEmail.setMaxWidth(200);
@@ -64,9 +65,11 @@ public class PageConnection extends BorderPane {
 		header.setPadding(new Insets(20, 20, 20, 20));
 		mainContent.setAlignment(Pos.CENTER);
 		header.setPrefSize(800, 80); // Taille fixe pour le header
-		header.setHgrow(logoImageView, Priority.ALWAYS); // L'image peut s'étirer
+		HBox.setHgrow(logoImageView, Priority.ALWAYS); // L'image peut s'étirer
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS);
+		VBox.setMargin(labelTitre, new Insets(0, 0, 50, 0));
+
 		// j'ajoute mon logo et mon bouton accueil au header
 		header.getChildren().addAll(logoImageView, spacer, boutonAccueil);
 
@@ -83,7 +86,7 @@ public class PageConnection extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageAccueil pageAccueil = new PageAccueil();
+				PageAccueil pageAccueil = new PageAccueil(annuaire);
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
 

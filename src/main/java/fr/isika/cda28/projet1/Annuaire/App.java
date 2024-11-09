@@ -2,6 +2,7 @@ package fr.isika.cda28.projet1.Annuaire;
 
 import fr.isika.cda28.projet1.Annuaire.Design.PageAccueil;
 import fr.isika.cda28.projet1.Annuaire.Design.PageVisiteurs;
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,16 +18,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class App extends Application {
-
+	
 	@Override
 	public void start(Stage stage) throws Exception {
-		PageAccueil root = new PageAccueil();
+		
+		Annuaire annuaire = new Annuaire();
+		
+		PageAccueil root = new PageAccueil(annuaire);
 
 		Image icon = new Image(getClass().getResourceAsStream("/mesFichiers/icon.png"), 40, 40, true, true);
 
 		stage.getIcons().add(icon);
 //		 On instancie la scène avec ses dimensions.
-		Scene scene = new Scene(root, 800, 600);
+		Scene scene = new Scene(root, 1360, 1080);
 
 		// On donne un titre à la scène
 		stage.setTitle("DevUp Academy");
