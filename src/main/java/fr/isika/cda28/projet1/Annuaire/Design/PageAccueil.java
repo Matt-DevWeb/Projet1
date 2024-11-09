@@ -41,7 +41,7 @@ public class PageAccueil extends BorderPane {
 		super();
 		this.annuaire = annuaire;
 		// Définir la taille de la fenêtre principale
-		setPrefSize(1370, 1080);
+//		setPrefSize(1370, 1080);
 
 		// Définir la taille du logo
 		logoImageView.setFitWidth(200);

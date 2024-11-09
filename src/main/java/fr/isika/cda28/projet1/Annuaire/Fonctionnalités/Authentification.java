@@ -10,19 +10,23 @@ public class Authentification {
     public Authentification() {
     	
         // Ajouter des utilisateurs pour l'exemple
-        utilisateurs.add(new Utilisateurs("admin@gmail.com", "1234"));
-        utilisateurs.add(new Utilisateurs("editeur@gmail.com", "password"));
+    	utilisateurs.add(new Editeur("editeur1@gmail.com", "12345","editeur","partiel"));
+    	utilisateurs.add(new Editeur("editeur2@gmail.com", "56789","editeur","partiel"));
+        utilisateurs.add(new Administrateur("admin@gmail.com", "1234","Admin","ALL"));
+    
         
     }
 
-    public boolean authenticate(String userID, String password) {
+    public Utilisateurs authenticate(String userID, String password) {
         for (Utilisateurs utilisateur : utilisateurs) {
             if (utilisateur.getUserID().equals(userID) && utilisateur.getPassword().equals(password)) {
             	System.out.println("Connexion réussie");
-                return true;
+            	
+                return utilisateur;
             }
         }
         System.out.println("Connexion échec");
-        return false;
+        return null;
     }
+ 
 }

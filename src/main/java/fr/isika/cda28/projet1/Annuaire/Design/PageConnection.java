@@ -1,7 +1,9 @@
 package fr.isika.cda28.projet1.Annuaire.Design;
 
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Administrateur;
 import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Authentification;
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Utilisateurs;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -103,11 +105,11 @@ public class PageConnection extends BorderPane {
 				String userID = champEmail.getText();
 				String password = champMotDePasse.getText();
 
-				boolean authenticate = authentifcation.authenticate(userID, password);
+				Utilisateurs authenticate = authentifcation.authenticate(userID, password);
 
-				if (authenticate) {
-					PageAccueil pageAccueil = new PageAccueil(annuaire);
-					boutonAccueil.getScene().setRoot(pageAccueil);
+				if (authenticate!=null) {
+					PageAdminEdit pageAdminEdit  = new PageAdminEdit(annuaire);
+					boutonValider.getScene().setRoot(pageAdminEdit);
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Connexion échouée");

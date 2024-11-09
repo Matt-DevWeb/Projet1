@@ -3,6 +3,7 @@ package fr.isika.cda28.projet1.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.Design.PageAccueil;
 import fr.isika.cda28.projet1.Annuaire.Design.PageVisiteurs;
 import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.GestionDesFichiers;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -30,7 +31,7 @@ public class App extends Application {
 
 		stage.getIcons().add(icon);
 //		 On instancie la scène avec ses dimensions.
-		Scene scene = new Scene(root, 1366, 768);
+		Scene scene = new Scene(root, 1024, 576);
 
 		// On donne un titre à la scène
 		stage.setTitle("DevUp Academy");
@@ -44,6 +45,10 @@ public class App extends Application {
 	}
 
 	public static void main(String[] args) {
+		GestionDesFichiers fichier = new GestionDesFichiers();
+	fichier.chargerStagiairesDepuisFichier();
+		
+		
 		launch(args);
 	}
 
