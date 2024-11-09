@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire.Fonctionnalités;
+package fr.isika.cda28.projet1.Annuaire;
 
 public class Editeur extends Utilisateurs {
 	

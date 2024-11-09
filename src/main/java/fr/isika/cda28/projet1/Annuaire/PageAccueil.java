@@ -1,6 +1,9 @@
-package fr.isika.cda28.projet1.Annuaire.Design;
+package fr.isika.cda28.projet1.Annuaire;
 
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,8 +19,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageAccueil extends BorderPane {
-	// on instancie la classe annuaire;
-	private Annuaire annuaire;
+	// on instancie une liste de stagiaires;
+	private ArrayList<Stagiaire> promotion;
 
 	// Label pour afficher un message de bienvenue
 	private Label bienvenue = new Label("Bienvenue sur l'annuaire de la Dev'Up academy");
@@ -36,10 +39,12 @@ public class PageAccueil extends BorderPane {
 	private VBox mainContent = new VBox(20);
 	private VBox buttonContent = new VBox(20);
 
+	
 	// Constructeur de la page d'accueil
-	public PageAccueil(Annuaire annuaire) {
+	public PageAccueil() {
 		super();
-		this.annuaire = annuaire;
+		
+		this.promotion = new ArrayList<Stagiaire>();
 		// Définir la taille de la fenêtre principale
 //		setPrefSize(1370, 1080);
 
@@ -110,7 +115,7 @@ public class PageAccueil extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire);
+				PageVisiteurs pageVisiteurs = new PageVisiteurs(promotion);
 				consulter.getScene().setRoot(pageVisiteurs);
 
 			}
@@ -189,5 +194,8 @@ public class PageAccueil extends BorderPane {
 
 	public void setButtonContent(VBox buttonContent) {
 		this.buttonContent = buttonContent;
+	}
+	public void setPromotion(ArrayList<Stagiaire> promotion) {
+		this.promotion = promotion;
 	}
 }

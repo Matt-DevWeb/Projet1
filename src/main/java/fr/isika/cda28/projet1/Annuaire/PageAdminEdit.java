@@ -1,6 +1,5 @@
-package fr.isika.cda28.projet1.Annuaire.Design;
+package fr.isika.cda28.projet1.Annuaire;
 
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,7 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class PageVisiteurs extends BorderPane {
+public class PageAdminEdit extends BorderPane {
 
 	private Annuaire annuaire;
 	public TableView<Annuaire> tableViewStagiaire;
@@ -40,19 +39,25 @@ public class PageVisiteurs extends BorderPane {
 	private Button accueil = new Button("Accueil");
 	private Button recherche = new Button("Rechercher");
 	private Button trier = new Button("Trier");
+	private Button mettreAjour = new Button ("Mettre a jour un stagiaire");
+	private Button ajoutStagiaire = new Button("Ajouter un stagiaire");
+	private Button suppStagiaire = new Button("Supprimer un stagiaire");
+	private Button ajoutEditeur  = new Button("Ajouter un editeur");
+	private Button suppEditeur = new Button("Supprimer un editeur ");
+	
 
 	// On instancie le TextField
 	private TextField zoneRecherche = new TextField();
 
 	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
-	private VBox coteGauche = new VBox(220);
+	private VBox coteGauche = new VBox(50);
 	private VBox coteGaucheBoutons = new VBox(20);
 	private VBox contenuPrincipal = new VBox();
 	private HBox bienvenueContenu = new HBox(350);
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
 
-	public PageVisiteurs(Annuaire annuaire) {
+	public PageAdminEdit(Annuaire annuaire) {
 		super();
 		this.annuaire = annuaire;
 		this.tableViewStagiaire = new TableView<Annuaire>();
@@ -72,7 +77,7 @@ public class PageVisiteurs extends BorderPane {
 		coteGauche.getChildren().addAll(logoImageView, coteGaucheBoutons);
 
 		// on ajoute nos boutons a la VBox coteGauche
-		coteGaucheBoutons.getChildren().addAll(imprimer, accueil);
+		coteGaucheBoutons.getChildren().addAll(mettreAjour,ajoutStagiaire,suppStagiaire,ajoutEditeur,suppEditeur,imprimer,accueil);
 
 		// On chane la change la couleur de fond de la partie gauche
 		coteGauche.setStyle("-fx-background-color:#25333F");
@@ -190,11 +195,16 @@ public class PageVisiteurs extends BorderPane {
 		rechercheContenu.setAlignment(Pos.CENTER);
 		listeTriContenu.setAlignment(Pos.CENTER);
 
+		//on affiche et on cache les boutons en fontion du profil
+
+		
+		
+		// on ajoute du comportement au bouton accueil
 		accueil.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageAccueil pageAccueil = new PageAccueil(annuaire);
+				PageAccueil pageAccueil = new PageAccueil();
 				accueil.getScene().setRoot(pageAccueil);
 			}
 

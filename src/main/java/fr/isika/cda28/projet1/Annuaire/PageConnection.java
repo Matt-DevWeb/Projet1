@@ -1,9 +1,5 @@
-package fr.isika.cda28.projet1.Annuaire.Design;
+package fr.isika.cda28.projet1.Annuaire;
 
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Administrateur;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Authentification;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Utilisateurs;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -92,7 +88,7 @@ public class PageConnection extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageAccueil pageAccueil = new PageAccueil(annuaire);
+				PageAccueil pageAccueil = new PageAccueil();
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
 

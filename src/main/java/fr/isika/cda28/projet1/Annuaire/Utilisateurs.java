@@ -1,8 +1,8 @@
-package fr.isika.cda28.projet1.Annuaire.Fonctionnalités;
+package fr.isika.cda28.projet1.Annuaire;
 
+import java.io.Serializable;
 
-
-public class Utilisateurs {
+public class Utilisateurs{
 	
 	//Attributs
 	private String userID;
