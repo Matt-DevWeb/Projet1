@@ -1,5 +1,6 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import fr.isika.cda28.projet1.Annuaire.Administrateur;
@@ -51,10 +52,9 @@ public class PageConnection extends BorderPane {
 	PasswordField champMotDePasse = new PasswordField();
 
 	// Constructeur
-	public PageConnection() {
+	public PageConnection(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
 		super();
 		// Initialisation de la liste des stagiaires (peut être une liste vide ou chargée d'une source de données)
-		stagiaires = FXCollections.observableArrayList(new ArrayList<Stagiaire>());
 
 		// ajout du style au graphe + logos
 		logoImageView.setFitWidth(200);
@@ -99,7 +99,8 @@ public class PageConnection extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageAccueil pageAccueil = new PageAccueil();
+				Annuaire annuaire = new Annuaire();
+				PageAccueil pageAccueil = new PageAccueil(annuaire);
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
 
@@ -115,7 +116,8 @@ public class PageConnection extends BorderPane {
 				Utilisateurs utilisateurConnecte = authentifcation.authenticate(userID, password);
 
 				if (utilisateurConnecte!=null) {
-					PageAdminEdit pageAdminEdit  = new PageAdminEdit(stagiaires, utilisateurConnecte);
+					Annuaire annuaire = new Annuaire();
+					PageAdminEdit pageAdminEdit  = new PageAdminEdit(annuaire, stagiaires, utilisateurConnecte);
 					boutonValider.getScene().setRoot(pageAdminEdit);
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
@@ -217,6 +219,9 @@ public class PageConnection extends BorderPane {
 
 	public void setMainContent(VBox mainContent) {
 		this.mainContent = mainContent;
+	}
+	public void setPromotion(ObservableList<Stagiaire> observableList) {
+		this.stagiaires = observableList;
 	}
 
 }

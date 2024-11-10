@@ -98,6 +98,7 @@ public class Annuaire {
 			racine.supprimerNoeud(stagiaireASupprimer, raf, 0);
 		}
 	}
+	
 
 	public List<Stagiaire> afficherListeOrdreAlphabetique() throws IOException {
 		List<Stagiaire> listeTriee = new ArrayList<>();

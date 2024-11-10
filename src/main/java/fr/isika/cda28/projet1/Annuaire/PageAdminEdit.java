@@ -1,5 +1,8 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -24,10 +27,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 
 public class PageAdminEdit extends BorderPane {
 
-	public TableView<Stagiaire> tableViewStagiaire;
+	private TableView<Stagiaire> tableViewStagiaire;
 	
 
 	// On instancie les labels
@@ -60,11 +64,16 @@ public class PageAdminEdit extends BorderPane {
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
 
-	public PageAdminEdit(ObservableList<Stagiaire> stagiaires, Utilisateurs utilisateurConnecte) {
+
+	private Annuaire annuaire;
+
+	public PageAdminEdit(Annuaire annuaire, ObservableList<Stagiaire> stagiaires, Utilisateurs utilisateurConnecte) {
 		super();
-
+		this.annuaire = annuaire;		
+		
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
-
+		
+		
 		// taille de la page
 //		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
@@ -270,8 +279,8 @@ public class PageAdminEdit extends BorderPane {
 			return row;
 		});
 
-		tableViewStagiaire.getColumns().forEach(colonne -> {
-			colonne.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
+		tableViewStagiaire.getColumns().forEach(column -> {
+			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
 
 		tableViewStagiaire.setItems(stagiaires);
@@ -295,16 +304,83 @@ public class PageAdminEdit extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageAccueil pageAccueil = new PageAccueil();
+				Annuaire annuaire = new Annuaire();
+				PageAccueil pageAccueil = new PageAccueil(annuaire);
+				try {
+					pageAccueil.setPromotion(annuaire.lireFichierObservable());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
 
 		});
+		
+		boutonImprimer.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+
+				try {
+					proposerTelechargementPDF();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		});
+	
+
 
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
 
+	}
+	public void proposerTelechargementPDF() throws IOException {
+		Annuaire annuaire = new Annuaire();
+		// Créer une instance de FileChooser
+		FileChooser fileChooser = new FileChooser();
+
+		// Définir un filtre pour n'accepter que les fichiers PDF
+		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("PDF Files", "*.pdf");
+		fileChooser.getExtensionFilters().add(filter);
+
+		// Ouvrir une boîte de dialogue pour choisir le fichier
+		File fichier = fileChooser.showSaveDialog(null);
+
+		// Vérifier si l'utilisateur a sélectionné un fichier
+		if (fichier != null) {
+			if (!fichier.getName().endsWith(".pdf")) {
+				// Ajouter l'extension .pdf si nécessaire
+				fichier = new File(fichier.getAbsolutePath() + ".pdf");
+			}
+			System.out.println("Fichier sélectionné : " + fichier.getAbsolutePath());
+			// Créer le PDF à l'emplacement sélectionné
+			annuaire.creerPDF(fichier.getAbsolutePath());
+			System.out.println("Le fichier PDF a été créé avec succès à : " + fichier.getAbsolutePath());
+			try {
+				File pdfFile = new File(fichier.getPath());
+				if (pdfFile.exists()) {
+					if (Desktop.isDesktopSupported()) {
+
+						// Ouvrir le fichier
+						Desktop desktop = Desktop.getDesktop();
+						desktop.open(pdfFile);
+					} else {
+						System.out.println("Le système ne supporte pas l'ouverture de fichiers par défaut.");
+					}
+
+				} else {
+					System.out.println("Le fichier PDF n'existe pas.");
+				}
+			} catch (IOException e) {
+				System.out.println("Erreur lors de l'ouverture du fichier PDF : " + e.getMessage());
+			}
+		} else {
+			System.out.println("L'utilisateur a annulé la selection du fichier");
+		}
 	}
 
 	// Getters et Setters
@@ -428,6 +504,17 @@ public class PageAdminEdit extends BorderPane {
 		this.listeTriContenu = listeTriContenu;
 	}
 
+	public TableView<Stagiaire> getTableViewStagiaire() {
+		return tableViewStagiaire;
+	}
+
+	public void setTableViewStagiaire(TableView<Stagiaire> tableViewStagiaire) {
+		this.tableViewStagiaire = tableViewStagiaire;
+	}
+
+	//	public void setPromotion(ObservableList<Stagiaire> observableList) {
+//		this.tableViewStagiaire = observableList;
+//	}
 	// Méthode pour créer des Labels avec style pour les titres des colonnes de
 	// TableView
 	private Label titreTableView(String title, Color color, int fontSize) {

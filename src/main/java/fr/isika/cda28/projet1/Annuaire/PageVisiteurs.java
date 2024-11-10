@@ -1,5 +1,6 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -60,9 +61,9 @@ public class PageVisiteurs extends BorderPane {
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
 
-	public PageVisiteurs(ObservableList<Stagiaire> stagiaires) {
+	public PageVisiteurs(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
 		super();
-
+		this.annuaire = annuaire;
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
 		// taille de la page
 		setPrefSize(1366, 768);
@@ -90,7 +91,7 @@ public class PageVisiteurs extends BorderPane {
 		// CENTRE DE PAGE
 		recherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		connexion.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		trier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+//				trier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// On change la couleur du texte des labels
 		bienvenue.setStyle("-fx-text-fill: white; -fx-font-size:30px;");
@@ -113,30 +114,30 @@ public class PageVisiteurs extends BorderPane {
 
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
 		// listeTriContenu
-		listeTriContenu.getChildren().addAll(listeStagiaire, trier);
+		listeTriContenu.getChildren().addAll(listeStagiaire);
 
 		// On ajoute du padding à la HBox listeTriContenu
 
 		// table VIEW
 		tableViewStagiaire.setEditable(false);
 
-		TableColumn<Stagiaire, String> colonneNom = new TableColumn<>("Nom");
+		TableColumn<Stagiaire, String> colonneNom = new TableColumn<>();
 		colonneNom.setMinWidth(200);
 		colonneNom.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("nom"));
 
-		TableColumn<Stagiaire, String> colonnePrenom = new TableColumn<>(" Prenom ");
+		TableColumn<Stagiaire, String> colonnePrenom = new TableColumn<>();
 		colonnePrenom.setMinWidth(200);
 		colonnePrenom.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("prenom"));
 
-		TableColumn<Stagiaire, String> colonneDepartement = new TableColumn<>("Departement");
+		TableColumn<Stagiaire, String> colonneDepartement = new TableColumn<>();
 		colonneDepartement.setMinWidth(50);
 		colonneDepartement.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("departement"));
 
-		TableColumn<Stagiaire, String> colonneCursus = new TableColumn<>("Cursus");
+		TableColumn<Stagiaire, String> colonneCursus = new TableColumn<>();
 		colonneCursus.setMinWidth(150);
 		colonneCursus.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("cursus"));
 
-		TableColumn<Stagiaire, Integer> colonnePromo = new TableColumn<>("Année de la promo");
+		TableColumn<Stagiaire, Integer> colonnePromo = new TableColumn<>();
 		colonnePromo.setMinWidth(100);
 		colonnePromo.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("anneePromo"));
 
@@ -172,7 +173,66 @@ public class PageVisiteurs extends BorderPane {
 				}
 			};
 		});
-
+		colonnePrenom.setCellFactory(col -> {
+			return new TableCell<Stagiaire, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item);
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
+		colonneDepartement.setCellFactory(col -> {
+			return new TableCell<Stagiaire, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item);
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
+		colonneCursus.setCellFactory(col -> {
+			return new TableCell<Stagiaire, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item);
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
+		colonnePromo.setCellFactory(col -> {
+			return new TableCell<Stagiaire, Integer>() {
+				@Override
+				protected void updateItem(Integer item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item.toString());
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
 		tableViewStagiaire.setRowFactory(tv -> {
 			TableRow<Stagiaire> row = new TableRow<>();
 			row.setStyle("-fx-background-color: #324255;");
@@ -209,7 +269,7 @@ public class PageVisiteurs extends BorderPane {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
-				PageAccueil pageAccueil = new PageAccueil();
+				PageAccueil pageAccueil = new PageAccueil(annuaire);
 				try {
 					pageAccueil.setPromotion(annuaire.lireFichierObservable());
 				} catch (IOException e) {
@@ -263,6 +323,24 @@ public class PageVisiteurs extends BorderPane {
 			// Créer le PDF à l'emplacement sélectionné
 			annuaire.creerPDF(fichier.getAbsolutePath());
 			System.out.println("Le fichier PDF a été créé avec succès à : " + fichier.getAbsolutePath());
+			try {
+				File pdfFile = new File(fichier.getPath());
+				if (pdfFile.exists()) {
+					if (Desktop.isDesktopSupported()) {
+
+						// Ouvrir le fichier
+						Desktop desktop = Desktop.getDesktop();
+						desktop.open(pdfFile);
+					} else {
+						System.out.println("Le système ne supporte pas l'ouverture de fichiers par défaut.");
+					}
+
+				} else {
+					System.out.println("Le fichier PDF n'existe pas.");
+				}
+			} catch (IOException e) {
+				System.out.println("Erreur lors de l'ouverture du fichier PDF : " + e.getMessage());
+			}
 		} else {
 			System.out.println("L'utilisateur a annulé la selection du fichier");
 		}

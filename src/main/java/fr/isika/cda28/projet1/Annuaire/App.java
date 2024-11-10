@@ -41,7 +41,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 
-		PageAccueil root = new PageAccueil();
+		PageAccueil root = new PageAccueil(annuaire);
 		root.setPromotion(annuaire.lireFichierObservable());
 //		annuaire.afficherListeOrdreAlphabetique();
 		Image icon = new Image(getClass().getResourceAsStream("/mesFichiers/icon.png"), 40, 40, true, true);
