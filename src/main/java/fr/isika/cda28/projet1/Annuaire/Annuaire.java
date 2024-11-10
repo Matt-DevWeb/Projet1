@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Annuaire {
 	// Attributs
 	private RandomAccessFile raf;
@@ -31,18 +34,27 @@ public class Annuaire {
 
 	// Méthodes
 
-	ArrayList<Stagiaire> lireFichier() throws IOException  {
-		ArrayList<Stagiaire> stagiaires = new ArrayList<Stagiaire>();
-		Noeud tmp = new Noeud();
-		
-		for (int position = 0; position < raf.length() ;position += tmp.TAILLE_NOEUD_OCTET) {
-			raf.seek(position);
-			Noeud nouveauNoeud = tmp.lireNoeud(this.raf);
-			stagiaires.add(nouveauNoeud.getStagiaire());
-		}
-		return stagiaires;
-	}
-	
+	public ObservableList<Stagiaire> lireFichierObservable() throws IOException {
+        ObservableList<Stagiaire> stagiaires = FXCollections.observableArrayList();
+        if (raf == null || !raf.getChannel().isOpen()) {
+            System.err.println("Le fichier binaire raf n'est pas initialisé.");
+            return stagiaires; // Retourne une liste vide
+        }
+        if (raf.length() == 0) {
+            System.out.println("Le fichier binaire est vide.");
+            return stagiaires; // Retourne une liste vide
+        }
+
+        Noeud tmp = new Noeud();
+        for (int position = 0; position < raf.length(); position += tmp.TAILLE_NOEUD_OCTET) {
+            raf.seek(position);
+            Noeud nouveauNoeud = tmp.lireNoeud(this.raf);
+            stagiaires.add(nouveauNoeud.getStagiaire());
+        }
+        return stagiaires;
+    }
+
+
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
 
 		if (raf.length() == 0) {
@@ -56,8 +68,7 @@ public class Annuaire {
 
 	}
 
-	
-	public Noeud rechercherStagiaire (String stagiaireARechercher) throws IOException {
+	public Noeud rechercherStagiaire(String stagiaireARechercher) throws IOException {
 		Noeud resultatRecherche = new Noeud();
 		if (raf.length() == 0) {
 			System.out.println(" Nous ne pouvons pas trouver de stagiaire, car celui-ci est vide");
@@ -65,33 +76,32 @@ public class Annuaire {
 			raf.seek(0);
 			Noeud racine = new Noeud();
 			racine = racine.lireNoeud(raf);
-			resultatRecherche= racine.rechercheNoeud(stagiaireARechercher, raf, 0);
-		} return resultatRecherche;
+			resultatRecherche = racine.rechercheNoeud(stagiaireARechercher, raf, 0);
+		}
+		return resultatRecherche;
 	}
 
-	public void supprimerStagiaire (Noeud stagiaireASupprimer) throws IOException {
-		if (raf.length() == 0 ) {
+	public void supprimerStagiaire(Noeud stagiaireASupprimer) throws IOException {
+		if (raf.length() == 0) {
 			System.out.println("L'annuaire est vide ");
 		} else {
 			raf.seek(0);
 			Noeud racine = stagiaireASupprimer.lireNoeud(raf);
-			racine.supprimerNoeud(stagiaireASupprimer,raf, 0);
+			racine.supprimerNoeud(stagiaireASupprimer, raf, 0);
 		}
 	}
-	
+
 	public void afficherListeOrdreAlphabetique() throws IOException {
-        if (raf.length() > 0) {
-            raf.seek(0);  // Revenir au début du fichier pour lire la racine
-            Noeud racine = new Noeud(new Stagiaire(), -1, -1);  // Initialiser un noeud pour la racine
-            racine = racine.lireNoeud(raf);  // Lire la racine
-            racine.listeOrdreAlphabetique(raf);  // Lancer la traversée In-Order
-        } else {
-            System.out.println("L'annuaire est vide.");
-        }
-    }
-	
-	
-	
+		if (raf.length() > 0) {
+			raf.seek(0); // Revenir au début du fichier pour lire la racine
+			Noeud racine = new Noeud(new Stagiaire(), -1, -1); // Initialiser un noeud pour la racine
+			racine = racine.lireNoeud(raf); // Lire la racine
+			racine.listeOrdreAlphabetique(raf); // Lancer la traversée In-Order
+		} else {
+			System.out.println("L'annuaire est vide.");
+		}
+	}
+
 	public void close() {
 		try {
 			if (raf != null) {

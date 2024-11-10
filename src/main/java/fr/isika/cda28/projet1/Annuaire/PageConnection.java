@@ -6,6 +6,8 @@ import fr.isika.cda28.projet1.Annuaire.Administrateur;
 import fr.isika.cda28.projet1.Annuaire.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.Authentification;
 import fr.isika.cda28.projet1.Annuaire.Utilisateurs;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -25,8 +27,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageConnection extends BorderPane {
-//	private ArrayList<Stagiaire> promotion;
-	private Annuaire annuaire;
+	private ObservableList<Stagiaire> stagiaires;
+	
 	// Initialisation des éléments de la page "connection"
 	private HBox header = new HBox(20);
 	private VBox mainContent = new VBox(30);
@@ -51,6 +53,8 @@ public class PageConnection extends BorderPane {
 	// Constructeur
 	public PageConnection() {
 		super();
+		// Initialisation de la liste des stagiaires (peut être une liste vide ou chargée d'une source de données)
+		stagiaires = FXCollections.observableArrayList(new ArrayList<Stagiaire>());
 
 		// ajout du style au graphe + logos
 		logoImageView.setFitWidth(200);
@@ -111,7 +115,7 @@ public class PageConnection extends BorderPane {
 				Utilisateurs utilisateurConnecte = authentifcation.authenticate(userID, password);
 
 				if (utilisateurConnecte!=null) {
-					PageAdminEdit pageAdminEdit  = new PageAdminEdit(annuaire, utilisateurConnecte);
+					PageAdminEdit pageAdminEdit  = new PageAdminEdit(stagiaires, utilisateurConnecte);
 					boutonValider.getScene().setRoot(pageAdminEdit);
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);

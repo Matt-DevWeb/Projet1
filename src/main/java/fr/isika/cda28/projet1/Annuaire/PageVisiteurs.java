@@ -1,9 +1,11 @@
 package fr.isika.cda28.projet1.Annuaire;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -26,9 +28,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class PageVisiteurs extends BorderPane {
-
-	private ArrayList<Stagiaire> promotion;
+	
+	
 	public TableView<Stagiaire> tableViewStagiaire;
+	
 
 	// On instancie les labels
 	private Label bienvenue = new Label("Bienvenue !");
@@ -56,10 +59,10 @@ public class PageVisiteurs extends BorderPane {
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
 
-	public PageVisiteurs(ArrayList<Stagiaire> promotion) {
+	public PageVisiteurs(ObservableList<Stagiaire> stagiaires) {
 		super();
-		this.promotion = promotion;
-		this.tableViewStagiaire = new TableView<Stagiaire>();
+		
+		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
 		// taille de la page
 		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
@@ -186,7 +189,7 @@ public class PageVisiteurs extends BorderPane {
 			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
 
-		tableViewStagiaire.setItems(FXCollections.observableArrayList(this.promotion));
+		tableViewStagiaire.setItems(stagiaires);
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		// contenuPrincipal
@@ -207,7 +210,7 @@ public class PageVisiteurs extends BorderPane {
 				Annuaire annuaire = new Annuaire();
 				PageAccueil pageAccueil = new PageAccueil();
 				try {
-					pageAccueil.setPromotion(annuaire.lireFichier());
+					pageAccueil.setPromotion(annuaire.lireFichierObservable());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,8 +21,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageAccueil extends BorderPane {
-	// on instancie une liste de stagiaires;
-	private ArrayList<Stagiaire> promotion;
+	
+	private ObservableList<Stagiaire> stagiaires;
 
 	// Label pour afficher un message de bienvenue
 	private Label bienvenue = new Label("Bienvenue sur l'annuaire de la Dev'Up academy");
@@ -44,7 +46,7 @@ public class PageAccueil extends BorderPane {
 	public PageAccueil() {
 		super();
 		
-		this.promotion = new ArrayList<Stagiaire>();
+		
 		// Définir la taille de la fenêtre principale
 //		setPrefSize(1370, 1080);
 
@@ -115,7 +117,7 @@ public class PageAccueil extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageVisiteurs pageVisiteurs = new PageVisiteurs(promotion);
+				PageVisiteurs pageVisiteurs = new PageVisiteurs(stagiaires);
 				consulter.getScene().setRoot(pageVisiteurs);
 
 			}
@@ -195,7 +197,7 @@ public class PageAccueil extends BorderPane {
 	public void setButtonContent(VBox buttonContent) {
 		this.buttonContent = buttonContent;
 	}
-	public void setPromotion(ArrayList<Stagiaire> promotion) {
-		this.promotion = promotion;
+	public void setPromotion(ObservableList<Stagiaire> observableList) {
+		this.stagiaires = observableList;
 	}
 }
