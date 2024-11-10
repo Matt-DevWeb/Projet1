@@ -28,10 +28,10 @@ public class LanceurTest {
 		annuaire.ajouterStagiaire(new Noeud(stagiaire4, -1, -1));
 		annuaire.ajouterStagiaire(new Noeud(stagiaire5, -1, -1));
 		annuaire.supprimerStagiaire(stagiaire22);
-//		annuaire.afficherListeOrdreAlphabetique();
+		annuaire.afficherListeOrdreAlphabetique();
+
 		
-		System.out.println("Est ce que BOB est présent dans l'annuaire ? : "
-				+ annuaire.rechercherStagiaire(stagiaire1));
+		annuaire.creerPDF("src/main/resources/mesFichiers/ListeStagiaires.pdf");
 //		for (int i = 0; i < 4; i++) {
 //			annuaire.getRaf().seek(i * Noeud.TAILLE_NOEUD_OCTET);
 //			System.out.println(annuaire.noeud.lireNoeud(annuaire.getRaf()));

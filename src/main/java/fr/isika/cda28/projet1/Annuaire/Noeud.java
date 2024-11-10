@@ -2,6 +2,7 @@ package fr.isika.cda28.projet1.Annuaire;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.List;
 
 public class Noeud {
 
@@ -162,20 +163,20 @@ public class Noeud {
 
 	}
 
-	public void listeOrdreAlphabetique(RandomAccessFile raf) throws IOException {
+	public void listeOrdreAlphabetique(RandomAccessFile raf, List<Stagiaire> listeTriee) throws IOException {
 		if (filsGauche != -1) { // Si un fils gauche existe
 			raf.seek(filsGauche * TAILLE_NOEUD_OCTET); // Accède à la position du fils gauche
 			Noeud noeudFilsGauche = lireNoeud(raf); // Lit le noeud gauche
-			noeudFilsGauche.listeOrdreAlphabetique(raf); // Parcours récursif du sous-arbre gauche
+			noeudFilsGauche.listeOrdreAlphabetique(raf, listeTriee); // Parcours récursif du sous-arbre gauche
 		}
 
 		// Affiche le noeud courant (la racine dans ce contexte)
-		System.out.println(this.getStagiaire());
+		listeTriee.add(this.getStagiaire());
 
 		if (filsDroit != -1) { // Si un fils droit existe
 			raf.seek(filsDroit * TAILLE_NOEUD_OCTET); // Accède à la position du fils droit
 			Noeud noeudFilsDroit = lireNoeud(raf); // Lit le noeud droit
-			noeudFilsDroit.listeOrdreAlphabetique(raf); // Parcours récursif du sous-arbre droit
+			noeudFilsDroit.listeOrdreAlphabetique(raf, listeTriee); // Parcours récursif du sous-arbre droit
 		}
 	}
 
