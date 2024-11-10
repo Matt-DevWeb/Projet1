@@ -22,12 +22,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class PageVisiteurs extends BorderPane {
 
 	private ArrayList<Stagiaire> promotion;
 	public TableView<Stagiaire> tableViewStagiaire;
-	
+
 	// On instancie les labels
 	private Label bienvenue = new Label("Bienvenue !");
 	private Label listeStagiaire = new Label("Liste des stagiaires de l'entreprise.");
@@ -134,7 +136,8 @@ public class PageVisiteurs extends BorderPane {
 		colonnePromo.setMinWidth(100);
 		colonnePromo.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("anneePromo"));
 
-		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus, colonnePromo);
+		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus,
+				colonnePromo);
 
 		tableViewStagiaire.setPlaceholder(new Label("Aucun stagiaire trouvé."));
 		// permet au colonne d'utiliser tout l'espace disponible
@@ -142,35 +145,42 @@ public class PageVisiteurs extends BorderPane {
 		// permet de selectionner de multiples éléments
 		tableViewStagiaire.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableViewStagiaire.setStyle("-fx-background-color: #324255");
-		// Changer la couleur du texte dans la colonne nom
-//		colonneNom.setCellFactory(col -> {
-//			return new TableCell<Stagiaire, String>() {
-//				@Override
-//				protected void updateItem(String item, boolean empty) {
-//					super.updateItem(item, empty);
-//					if (item == null || empty) {
-//						setText(null);
-//						setStyle("");
-//					} else {
-//						setText(item);
-//						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
-//					}
-//				}
-//			};
-//		});
+		// Définition des en-têtes avec couleurs personnalisées
+		colonneNom.setGraphic(titreTableView("Nom", Color.WHITE, 14));
+		colonnePrenom.setGraphic(titreTableView("Prenom", Color.WHITE, 14));
+		colonneDepartement.setGraphic(titreTableView("Dpt", Color.WHITE, 14));
+		colonneCursus.setGraphic(titreTableView("Cursus", Color.WHITE, 14));
+		colonnePromo.setGraphic(titreTableView("Promo", Color.WHITE, 14));
+		
+		 //Changer la couleur du texte dans la colonne nom
+		colonneNom.setCellFactory(col -> {
+			return new TableCell<Stagiaire, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item);
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
 
-//		tableViewStagiaire.setRowFactory(tv -> {
-//		    TableRow<Annuaire> row = new TableRow<>();
-//		    row.setStyle("-fx-background-color: #324255;");
-//		    row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-//		        if (isSelected) {
-//		            row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428" );
-//		        } else {
-//		            row.setStyle("-fx-background-color: #172428");
-//		        }
-//		    });
-//		    return row;
-//		});
+		tableViewStagiaire.setRowFactory(tv -> {
+		    TableRow<Stagiaire> row = new TableRow<>();
+		    row.setStyle("-fx-background-color: #324255;");
+		    row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+		        if (isSelected) {
+		            row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428" );
+		        } else {
+		            row.setStyle("-fx-background-color: #172428");
+		        }
+		    });
+		    return row;
+		});
 
 		tableViewStagiaire.getColumns().forEach(column -> {
 			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
@@ -200,7 +210,7 @@ public class PageVisiteurs extends BorderPane {
 					pageAccueil.setPromotion(annuaire.lireFichier());
 				} catch (IOException e) {
 					e.printStackTrace();
-				}	
+				}
 				accueil.getScene().setRoot(pageAccueil);
 			}
 
@@ -338,6 +348,15 @@ public class PageVisiteurs extends BorderPane {
 
 	public void setListeTriContenu(HBox listeTriContenu) {
 		this.listeTriContenu = listeTriContenu;
+	}
+
+	// Méthode pour créer des Labels avec style pour les titres des colonnes de
+	// TableView
+	private Label titreTableView(String title, Color color, int fontSize) {
+		Label titreColonne = new Label(title);
+		titreColonne.setTextFill(color); // Couleur de la police
+		titreColonne.setFont(new Font("Arial", fontSize)); // Police et taille
+		return titreColonne;
 	}
 
 }

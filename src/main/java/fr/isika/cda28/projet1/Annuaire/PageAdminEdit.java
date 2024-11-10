@@ -1,5 +1,7 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,31 +21,35 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class PageAdminEdit extends BorderPane {
 
-	private Annuaire annuaire;
+//	private ArrayList<Stagiaire> promotion;
 	public TableView<Annuaire> tableViewStagiaire;
+	private Annuaire annuaire;
+	
 
 	// On instancie les labels
-	private Label bienvenue = new Label("Bienvenue !");
-	private Label listeStagiaire = new Label("Liste des stagiaires de l'entreprise.");
+	private Label labelBienvenue = new Label("Bienvenue !");
+	private Label labelListeStagiaires = new Label("Liste des stagiaires de l'entreprise.");
 
 	// On instancie l'image
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_Projet1.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// On instancie nos boutons
-	private Button connexion = new Button("Se connecter");
-	private Button imprimer = new Button("Imprimer la liste");
-	private Button accueil = new Button("Accueil");
-	private Button recherche = new Button("Rechercher");
-	private Button trier = new Button("Trier");
-	private Button mettreAjour = new Button ("Mettre a jour un stagiaire");
-	private Button ajoutStagiaire = new Button("Ajouter un stagiaire");
-	private Button suppStagiaire = new Button("Supprimer un stagiaire");
-	private Button ajoutEditeur  = new Button("Ajouter un editeur");
-	private Button suppEditeur = new Button("Supprimer un editeur ");
+	private Button boutonImprimer = new Button("Imprimer la liste");
+	private Button boutonAccueil = new Button("Accueil");
+	private Button boutonRecherche = new Button("Rechercher");
+	private Button boutonTrier = new Button("Trier");
+	private Button boutonMettreAjour = new Button ("Modifier un stagiaire");
+	private Button boutonAjoutStagiaire = new Button("Ajouter un stagiaire");
+	private Button boutonSuppStagiaire = new Button("Supprimer un stagiaire");
+	private Button boutonAjoutEditeur  = new Button("Ajouter un editeur");
+	private Button boutonSuppEditeur = new Button("Supprimer un editeur ");
+	
 	
 
 	// On instancie le TextField
@@ -57,10 +63,13 @@ public class PageAdminEdit extends BorderPane {
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
 
-	public PageAdminEdit(Annuaire annuaire) {
+	public PageAdminEdit(Annuaire annuaire, Utilisateurs utilisateurConnecte) {
 		super();
 		this.annuaire = annuaire;
+//		this.promotion = promotion;
 		this.tableViewStagiaire = new TableView<Annuaire>();
+		
+		
 		// taille de la page
 //		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
@@ -77,21 +86,51 @@ public class PageAdminEdit extends BorderPane {
 		coteGauche.getChildren().addAll(logoImageView, coteGaucheBoutons);
 
 		// on ajoute nos boutons a la VBox coteGauche
-		coteGaucheBoutons.getChildren().addAll(mettreAjour,ajoutStagiaire,suppStagiaire,ajoutEditeur,suppEditeur,imprimer,accueil);
+		
+		if (utilisateurConnecte.isAdmin()){
+			coteGaucheBoutons.getChildren().addAll(boutonMettreAjour,boutonAjoutStagiaire,boutonSuppStagiaire,boutonAjoutEditeur,boutonSuppEditeur,boutonImprimer,boutonAccueil);
+		}else {
+			coteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire,boutonImprimer,boutonAccueil);
 
-		// On chane la change la couleur de fond de la partie gauche
+		}
+		// On change la couleur de fond de la partie gauche
 		coteGauche.setStyle("-fx-background-color:#25333F");
-		imprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		accueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		
+		boutonImprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonImprimer.setPrefSize(200, 20);
+
+		boutonAccueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAccueil.setPrefSize(200, 20);
+
+		
+		boutonMettreAjour.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonMettreAjour.setPrefSize(200, 20);
+
+		
+		boutonAjoutStagiaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;"); 
+		boutonAjoutStagiaire.setPrefSize(200, 20);
+
+		
+		boutonSuppStagiaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;"); 
+		boutonSuppStagiaire.setPrefSize(200, 20);
+
+		
+		boutonAjoutEditeur.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;"); 
+		boutonAjoutEditeur.setPrefSize(200, 20);
+
+		
+		boutonSuppEditeur.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonSuppEditeur.setPrefSize(200, 20);
+
+		
 
 		// CENTRE DE PAGE
-		recherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		connexion.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		trier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonRecherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonTrier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// On change la couleur du texte des labels
-		bienvenue.setStyle("-fx-text-fill: white; -fx-font-size:30px;");
-		listeStagiaire.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
+		labelBienvenue.setStyle("-fx-text-fill: white; -fx-font-size:30px;");
+		labelListeStagiaires.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
 
 		// On stylise le textField zoneRecherche
 		zoneRecherche.setMaxWidth(300);
@@ -100,46 +139,52 @@ public class PageAdminEdit extends BorderPane {
 
 		// On ajoute le label bienvenue et le bouton connexion à la VBox
 		// bienvenueContenu
-		bienvenueContenu.getChildren().addAll(bienvenue, connexion);
+		bienvenueContenu.getChildren().addAll(labelBienvenue);
 
 		// On ajoute du padding à la HBox bienvenueContenu
 		bienvenueContenu.setPadding(new Insets(30, 30, 30, 30));
 
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(zoneRecherche, recherche);
+		rechercheContenu.getChildren().addAll(zoneRecherche, boutonRecherche);
 
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
 		// listeTriContenu
-		listeTriContenu.getChildren().addAll(listeStagiaire, trier);
+		listeTriContenu.getChildren().addAll(labelListeStagiaires, boutonTrier);
 
 		// On ajoute du padding à la HBox listeTriContenu
 		listeTriContenu.setPadding(new Insets(30, 30, 30, 30));
 
 		// table VIEW
-		tableViewStagiaire.setEditable(false);
+//		tableViewStagiaire.setEditable(false);
 
-		TableColumn<Annuaire, String> colonneNom = new TableColumn<>(" Nom ");
+		TableColumn<Annuaire, String> colonneNom = new TableColumn<>();
 		colonneNom.setMinWidth(200);
+		colonneNom.setGraphic(titreTableView("Nom", Color.WHITE, 14));
 		colonneNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
 
-		TableColumn<Annuaire, String> colonnePrenom = new TableColumn<>(" Prenom ");
+		TableColumn<Annuaire, String> colonnePrenom = new TableColumn<>();
 		colonnePrenom.setMinWidth(200);
+		colonnePrenom.setGraphic(titreTableView("Prenom", Color.WHITE, 14));
 		colonnePrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
 
-		TableColumn<Annuaire, String> colonneDepartement = new TableColumn<>(" Departement ");
+		TableColumn<Annuaire, String> colonneDepartement = new TableColumn<>();
 		colonneDepartement.setMinWidth(50);
+		colonneDepartement.setGraphic(titreTableView("Dpt", Color.WHITE, 14));
 		colonneDepartement.setCellValueFactory(new PropertyValueFactory<>("departement"));
 
-		TableColumn<Annuaire, String> colonneCursus = new TableColumn<>(" Cursus ");
+		TableColumn<Annuaire, String> colonneCursus = new TableColumn<>();
 		colonneCursus.setMinWidth(150);
+		colonneCursus.setGraphic(titreTableView("Cursus", Color.WHITE, 14));
 		colonneCursus.setCellValueFactory(new PropertyValueFactory<>("cursus"));
 
-		TableColumn<Annuaire, Integer> colonnePromo = new TableColumn<>(" Année de la promo ");
+		TableColumn<Annuaire, Integer> colonnePromo = new TableColumn<>();
 		colonnePromo.setMinWidth(100);
+		colonnePromo.setGraphic(titreTableView("Promo", Color.WHITE, 14));
 		colonnePromo.setCellValueFactory(new PropertyValueFactory<>("anneePromo"));
+		
 
-		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus,
-				colonnePromo);
+
+		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus, colonnePromo);
 
 		tableViewStagiaire.setPlaceholder(new Label("Aucun stagiaire trouvé."));
 		// permet au colonne d'utiliser tout l'espace disponible
@@ -158,27 +203,87 @@ public class PageAdminEdit extends BorderPane {
 						setStyle("");
 					} else {
 						setText(item);
-						setStyle("-fx-text-fill: darkblue;"); // Changer la couleur du texte
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
 					}
 				}
 			};
 		});
+		colonnePrenom.setCellFactory(col -> {
+			return new TableCell<Annuaire, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item);
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
+		colonneDepartement.setCellFactory(col -> {
+			return new TableCell<Annuaire, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item);
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
+		colonneCursus.setCellFactory(col -> {
+			return new TableCell<Annuaire, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item);
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
+		colonnePromo.setCellFactory(col -> {
+			return new TableCell<Annuaire, Integer>() {
+				@Override
+				protected void updateItem(Integer item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(item.toString());
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
+					}
+				}
+			};
+		});
+		
+		tableViewStagiaire.setRowFactory(tv -> {
+		    TableRow<Annuaire> row = new TableRow<>();
+		    row.setStyle("-fx-background-color: #324255;");
+		    row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+		        if (isSelected) {
+		            row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428" );
+		        } else {
+		            row.setStyle("-fx-background-color: #324255");
+		        }
+		    });
+		    return row;
+		});
 
-//		tableViewStagiaire.setRowFactory(tv -> {
-//		    TableRow<Annuaire> row = new TableRow<>();
-//		    row.setStyle("-fx-background-color: #324255;");
-//		    row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-//		        if (isSelected) {
-//		            row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428" );
-//		        } else {
-//		            row.setStyle("-fx-background-color: #172428");
-//		        }
-//		    });
-//		    return row;
-//		});
-
-		tableViewStagiaire.getColumns().forEach(column -> {
-			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
+		tableViewStagiaire.getColumns().forEach(colonne -> {
+			colonne.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
 
 		tableViewStagiaire.setItems(FXCollections.observableArrayList(this.annuaire));
@@ -196,16 +301,16 @@ public class PageAdminEdit extends BorderPane {
 		listeTriContenu.setAlignment(Pos.CENTER);
 
 		//on affiche et on cache les boutons en fontion du profil
-
 		
+	
 		
 		// on ajoute du comportement au bouton accueil
-		accueil.setOnAction(new EventHandler<ActionEvent>() {
+		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				PageAccueil pageAccueil = new PageAccueil();
-				accueil.getScene().setRoot(pageAccueil);
+				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
 
 		});
@@ -215,21 +320,23 @@ public class PageAdminEdit extends BorderPane {
 		this.setCenter(contenuPrincipal);
 
 	}
+	
 
+    //Getters et Setters
 	public Label getBienvenue() {
-		return bienvenue;
+		return labelBienvenue;
 	}
 
 	public void setBienvenue(Label bienvenue) {
-		this.bienvenue = bienvenue;
+		this.labelBienvenue = bienvenue;
 	}
 
 	public Label getListeStagiaire() {
-		return listeStagiaire;
+		return labelListeStagiaires;
 	}
 
 	public void setListeStagiaire(Label listeStagiaire) {
-		this.listeStagiaire = listeStagiaire;
+		this.labelListeStagiaires = listeStagiaire;
 	}
 
 	public Image getLogo() {
@@ -248,44 +355,36 @@ public class PageAdminEdit extends BorderPane {
 		this.logoImageView = logoImageView;
 	}
 
-	public Button getConnexion() {
-		return connexion;
-	}
-
-	public void setConnexion(Button connexion) {
-		this.connexion = connexion;
-	}
-
 	public Button getImprimer() {
-		return imprimer;
+		return boutonImprimer;
 	}
 
 	public void setImprimer(Button imprimer) {
-		this.imprimer = imprimer;
+		this.boutonImprimer = imprimer;
 	}
 
 	public Button getAccueil() {
-		return accueil;
+		return boutonAccueil;
 	}
 
 	public void setAccueil(Button accueil) {
-		this.accueil = accueil;
+		this.boutonAccueil = accueil;
 	}
 
 	public Button getRecherche() {
-		return recherche;
+		return boutonRecherche;
 	}
 
 	public void setRecherche(Button recherche) {
-		this.recherche = recherche;
+		this.boutonRecherche = recherche;
 	}
 
 	public Button getTrier() {
-		return trier;
+		return boutonTrier;
 	}
 
 	public void setTrier(Button trier) {
-		this.trier = trier;
+		this.boutonTrier = trier;
 	}
 
 	public TextField getZoneRecherche() {
@@ -344,4 +443,12 @@ public class PageAdminEdit extends BorderPane {
 		this.listeTriContenu = listeTriContenu;
 	}
 
+    // Méthode pour créer des Labels avec style pour les titres des colonnes de TableView
+    private Label titreTableView(String title, Color color, int fontSize) {
+        Label titreColonne = new Label(title);
+        titreColonne.setTextFill(color);           // Couleur de la police
+        titreColonne.setFont(new Font("Arial", fontSize)); // Police et taille
+        return titreColonne;
+    }
+	
 }
