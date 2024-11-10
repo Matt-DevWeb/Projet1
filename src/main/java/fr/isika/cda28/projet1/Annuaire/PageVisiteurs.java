@@ -1,8 +1,8 @@
-package fr.isika.cda28.projet1.Annuaire.Design;
+package fr.isika.cda28.projet1.Annuaire;
 
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Administrateur;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Utilisateurs;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,11 +22,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
-public class PageAdminEdit extends BorderPane {
+public class PageVisiteurs extends BorderPane {
 
-	private Annuaire annuaire;
-	public TableView<Annuaire> tableViewStagiaire;
+	private ArrayList<Stagiaire> promotion;
+	public TableView<Stagiaire> tableViewStagiaire;
 
 	// On instancie les labels
 	private Label bienvenue = new Label("Bienvenue !");
@@ -42,30 +44,24 @@ public class PageAdminEdit extends BorderPane {
 	private Button accueil = new Button("Accueil");
 	private Button recherche = new Button("Rechercher");
 	private Button trier = new Button("Trier");
-	private Button mettreAjour = new Button ("Mettre a jour un stagiaire");
-	private Button ajoutStagiaire = new Button("Ajouter un stagiaire");
-	private Button suppStagiaire = new Button("Supprimer un stagiaire");
-	private Button ajoutEditeur  = new Button("Ajouter un editeur");
-	private Button suppEditeur = new Button("Supprimer un editeur ");
-	
 
 	// On instancie le TextField
 	private TextField zoneRecherche = new TextField();
 
 	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
-	private VBox coteGauche = new VBox(50);
+	private VBox coteGauche = new VBox(220);
 	private VBox coteGaucheBoutons = new VBox(20);
 	private VBox contenuPrincipal = new VBox();
 	private HBox bienvenueContenu = new HBox(350);
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
 
-	public PageAdminEdit(Annuaire annuaire) {
+	public PageVisiteurs(ArrayList<Stagiaire> promotion) {
 		super();
-		this.annuaire = annuaire;
-		this.tableViewStagiaire = new TableView<Annuaire>();
+		this.promotion = promotion;
+		this.tableViewStagiaire = new TableView<Stagiaire>();
 		// taille de la page
-//		setPrefSize(1366, 768);
+		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
 		// logo
 		logoImageView.setFitWidth(140);
@@ -80,7 +76,7 @@ public class PageAdminEdit extends BorderPane {
 		coteGauche.getChildren().addAll(logoImageView, coteGaucheBoutons);
 
 		// on ajoute nos boutons a la VBox coteGauche
-		coteGaucheBoutons.getChildren().addAll(mettreAjour,ajoutStagiaire,suppStagiaire,ajoutEditeur,suppEditeur,imprimer,accueil);
+		coteGaucheBoutons.getChildren().addAll(imprimer, accueil);
 
 		// On chane la change la couleur de fond de la partie gauche
 		coteGauche.setStyle("-fx-background-color:#25333F");
@@ -116,30 +112,29 @@ public class PageAdminEdit extends BorderPane {
 		listeTriContenu.getChildren().addAll(listeStagiaire, trier);
 
 		// On ajoute du padding à la HBox listeTriContenu
-		listeTriContenu.setPadding(new Insets(30, 30, 30, 30));
 
 		// table VIEW
 		tableViewStagiaire.setEditable(false);
 
-		TableColumn<Annuaire, String> colonneNom = new TableColumn<>(" Nom ");
+		TableColumn<Stagiaire, String> colonneNom = new TableColumn<>("Nom");
 		colonneNom.setMinWidth(200);
-		colonneNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+		colonneNom.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("nom"));
 
-		TableColumn<Annuaire, String> colonnePrenom = new TableColumn<>(" Prenom ");
+		TableColumn<Stagiaire, String> colonnePrenom = new TableColumn<>(" Prenom ");
 		colonnePrenom.setMinWidth(200);
-		colonnePrenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+		colonnePrenom.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("prenom"));
 
-		TableColumn<Annuaire, String> colonneDepartement = new TableColumn<>(" Departement ");
+		TableColumn<Stagiaire, String> colonneDepartement = new TableColumn<>("Departement");
 		colonneDepartement.setMinWidth(50);
-		colonneDepartement.setCellValueFactory(new PropertyValueFactory<>("departement"));
+		colonneDepartement.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("departement"));
 
-		TableColumn<Annuaire, String> colonneCursus = new TableColumn<>(" Cursus ");
+		TableColumn<Stagiaire, String> colonneCursus = new TableColumn<>("Cursus");
 		colonneCursus.setMinWidth(150);
-		colonneCursus.setCellValueFactory(new PropertyValueFactory<>("cursus"));
+		colonneCursus.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("cursus"));
 
-		TableColumn<Annuaire, Integer> colonnePromo = new TableColumn<>(" Année de la promo ");
+		TableColumn<Stagiaire, Integer> colonnePromo = new TableColumn<>("Année de la promo");
 		colonnePromo.setMinWidth(100);
-		colonnePromo.setCellValueFactory(new PropertyValueFactory<>("anneePromo"));
+		colonnePromo.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("anneePromo"));
 
 		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus,
 				colonnePromo);
@@ -150,9 +145,16 @@ public class PageAdminEdit extends BorderPane {
 		// permet de selectionner de multiples éléments
 		tableViewStagiaire.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableViewStagiaire.setStyle("-fx-background-color: #324255");
-		// Changer la couleur du texte dans la colonne nom
+		// Définition des en-têtes avec couleurs personnalisées
+		colonneNom.setGraphic(titreTableView("Nom", Color.WHITE, 14));
+		colonnePrenom.setGraphic(titreTableView("Prenom", Color.WHITE, 14));
+		colonneDepartement.setGraphic(titreTableView("Dpt", Color.WHITE, 14));
+		colonneCursus.setGraphic(titreTableView("Cursus", Color.WHITE, 14));
+		colonnePromo.setGraphic(titreTableView("Promo", Color.WHITE, 14));
+		
+		 //Changer la couleur du texte dans la colonne nom
 		colonneNom.setCellFactory(col -> {
-			return new TableCell<Annuaire, String>() {
+			return new TableCell<Stagiaire, String>() {
 				@Override
 				protected void updateItem(String item, boolean empty) {
 					super.updateItem(item, empty);
@@ -161,30 +163,30 @@ public class PageAdminEdit extends BorderPane {
 						setStyle("");
 					} else {
 						setText(item);
-						setStyle("-fx-text-fill: darkblue;"); // Changer la couleur du texte
+						setStyle("-fx-text-fill: white;"); // Changer la couleur du texte
 					}
 				}
 			};
 		});
 
-//		tableViewStagiaire.setRowFactory(tv -> {
-//		    TableRow<Annuaire> row = new TableRow<>();
-//		    row.setStyle("-fx-background-color: #324255;");
-//		    row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-//		        if (isSelected) {
-//		            row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428" );
-//		        } else {
-//		            row.setStyle("-fx-background-color: #172428");
-//		        }
-//		    });
-//		    return row;
-//		});
+		tableViewStagiaire.setRowFactory(tv -> {
+		    TableRow<Stagiaire> row = new TableRow<>();
+		    row.setStyle("-fx-background-color: #324255;");
+		    row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+		        if (isSelected) {
+		            row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428" );
+		        } else {
+		            row.setStyle("-fx-background-color: #172428");
+		        }
+		    });
+		    return row;
+		});
 
 		tableViewStagiaire.getColumns().forEach(column -> {
 			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
 
-		tableViewStagiaire.setItems(FXCollections.observableArrayList(this.annuaire));
+		tableViewStagiaire.setItems(FXCollections.observableArrayList(this.promotion));
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		// contenuPrincipal
@@ -198,16 +200,17 @@ public class PageAdminEdit extends BorderPane {
 		rechercheContenu.setAlignment(Pos.CENTER);
 		listeTriContenu.setAlignment(Pos.CENTER);
 
-		//on affiche et on cache les boutons en fontion du profil
-
-		
-		
-		// on ajoute du comportement au bouton accueil
 		accueil.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageAccueil pageAccueil = new PageAccueil(annuaire);
+				Annuaire annuaire = new Annuaire();
+				PageAccueil pageAccueil = new PageAccueil();
+				try {
+					pageAccueil.setPromotion(annuaire.lireFichier());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				accueil.getScene().setRoot(pageAccueil);
 			}
 
@@ -345,6 +348,15 @@ public class PageAdminEdit extends BorderPane {
 
 	public void setListeTriContenu(HBox listeTriContenu) {
 		this.listeTriContenu = listeTriContenu;
+	}
+
+	// Méthode pour créer des Labels avec style pour les titres des colonnes de
+	// TableView
+	private Label titreTableView(String title, Color color, int fontSize) {
+		Label titreColonne = new Label(title);
+		titreColonne.setTextFill(color); // Couleur de la police
+		titreColonne.setFont(new Font("Arial", fontSize)); // Police et taille
+		return titreColonne;
 	}
 
 }

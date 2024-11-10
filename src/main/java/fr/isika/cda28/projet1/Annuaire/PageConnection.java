@@ -1,9 +1,11 @@
-package fr.isika.cda28.projet1.Annuaire.Design;
+package fr.isika.cda28.projet1.Annuaire;
 
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Administrateur;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Authentification;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Utilisateurs;
+import java.util.ArrayList;
+
+import fr.isika.cda28.projet1.Annuaire.Administrateur;
+import fr.isika.cda28.projet1.Annuaire.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.Authentification;
+import fr.isika.cda28.projet1.Annuaire.Utilisateurs;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,6 +25,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageConnection extends BorderPane {
+//	private ArrayList<Stagiaire> promotion;
 	private Annuaire annuaire;
 	// Initialisation des éléments de la page "connection"
 	private HBox header = new HBox(20);
@@ -92,7 +95,7 @@ public class PageConnection extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageAccueil pageAccueil = new PageAccueil(annuaire);
+				PageAccueil pageAccueil = new PageAccueil();
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
 
@@ -105,10 +108,10 @@ public class PageConnection extends BorderPane {
 				String userID = champEmail.getText();
 				String password = champMotDePasse.getText();
 
-				Utilisateurs authenticate = authentifcation.authenticate(userID, password);
+				Utilisateurs utilisateurConnecte = authentifcation.authenticate(userID, password);
 
-				if (authenticate!=null) {
-					PageAdminEdit pageAdminEdit  = new PageAdminEdit(annuaire);
+				if (utilisateurConnecte!=null) {
+					PageAdminEdit pageAdminEdit  = new PageAdminEdit(annuaire, utilisateurConnecte);
 					boutonValider.getScene().setRoot(pageAdminEdit);
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);

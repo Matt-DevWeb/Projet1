@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire.Design;
+package fr.isika.cda28.projet1.Annuaire;
 
 import java.util.ArrayList;
 import java.util.List;

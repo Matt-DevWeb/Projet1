@@ -1,9 +1,7 @@
 package fr.isika.cda28.projet1.Annuaire;
 
-import fr.isika.cda28.projet1.Annuaire.Design.PageAccueil;
-import fr.isika.cda28.projet1.Annuaire.Design.PageVisiteurs;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.Annuaire;
-import fr.isika.cda28.projet1.Annuaire.Fonctionnalités.GestionDesFichiers;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,11 +19,20 @@ import javafx.stage.Stage;
 public class App extends Application {
 
 	@Override
+	public void init() throws Exception {
+		GestionDesFichiers fichier = new GestionDesFichiers();
+		fichier.chargerStagiairesDepuisFichier();
+		super.init();
+	}
+	
+	
+	@Override
 	public void start(Stage stage) throws Exception {
 
 		Annuaire annuaire = new Annuaire();
 
-		PageAccueil root = new PageAccueil(annuaire);
+		PageAccueil root = new PageAccueil();
+		root.setPromotion(annuaire.lireFichier());	 
 
 		Image icon = new Image(getClass().getResourceAsStream("/mesFichiers/icon.png"), 40, 40, true, true);
 
@@ -44,10 +51,13 @@ public class App extends Application {
 		stage.show();
 	}
 
-	public static void main(String[] args) {
-		GestionDesFichiers fichier = new GestionDesFichiers();
-	fichier.chargerStagiairesDepuisFichier();
+	public static void main(String[] args) throws IOException{
 		
+		//Annuaire annuaireTest = new Annuaire();
+		//Stagiaire stagiaireTest = new Stagiaire("DAUBERMANN", "Maxime", "62","AL 18",2022 );
+		//Noeud stagiaireTestNoeud = new Noeud(stagiaireTest, -1, -1);
+		
+		//annuaireTest.ajouterStagiaire(stagiaireTestNoeud);
 		
 		launch(args);
 	}

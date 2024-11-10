@@ -1,9 +1,10 @@
-package fr.isika.cda28.projet1.Annuaire.Fonctionnalités;
+package fr.isika.cda28.projet1.Annuaire;
 
 import java.io.File;
 import java.io.IOException;
 // Sert à faire la transition entre front et fichier binaire
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 
 public class Annuaire {
 	// Attributs
@@ -22,7 +23,6 @@ public class Annuaire {
 
 	}
 
-
 	// Getters et Setters
 
 	public RandomAccessFile getRaf() {
@@ -31,6 +31,18 @@ public class Annuaire {
 
 	// Méthodes
 
+	ArrayList<Stagiaire> lireFichier() throws IOException  {
+		ArrayList<Stagiaire> stagiaires = new ArrayList<Stagiaire>();
+		Noeud tmp = new Noeud();
+		
+		for (int position = 0; position < raf.length() ;position += tmp.TAILLE_NOEUD_OCTET) {
+			raf.seek(position);
+			Noeud nouveauNoeud = tmp.lireNoeud(this.raf);
+			stagiaires.add(nouveauNoeud.getStagiaire());
+		}
+		return stagiaires;
+	}
+	
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
 
 		if (raf.length() == 0) {
@@ -43,6 +55,8 @@ public class Annuaire {
 		}
 
 	}
+
+	
 	public Noeud rechercherStagiaire (String stagiaireARechercher) throws IOException {
 		Noeud resultatRecherche = new Noeud();
 		if (raf.length() == 0) {
@@ -75,6 +89,7 @@ public class Annuaire {
             System.out.println("L'annuaire est vide.");
         }
     }
+	
 	
 	
 	public void close() {
