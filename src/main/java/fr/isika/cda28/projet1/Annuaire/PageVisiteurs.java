@@ -1,5 +1,6 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -26,12 +27,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 
 public class PageVisiteurs extends BorderPane {
-	
-	
+
+	private Annuaire annuaire;
 	public TableView<Stagiaire> tableViewStagiaire;
-	
 
 	// On instancie les labels
 	private Label bienvenue = new Label("Bienvenue !");
@@ -61,7 +62,7 @@ public class PageVisiteurs extends BorderPane {
 
 	public PageVisiteurs(ObservableList<Stagiaire> stagiaires) {
 		super();
-		
+
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
 		// taille de la page
 		setPrefSize(1366, 768);
@@ -154,8 +155,8 @@ public class PageVisiteurs extends BorderPane {
 		colonneDepartement.setGraphic(titreTableView("Dpt", Color.WHITE, 14));
 		colonneCursus.setGraphic(titreTableView("Cursus", Color.WHITE, 14));
 		colonnePromo.setGraphic(titreTableView("Promo", Color.WHITE, 14));
-		
-		 //Changer la couleur du texte dans la colonne nom
+
+		// Changer la couleur du texte dans la colonne nom
 		colonneNom.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
 				@Override
@@ -173,16 +174,16 @@ public class PageVisiteurs extends BorderPane {
 		});
 
 		tableViewStagiaire.setRowFactory(tv -> {
-		    TableRow<Stagiaire> row = new TableRow<>();
-		    row.setStyle("-fx-background-color: #324255;");
-		    row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-		        if (isSelected) {
-		            row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428" );
-		        } else {
-		            row.setStyle("-fx-background-color: #172428");
-		        }
-		    });
-		    return row;
+			TableRow<Stagiaire> row = new TableRow<>();
+			row.setStyle("-fx-background-color: #324255;");
+			row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+				if (isSelected) {
+					row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428");
+				} else {
+					row.setStyle("-fx-background-color: #172428");
+				}
+			});
+			return row;
 		});
 
 		tableViewStagiaire.getColumns().forEach(column -> {
@@ -219,10 +220,52 @@ public class PageVisiteurs extends BorderPane {
 
 		});
 
+		imprimer.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+
+				try {
+					proposerTelechargementPDF();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		});
+
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
 
+	}
+
+	public void proposerTelechargementPDF() throws IOException {
+		Annuaire annuaire = new Annuaire();
+		// Créer une instance de FileChooser
+		FileChooser fileChooser = new FileChooser();
+
+		// Définir un filtre pour n'accepter que les fichiers PDF
+		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("PDF Files", "*.pdf");
+		fileChooser.getExtensionFilters().add(filter);
+
+		// Ouvrir une boîte de dialogue pour choisir le fichier
+		File fichier = fileChooser.showSaveDialog(null);
+
+		// Vérifier si l'utilisateur a sélectionné un fichier
+		if (fichier != null) {
+			if (!fichier.getName().endsWith(".pdf")) {
+				// Ajouter l'extension .pdf si nécessaire
+				fichier = new File(fichier.getAbsolutePath() + ".pdf");
+			}
+			System.out.println("Fichier sélectionné : " + fichier.getAbsolutePath());
+			// Créer le PDF à l'emplacement sélectionné
+			annuaire.creerPDF(fichier.getAbsolutePath());
+			System.out.println("Le fichier PDF a été créé avec succès à : " + fichier.getAbsolutePath());
+		} else {
+			System.out.println("L'utilisateur a annulé la selection du fichier");
+		}
 	}
 
 	public Label getBienvenue() {
