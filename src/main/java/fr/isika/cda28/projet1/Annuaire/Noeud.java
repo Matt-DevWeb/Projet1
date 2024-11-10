@@ -57,7 +57,7 @@ public class Noeud {
 
 	@Override
 	public String toString() {
-		return "Noeud [stagiaire=" + stagiaire + ", filsGauche=" + filsGauche + ", filsDroit=" + filsDroit + "]";
+		return "Stagiaire= " + stagiaire + ", filsGauche= " + filsGauche + ", filsDroit= " + filsDroit ;
 	}
 
 	public void ecrireNoeud(Noeud stagiaire, RandomAccessFile raf) throws IOException {
@@ -179,31 +179,54 @@ public class Noeud {
 		}
 	}
 
-	public Noeud rechercheNoeud(String valeurRechercher, RandomAccessFile raf, long position)
-			throws IOException {
-		raf.seek(position);
-		Noeud nouveauNoeud = lireNoeud(raf);
+//	public Noeud rechercheNoeud(String valeurRechercher, RandomAccessFile raf, long position)
+//			throws IOException {
+//		raf.seek(position);
+//		Noeud nouveauNoeud = lireNoeud(raf);
+//
+//		if (nouveauNoeud.getStagiaire().getNomLong().trim().equalsIgnoreCase(valeurRechercher)) {
+//			return nouveauNoeud;
+//		}
+//
+//		// Vérifie Fils Gauche
+//
+//		if (nouveauNoeud.getFilsGauche() != -1) {
+//			if (rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getFilsGauche() * TAILLE_NOEUD_OCTET) != null) {
+//				return nouveauNoeud;
+//			}
+//		}
+//
+//		// Vérifie Fils Droit
+//
+//		if (nouveauNoeud.getFilsDroit() != -1) {
+//			return rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getFilsDroit() * TAILLE_NOEUD_OCTET);
+//		}
+//
+//		return null;
+//	}
+	
+	public Noeud rechercheNoeud(Stagiaire stagiaireRecherche, RandomAccessFile raf, long position) throws IOException {
+	    raf.seek(position);
+	    Noeud nouveauNoeud = lireNoeud(raf);
 
-		if (nouveauNoeud.getStagiaire().getNomLong().trim().equalsIgnoreCase(valeurRechercher)) {
-			return nouveauNoeud;
-		}
+	    // Utilisation de compareTo pour vérifier l'égalité avec l'objet recherché
+	    if (nouveauNoeud.getStagiaire().compareTo(stagiaireRecherche) == 0) {
+	        return nouveauNoeud;
+	    }
 
-		// Vérifie Fils Gauche
+	    // Recherche dans le sous-arbre gauche si le stagiaire recherché est "plus petit"
+	    if (nouveauNoeud.getStagiaire().compareTo(stagiaireRecherche) > 0 && nouveauNoeud.getFilsGauche() != -1) {
+	        return rechercheNoeud(stagiaireRecherche, raf, nouveauNoeud.getFilsGauche() * TAILLE_NOEUD_OCTET);
+	    }
 
-		if (nouveauNoeud.getFilsGauche() != -1) {
-			if (rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getFilsGauche() * TAILLE_NOEUD_OCTET) != null) {
-				return nouveauNoeud;
-			}
-		}
+	    // Recherche dans le sous-arbre droit si le stagiaire recherché est "plus grand"
+	    if (nouveauNoeud.getStagiaire().compareTo(stagiaireRecherche) < 0 && nouveauNoeud.getFilsDroit() != -1) {
+	        return rechercheNoeud(stagiaireRecherche, raf, nouveauNoeud.getFilsDroit() * TAILLE_NOEUD_OCTET);
+	    }
 
-		// Vérifie Fils Droit
-
-		if (nouveauNoeud.getFilsDroit() != -1) {
-			return rechercheNoeud(valeurRechercher, raf, nouveauNoeud.getFilsDroit() * TAILLE_NOEUD_OCTET);
-		}
-
-		return null;
+	    return null;
 	}
+
 
 	public void supprimerRacine(RandomAccessFile raf, int indexCourant) throws IOException {
 		

@@ -30,8 +30,8 @@ public class LanceurTest {
 		annuaire.supprimerStagiaire(stagiaire22);
 //		annuaire.afficherListeOrdreAlphabetique();
 		
-		System.out.println("Est ce que DAVID est présent dans l'annuaire ? : "
-				+ annuaire.rechercherStagiaire("WACIM"));
+		System.out.println("Est ce que BOB est présent dans l'annuaire ? : "
+				+ annuaire.rechercherStagiaire(stagiaire1));
 //		for (int i = 0; i < 4; i++) {
 //			annuaire.getRaf().seek(i * Noeud.TAILLE_NOEUD_OCTET);
 //			System.out.println(annuaire.noeud.lireNoeud(annuaire.getRaf()));

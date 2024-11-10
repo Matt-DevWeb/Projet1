@@ -24,8 +24,14 @@ public class App extends Application {
 	@Override
 	public void init() throws Exception {
 		GestionDesFichiers fichier = new GestionDesFichiers();
-		fichier.chargerStagiairesDepuisFichier();
 		annuaire = new Annuaire();
+		if (!fichier.fichierBinaireRempli()) {
+	        fichier.chargerStagiairesDepuisFichier();
+	    } else {
+	        annuaire.afficherListeOrdreAlphabetique();
+	    }
+		
+		System.out.println("le nombre de stagiaires est de " + annuaire.lireFichierObservable().size() );
 		
 		super.init();
 	}
@@ -40,7 +46,7 @@ public class App extends Application {
 
 		stage.getIcons().add(icon);
 //		 On instancie la scène avec ses dimensions.
-		Scene scene = new Scene(root, 1024, 576);
+		Scene scene = new Scene(root, 1366, 768);
 
 		// On donne un titre à la scène
 		stage.setTitle("DevUp Academy");

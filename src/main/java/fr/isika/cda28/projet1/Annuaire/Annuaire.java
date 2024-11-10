@@ -68,7 +68,7 @@ public class Annuaire {
 
 	}
 
-	public Noeud rechercherStagiaire(String stagiaireARechercher) throws IOException {
+	public Noeud rechercherStagiaire(Stagiaire stagiaireARechercher) throws IOException {
 		Noeud resultatRecherche = new Noeud();
 		if (raf.length() == 0) {
 			System.out.println(" Nous ne pouvons pas trouver de stagiaire, car celui-ci est vide");
