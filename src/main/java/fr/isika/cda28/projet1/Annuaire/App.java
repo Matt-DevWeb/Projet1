@@ -43,7 +43,7 @@ public class App extends Application {
 		root.setPromotion(annuaire.lireFichierObservable());
 
 		Image icon = new Image(getClass().getResourceAsStream("/mesFichiers/icon.png"), 40, 40, true, true);
-
+		annuaire.creerPDF("src/main/resources/mesFichiers/ListeStagiaires.pdf");
 		stage.getIcons().add(icon);
 //		 On instancie la scène avec ses dimensions.
 		Scene scene = new Scene(root, 1366, 768);
