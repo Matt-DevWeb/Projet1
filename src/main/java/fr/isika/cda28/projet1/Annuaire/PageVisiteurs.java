@@ -321,6 +321,19 @@ public class PageVisiteurs extends BorderPane {
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
 
+		// Ajouter le comportement au bouton "connexion" pour changer de page
+					connexion.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							Annuaire annuaire = new Annuaire();
+							// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
+							PageConnection pageConnection = new PageConnection(annuaire,stagiaires);
+							connexion.getScene().setRoot(pageConnection);
+						}
+					});
+		
+		
+		
 	}
 
 	private void filterStagiaires() {
@@ -389,7 +402,13 @@ public class PageVisiteurs extends BorderPane {
 		} else {
 			System.out.println("L'utilisateur a annulé la selection du fichier");
 		}
+	
+	
+	
+	
 	}
+
+	
 
 	public Label getBienvenue() {
 		return bienvenue;
