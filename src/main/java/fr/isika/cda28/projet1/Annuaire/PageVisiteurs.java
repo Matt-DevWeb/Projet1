@@ -5,14 +5,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
@@ -34,6 +37,8 @@ public class PageVisiteurs extends BorderPane {
 
 	private Annuaire annuaire;
 	public TableView<Stagiaire> tableViewStagiaire;
+
+	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
 
 	// On instancie les labels
 	private Label bienvenue = new Label("Bienvenue !");
@@ -60,6 +65,7 @@ public class PageVisiteurs extends BorderPane {
 	private HBox bienvenueContenu = new HBox(350);
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
+	private ChoiceBox<String> criteres = new ChoiceBox();
 
 	public PageVisiteurs(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
 		super();
@@ -91,6 +97,7 @@ public class PageVisiteurs extends BorderPane {
 		// CENTRE DE PAGE
 		recherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		connexion.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		criteres.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 //				trier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// On change la couleur du texte des labels
@@ -110,7 +117,7 @@ public class PageVisiteurs extends BorderPane {
 		bienvenueContenu.setPadding(new Insets(30, 30, 30, 30));
 
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(zoneRecherche, recherche);
+		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, recherche);
 
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
 		// listeTriContenu
@@ -251,6 +258,19 @@ public class PageVisiteurs extends BorderPane {
 		});
 
 		tableViewStagiaire.setItems(stagiaires);
+		datas.addAll(stagiaires);
+		// appel de la methode filterStagiaire lorsqu'on clic sur le bouton de recherche
+
+		// Rempliere la ChoiceBox
+		List<String> criters = new ArrayList<String>();
+
+		criters.add("nom");
+		criters.add("prenom");
+		criters.add("cursus");
+		criters.add("departement");
+		criters.add("promotion");
+		criteres.getItems().addAll(criters);
+		criteres.getSelectionModel().select(0);
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		// contenuPrincipal
@@ -280,6 +300,8 @@ public class PageVisiteurs extends BorderPane {
 
 		});
 
+		recherche.setOnAction(event -> filterStagiaires());
+
 		imprimer.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -299,6 +321,29 @@ public class PageVisiteurs extends BorderPane {
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
 
+	}
+
+	private void filterStagiaires() {
+		String critere = criteres.getValue().toLowerCase();
+		String value = zoneRecherche.getText().toLowerCase();
+
+		FilteredList<Stagiaire> listFiltre = new FilteredList<>(datas, stagiaire -> {
+			switch (critere) {
+			case "nom":
+				return stagiaire.getNom().equalsIgnoreCase(value);
+			case "prenom":
+				return stagiaire.getPrenom().equalsIgnoreCase(value);
+			case "departement":
+				return stagiaire.getDepartement().equalsIgnoreCase(value);
+			case "cursus":
+				return stagiaire.getCursus().equalsIgnoreCase(value);
+			case "promotion":
+				return String.valueOf(stagiaire.getAnneePromo()).equalsIgnoreCase(value);
+			default:
+				return true;
+			}
+		});
+		tableViewStagiaire.setItems(listFiltre);
 	}
 
 	public void proposerTelechargementPDF() throws IOException {

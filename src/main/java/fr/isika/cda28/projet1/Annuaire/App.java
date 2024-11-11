@@ -48,7 +48,7 @@ public class App extends Application {
 //		annuaire.creerPDF("src/main/resources/mesFichiers/ListeStagiaires.pdf");
 		stage.getIcons().add(icon);
 //		 On instancie la scène avec ses dimensions.
-		Scene scene = new Scene(root, 1366, 768);
+		Scene scene = new Scene(root, 1280, 720);
 
 		// On donne un titre à la scène
 		stage.setTitle("DevUp Academy");

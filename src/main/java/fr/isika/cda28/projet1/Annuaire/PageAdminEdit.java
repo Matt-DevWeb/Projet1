@@ -32,7 +32,6 @@ import javafx.stage.FileChooser;
 public class PageAdminEdit extends BorderPane {
 
 	private TableView<Stagiaire> tableViewStagiaire;
-	
 
 	// On instancie les labels
 	private Label labelBienvenue = new Label("Bienvenue !");
@@ -46,6 +45,7 @@ public class PageAdminEdit extends BorderPane {
 	private Button boutonImprimer = new Button("Imprimer la liste");
 	private Button boutonAccueil = new Button("Accueil");
 	private Button boutonRecherche = new Button("Rechercher");
+	private Button boutonDeconnexion = new Button("Se déconnecter");
 	private Button boutonTrier = new Button("Trier");
 	private Button boutonMettreAjour = new Button("Modifier un stagiaire");
 	private Button boutonAjoutStagiaire = new Button("Ajouter un stagiaire");
@@ -64,18 +64,15 @@ public class PageAdminEdit extends BorderPane {
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
 
-
 	private Annuaire annuaire;
 
 	public PageAdminEdit(Annuaire annuaire, ObservableList<Stagiaire> stagiaires, Utilisateurs utilisateurConnecte) {
 		super();
-		this.annuaire = annuaire;		
-		
+		this.annuaire = annuaire;
+
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
-		
-		
-		// taille de la page
-//		setPrefSize(1366, 768);
+
+
 		setStyle("-fx-background-color:#172428");
 		// logo
 		logoImageView.setFitWidth(140);
@@ -93,9 +90,9 @@ public class PageAdminEdit extends BorderPane {
 
 		if (utilisateurConnecte.isAdmin()) {
 			coteGaucheBoutons.getChildren().addAll(boutonMettreAjour, boutonAjoutStagiaire, boutonSuppStagiaire,
-					boutonAjoutEditeur, boutonSuppEditeur, boutonImprimer, boutonAccueil);
+					boutonAjoutEditeur, boutonSuppEditeur, boutonImprimer, boutonAccueil, boutonDeconnexion);
 		} else {
-			coteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil);
+			coteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil, boutonDeconnexion);
 
 		}
 		// On change la couleur de fond de la partie gauche
@@ -315,7 +312,7 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
-		
+
 		boutonImprimer.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -330,14 +327,34 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
-	
 
+		boutonAjoutStagiaire.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				AjouterStagiaire ajouterStagiaire = new AjouterStagiaire(annuaire, stagiaires);
+				boutonAjoutStagiaire.getScene().setRoot(ajouterStagiaire);
+
+			}
+
+		});
+		boutonAjoutEditeur.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				AjouterEditeur ajouterEditeur = new AjouterEditeur(annuaire, stagiaires);
+				boutonAjoutEditeur.getScene().setRoot(ajouterEditeur);
+
+			}
+
+		});
 
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
 
 	}
+
 	public void proposerTelechargementPDF() throws IOException {
 		Annuaire annuaire = new Annuaire();
 		// Créer une instance de FileChooser
@@ -512,7 +529,7 @@ public class PageAdminEdit extends BorderPane {
 		this.tableViewStagiaire = tableViewStagiaire;
 	}
 
-	//	public void setPromotion(ObservableList<Stagiaire> observableList) {
+	// public void setPromotion(ObservableList<Stagiaire> observableList) {
 //		this.tableViewStagiaire = observableList;
 //	}
 	// Méthode pour créer des Labels avec style pour les titres des colonnes de
