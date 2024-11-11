@@ -69,7 +69,7 @@ public class AjouterStagiaire extends BorderPane {
 		// fond blanc
 		setStyle("-fx-background-color:#172428");
 		cheminVersListeStagiaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		boutonAccueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
 		// Definir taille de la VBox + ajout composants
 		leftside.setPrefSize(220, 450);
 		leftside.getChildren().addAll(logoImageView, leftSideButtons);

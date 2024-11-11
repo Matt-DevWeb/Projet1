@@ -15,7 +15,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -38,7 +40,7 @@ public class PageAdminEdit extends BorderPane {
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
 
 	// On instancie les labels
-	private Label labelBienvenue = new Label("Bienvenue !");
+	private Label labelBienvenue = new Label("Annuaire des stagiaires de la Dev'Up Academy !");
 	private Label labelListeStagiaires = new Label("Liste des stagiaires de l'entreprise.");
 
 	// On instancie l'image
@@ -48,7 +50,7 @@ public class PageAdminEdit extends BorderPane {
 	// On instancie nos boutons
 	private Button boutonImprimer = new Button("Imprimer la liste");
 	private Button boutonAccueil = new Button("Accueil");
-	private Button boutonRecherche = new Button("Rechercher");
+	private Button boutonRecherche = new Button("Lancer la recherche");
 	private Button boutonDeconnexion = new Button("Se déconnecter");
 	private Button boutonMettreAjour = new Button("Modifier un stagiaire");
 	private Button boutonAjoutStagiaire = new Button("Ajouter un stagiaire");
@@ -60,13 +62,15 @@ public class PageAdminEdit extends BorderPane {
 	private TextField zoneRecherche = new TextField();
 
 	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
-	private VBox coteGauche = new VBox(50);
+	private VBox coteGauche = new VBox(180);
+
 	private VBox coteGaucheBoutons = new VBox(20);
 	private VBox contenuPrincipal = new VBox();
 	private HBox bienvenueContenu = new HBox(350);
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
-	private ChoiceBox<String> criteres = new ChoiceBox();
+	// On instancie la ChoiceBox
+	private ComboBox<String> criteres = new ComboBox();
 
 	private Annuaire annuaire;
 
@@ -93,10 +97,9 @@ public class PageAdminEdit extends BorderPane {
 
 		if (utilisateurConnecte.isAdmin()) {
 			coteGaucheBoutons.getChildren().addAll(boutonMettreAjour, boutonAjoutStagiaire, boutonSuppStagiaire,
-					boutonAjoutEditeur, boutonSuppEditeur, boutonImprimer, boutonAccueil, boutonDeconnexion);
+					boutonAjoutEditeur, boutonSuppEditeur, boutonImprimer, boutonAccueil);
 		} else {
-			coteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil,
-					boutonDeconnexion);
+			coteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil);
 
 		}
 		// On change la couleur de fond de la partie gauche
@@ -105,7 +108,7 @@ public class PageAdminEdit extends BorderPane {
 		boutonImprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonImprimer.setPrefSize(200, 20);
 
-		boutonAccueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonAccueil.setPrefSize(200, 20);
 
 		boutonMettreAjour.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
@@ -127,36 +130,38 @@ public class PageAdminEdit extends BorderPane {
 		boutonDeconnexion.setPrefSize(200, 20);
 		// CENTRE DE PAGE
 		boutonRecherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		criteres.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-
+		criteres.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		criteres.setPrefWidth(180); // Limite la largeur du ComboBox
+		criteres.setMaxHeight(300); // Limite la hauteur du ComboBox, si nécessaire
 		// On change la couleur du texte des labels
-		labelBienvenue.setStyle("-fx-text-fill: white; -fx-font-size:30px;");
-		labelListeStagiaires.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
+		labelBienvenue.setStyle("-fx-text-fill: white; -fx-font-size:20px;");
+		// labelListeStagiaires.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
 
 		// On stylise le textField zoneRecherche
+		zoneRecherche.setPadding(new Insets(10, 40, 10, 15));
 		zoneRecherche.setMaxWidth(300);
 		zoneRecherche.setPrefHeight(30);
 		zoneRecherche.setPromptText("Rechercher un stagiaire");
 
 		// On ajoute le label bienvenue et le bouton connexion à la VBox
 		// bienvenueContenu
-		bienvenueContenu.getChildren().addAll(labelBienvenue);
+		bienvenueContenu.getChildren().addAll(labelBienvenue, boutonDeconnexion);
 
 		// On ajoute du padding à la HBox bienvenueContenu
-		bienvenueContenu.setPadding(new Insets(30, 30, 30, 30));
-
+		bienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
 		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, boutonRecherche);
+		rechercheContenu.setPadding(new Insets(10, 0, 40, 0));
 
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
 		// listeTriContenu
-		listeTriContenu.getChildren().addAll(labelListeStagiaires);
+		// listeTriContenu.getChildren().addAll(boutonTrier);
 
 		// On ajoute du padding à la HBox listeTriContenu
-		listeTriContenu.setPadding(new Insets(30, 30, 30, 30));
+		// listeTriContenu.setPadding(new Insets(30, 30, 30, 30));
 
 		// table VIEW
-//		tableViewStagiaire.setEditable(false);
+		tableViewStagiaire.setEditable(true);
 
 		TableColumn<Stagiaire, String> colonneNom = new TableColumn<>();
 		colonneNom.setMinWidth(200);
@@ -274,7 +279,7 @@ public class PageAdminEdit extends BorderPane {
 			row.setStyle("-fx-background-color: #324255;");
 			row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
 				if (isSelected) {
-					row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428");
+					row.setStyle("-fx-background-color: #172428; -fx-text-fill:#172428");
 				} else {
 					row.setStyle("-fx-background-color: #324255");
 				}
@@ -354,7 +359,7 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
-		
+
 		boutonDeconnexion.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -366,21 +371,65 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
-
+		boutonRecherche.setOnAction(event -> filterStagiaires());
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
-
+		datas.addAll(stagiaires);
 		// Rempliere la ChoiceBox
 		List<String> criters = new ArrayList<String>();
-
-		criters.add("nom");
-		criters.add("prenom");
-		criters.add("cursus");
-		criters.add("departement");
-		criters.add("promotion");
+		
+		criters.add("Rechercher par :");
+		criters.add("Nom");
+		criters.add("Prenom");
+		criters.add("Cursus");
+		criters.add("Departement");
+		criters.add("Promotion");
 		criteres.getItems().addAll(criters);
 		criteres.getSelectionModel().select(0);
+		
+		criteres.setCellFactory(param -> {
+			ListCell<String> cell = new ListCell<String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item != null) {
+						setText(item);
+						setTextFill(Color.WHITE); // Changer la couleur du texte
+						setStyle("-fx-background-color: #324255;");
+					} else {
+						setText(null);
+					}
+				}
+			};
+			cell.setOnMouseEntered(event -> {
+				criteres.setPrefWidth(179); // Limite la largeur du ComboBox
+				criteres.setMaxHeight(299);
+				cell.setStyle("-fx-background-color: #324255; -fx-border-color: white; -fx-border-width: 1px;"); // Contour
+																													// Blanc
+																													// au
+																													// survol
+
+			});
+
+			cell.setOnMouseExited(event -> {
+				cell.setStyle("-fx-background-color: #324255;"); // Enlever le contour au survol
+			});
+			return cell;
+		});
+
+		criteres.setButtonCell(new ListCell<String>() {
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item != null) {
+					setText(item);
+					setTextFill(Color.WHITE); // Changer la couleur du texte
+				} else {
+					setText(null);
+				}
+			}
+		});
 
 	}
 
@@ -459,14 +508,6 @@ public class PageAdminEdit extends BorderPane {
 
 	public void setBienvenue(Label bienvenue) {
 		this.labelBienvenue = bienvenue;
-	}
-
-	public Label getListeStagiaire() {
-		return labelListeStagiaires;
-	}
-
-	public void setListeStagiaire(Label listeStagiaire) {
-		this.labelListeStagiaires = listeStagiaire;
 	}
 
 	public Image getLogo() {

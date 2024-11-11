@@ -25,7 +25,7 @@ public class PageAccueil extends BorderPane {
 	private ObservableList<Stagiaire> stagiaires;
 
 	// Label pour afficher un message de bienvenue
-	private Label bienvenue = new Label("Bienvenue sur l'annuaire de la Dev'Up academy");
+	private Label bienvenue = new Label("Bienvenue sur l'annuaire \nde Dev'Up academy");
 
 	// ImageView pour afficher le logo de l'entreprise
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_blanc_ligne.png"));
@@ -57,7 +57,7 @@ public class PageAccueil extends BorderPane {
 
 		// Définir le style général de la page
 		setStyle("-fx-background-color:#172428");
-		bienvenue.setStyle("-fx-text-fill:white ;-fx-font-size:40px;");
+		bienvenue.setStyle("-fx-text-fill:white ;-fx-font-size:40px; -fx-text-alignment : center;");
 
 		// Configurer les espaces et l'alignement des conteneurs
 		header.setPadding(new Insets(20, 20, 20, 20));
@@ -72,7 +72,7 @@ public class PageAccueil extends BorderPane {
 		connexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 //		recherche.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		consulter.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-
+		consulter.setPrefSize(200, 20);
 		// Configurer la taille du header (barre supérieure)
 		header.setPrefSize(800, 80); // Taille fixe pour le header
 		HBox.setHgrow(logoImageView, Priority.ALWAYS); // Permet au logo de s'étendre si nécessaire
@@ -115,7 +115,7 @@ public class PageAccueil extends BorderPane {
 				connexion.getScene().setRoot(pageConnection);
 			}
 		});
-		
+
 		consulter.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override

@@ -3,7 +3,7 @@ package fr.isika.cda28.projet1.Annuaire;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +15,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -41,7 +43,7 @@ public class PageVisiteurs extends BorderPane {
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
 
 	// On instancie les labels
-	private Label bienvenue = new Label("Bienvenue !");
+	private Label bienvenue = new Label("Annuaire des stagiaires de la Dev'Up Academy !");
 	private Label listeStagiaire = new Label("Liste des stagiaires de l'entreprise.");
 
 	// On instancie l'image
@@ -52,27 +54,27 @@ public class PageVisiteurs extends BorderPane {
 	private Button connexion = new Button("Se connecter");
 	private Button imprimer = new Button("Imprimer la liste");
 	private Button accueil = new Button("Accueil");
-	private Button recherche = new Button("Rechercher");
+	private Button recherche = new Button("Lancer la recherche");
 	private Button trier = new Button("Trier");
 
 	// On instancie le TextField
 	private TextField zoneRecherche = new TextField();
 
 	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
-	private VBox coteGauche = new VBox(220);
+	private VBox coteGauche = new VBox(450);
 	private VBox coteGaucheBoutons = new VBox(20);
 	private VBox contenuPrincipal = new VBox();
 	private HBox bienvenueContenu = new HBox(350);
-	private HBox rechercheContenu = new HBox(5);
+	private HBox rechercheContenu = new HBox(20);
 	private HBox listeTriContenu = new HBox(300);
-	private ChoiceBox<String> criteres = new ChoiceBox();
+	private ComboBox<String> criteres = new ComboBox();
 
 	public PageVisiteurs(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
 		super();
 		this.annuaire = annuaire;
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
 		// taille de la page
-		setPrefSize(1366, 768);
+//		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
 		// logo
 		logoImageView.setFitWidth(140);
@@ -92,38 +94,42 @@ public class PageVisiteurs extends BorderPane {
 		// On chane la change la couleur de fond de la partie gauche
 		coteGauche.setStyle("-fx-background-color:#25333F");
 		imprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		accueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-
+		imprimer.setPrefSize(200, 20);
+		accueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
+		accueil.setPrefSize(200, 20);
 		// CENTRE DE PAGE
 		recherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		connexion.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		criteres.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		criteres.setPrefWidth(180); // Limite la largeur du ComboBox
+		criteres.setMaxHeight(300); // Limite la hauteur du ComboBox, si nécessaire
+
 //				trier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// On change la couleur du texte des labels
-		bienvenue.setStyle("-fx-text-fill: white; -fx-font-size:30px;");
-		listeStagiaire.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
+		bienvenue.setStyle("-fx-text-fill: white; -fx-font-size:20px;");
+		// listeStagiaire.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
 
 		// On stylise le textField zoneRecherche
 		zoneRecherche.setMaxWidth(300);
 		zoneRecherche.setPrefHeight(30);
 		zoneRecherche.setPromptText("Rechercher un stagiaire");
-
+		zoneRecherche.setPadding(new Insets(10,40,10,15));
 		// On ajoute le label bienvenue et le bouton connexion à la VBox
 		// bienvenueContenu
 		bienvenueContenu.getChildren().addAll(bienvenue, connexion);
-
 		// On ajoute du padding à la HBox bienvenueContenu
-		bienvenueContenu.setPadding(new Insets(30, 30, 30, 30));
+		bienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
+		
+		
 
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
 		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, recherche);
-
+		rechercheContenu.setPadding(new Insets(10, 0, 40, 0));
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
-		// listeTriContenu
-		listeTriContenu.getChildren().addAll(listeStagiaire);
+	
 
-		// On ajoute du padding à la HBox listeTriContenu
+	
 
 		// table VIEW
 		tableViewStagiaire.setEditable(false);
@@ -245,9 +251,9 @@ public class PageVisiteurs extends BorderPane {
 			row.setStyle("-fx-background-color: #324255;");
 			row.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
 				if (isSelected) {
-					row.setStyle("-fx-background-color: #BFD7EA; -fx-text-fill:#172428");
+					row.setStyle("-fx-background-color: #172428; -fx-text-fill:#172428");
 				} else {
-					row.setStyle("-fx-background-color: #172428");
+					row.setStyle("-fx-background-color: #324255;");
 				}
 			});
 			return row;
@@ -264,13 +270,58 @@ public class PageVisiteurs extends BorderPane {
 		// Rempliere la ChoiceBox
 		List<String> criters = new ArrayList<String>();
 
-		criters.add("nom");
-		criters.add("prenom");
-		criters.add("cursus");
-		criters.add("departement");
-		criters.add("promotion");
+		criters.add("Rechercher par :");
+		criters.add("Nom");
+		criters.add("Prenom");
+		criters.add("Cursus");
+		criters.add("Departement");
+		criters.add("Promotion");
 		criteres.getItems().addAll(criters);
 		criteres.getSelectionModel().select(0);
+		criteres.setEditable(false);
+
+		criteres.setCellFactory(param -> {
+			ListCell<String> cell = new ListCell<String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (item != null) {
+						setText(item);
+						setTextFill(Color.WHITE); // Changer la couleur du texte
+						setStyle("-fx-background-color: #324255;");
+					} else {
+						setText(null);
+					}
+				}
+			};
+			cell.setOnMouseEntered(event -> {
+				criteres.setPrefWidth(179); // Limite la largeur du ComboBox
+				criteres.setMaxHeight(299);
+				cell.setStyle("-fx-background-color: #324255; -fx-border-color: white; -fx-border-width: 1px;"); // Contour
+																													// Blanc
+																													// au
+																													// survol
+
+			});
+
+			cell.setOnMouseExited(event -> {
+				cell.setStyle("-fx-background-color: #324255;"); // Enlever le contour au survol
+			});
+			return cell;
+		});
+
+		criteres.setButtonCell(new ListCell<String>() {
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item != null) {
+					setText(item);
+					setTextFill(Color.WHITE); // Changer la couleur du texte
+				} else {
+					setText(null);
+				}
+			}
+		});
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		// contenuPrincipal
@@ -322,18 +373,16 @@ public class PageVisiteurs extends BorderPane {
 		this.setCenter(contenuPrincipal);
 
 		// Ajouter le comportement au bouton "connexion" pour changer de page
-					connexion.setOnAction(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent event) {
-							Annuaire annuaire = new Annuaire();
-							// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
-							PageConnection pageConnection = new PageConnection(annuaire,stagiaires);
-							connexion.getScene().setRoot(pageConnection);
-						}
-					});
-		
-		
-		
+		connexion.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Annuaire annuaire = new Annuaire();
+				// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
+				PageConnection pageConnection = new PageConnection(annuaire, stagiaires);
+				connexion.getScene().setRoot(pageConnection);
+			}
+		});
+
 	}
 
 	private void filterStagiaires() {
@@ -402,13 +451,8 @@ public class PageVisiteurs extends BorderPane {
 		} else {
 			System.out.println("L'utilisateur a annulé la selection du fichier");
 		}
-	
-	
-	
-	
-	}
 
-	
+	}
 
 	public Label getBienvenue() {
 		return bienvenue;
@@ -418,13 +462,6 @@ public class PageVisiteurs extends BorderPane {
 		this.bienvenue = bienvenue;
 	}
 
-	public Label getListeStagiaire() {
-		return listeStagiaire;
-	}
-
-	public void setListeStagiaire(Label listeStagiaire) {
-		this.listeStagiaire = listeStagiaire;
-	}
 
 	public Image getLogo() {
 		return logo;

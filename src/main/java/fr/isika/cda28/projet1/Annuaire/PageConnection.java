@@ -69,7 +69,7 @@ public class PageConnection extends BorderPane {
 		champMotDePasse.setMaxWidth(200);
 		champMotDePasse.setPrefHeight(30);
 		boutonValider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		boutonAccueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		champEmail.setPromptText("Entrez votre Email");
 		champMotDePasse.setPromptText("Entrez votre Mot de Passe");
