@@ -4,14 +4,17 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
@@ -32,7 +35,9 @@ import javafx.stage.FileChooser;
 public class PageAdminEdit extends BorderPane {
 
 	private TableView<Stagiaire> tableViewStagiaire;
-
+	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
+	
+	
 	// On instancie les labels
 	private Label labelBienvenue = new Label("Bienvenue !");
 	private Label labelListeStagiaires = new Label("Liste des stagiaires de l'entreprise.");
@@ -46,7 +51,6 @@ public class PageAdminEdit extends BorderPane {
 	private Button boutonAccueil = new Button("Accueil");
 	private Button boutonRecherche = new Button("Rechercher");
 	private Button boutonDeconnexion = new Button("Se déconnecter");
-	private Button boutonTrier = new Button("Trier");
 	private Button boutonMettreAjour = new Button("Modifier un stagiaire");
 	private Button boutonAjoutStagiaire = new Button("Ajouter un stagiaire");
 	private Button boutonSuppStagiaire = new Button("Supprimer un stagiaire");
@@ -63,6 +67,7 @@ public class PageAdminEdit extends BorderPane {
 	private HBox bienvenueContenu = new HBox(350);
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
+	private ChoiceBox<String> criteres = new ChoiceBox();
 
 	private Annuaire annuaire;
 
@@ -119,9 +124,11 @@ public class PageAdminEdit extends BorderPane {
 		boutonSuppEditeur.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonSuppEditeur.setPrefSize(200, 20);
 
+		boutonDeconnexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonDeconnexion.setPrefSize(200, 20);
 		// CENTRE DE PAGE
 		boutonRecherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		boutonTrier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		criteres.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// On change la couleur du texte des labels
 		labelBienvenue.setStyle("-fx-text-fill: white; -fx-font-size:30px;");
@@ -140,11 +147,11 @@ public class PageAdminEdit extends BorderPane {
 		bienvenueContenu.setPadding(new Insets(30, 30, 30, 30));
 
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(zoneRecherche, boutonRecherche);
+		rechercheContenu.getChildren().addAll(zoneRecherche,criteres, boutonRecherche);
 
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
 		// listeTriContenu
-		listeTriContenu.getChildren().addAll(labelListeStagiaires, boutonTrier);
+		listeTriContenu.getChildren().addAll(labelListeStagiaires);
 
 		// On ajoute du padding à la HBox listeTriContenu
 		listeTriContenu.setPadding(new Insets(30, 30, 30, 30));
@@ -352,7 +359,43 @@ public class PageAdminEdit extends BorderPane {
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
+		
+		
+		// Rempliere la ChoiceBox
+		List<String> criters = new ArrayList<String>();
 
+		criters.add("nom");
+		criters.add("prenom");
+		criters.add("cursus");
+		criters.add("departement");
+		criters.add("promotion");
+		criteres.getItems().addAll(criters);
+		criteres.getSelectionModel().select(0);
+		
+		
+
+	}
+	private void filterStagiaires() {
+		String critere = criteres.getValue().toLowerCase();
+		String value = zoneRecherche.getText().toLowerCase();
+
+		FilteredList<Stagiaire> listFiltre = new FilteredList<>(datas, stagiaire -> {
+			switch (critere) {
+			case "nom":
+				return stagiaire.getNom().equalsIgnoreCase(value);
+			case "prenom":
+				return stagiaire.getPrenom().equalsIgnoreCase(value);
+			case "departement":
+				return stagiaire.getDepartement().equalsIgnoreCase(value);
+			case "cursus":
+				return stagiaire.getCursus().equalsIgnoreCase(value);
+			case "promotion":
+				return String.valueOf(stagiaire.getAnneePromo()).equalsIgnoreCase(value);
+			default:
+				return true;
+			}
+		});
+		tableViewStagiaire.setItems(listFiltre);
 	}
 
 	public void proposerTelechargementPDF() throws IOException {
@@ -457,13 +500,6 @@ public class PageAdminEdit extends BorderPane {
 		this.boutonRecherche = recherche;
 	}
 
-	public Button getTrier() {
-		return boutonTrier;
-	}
-
-	public void setTrier(Button trier) {
-		this.boutonTrier = trier;
-	}
 
 	public TextField getZoneRecherche() {
 		return zoneRecherche;
