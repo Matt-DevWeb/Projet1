@@ -1,5 +1,6 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -27,7 +28,7 @@ public class AjouterEditeur extends BorderPane {
 	private PasswordField motdepasse = new PasswordField();
 
 	// Déclaration des boutons
-	private Button annuaire = new Button("Annuaire");
+	private Button cheminVersListeStagiaire = new Button("Annuaire");
 	private Button accueil = new Button("Accueil");
 
 	// Bouton valider editeur
@@ -43,11 +44,10 @@ public class AjouterEditeur extends BorderPane {
 	GridPane rightSide = new GridPane(); // Conteneur droite pour le GridPane
 
 	// Constructeur
-	public AjouterEditeur() {
+	public AjouterEditeur(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
 		super();
 
-		// taille fenetre
-		setPrefSize(800, 450);
+	
 
 		// dimensions logo
 		logoImageView.setFitWidth(200);
@@ -58,12 +58,12 @@ public class AjouterEditeur extends BorderPane {
 
 		// fond blanc
 		setStyle("-fx-background-color:#172428");
-		annuaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		cheminVersListeStagiaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		accueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		// Definir taille de la VBox + ajout composants
 		leftside.setPrefSize(220, 450);
 		leftside.getChildren().addAll(logoImageView, leftSideButtons);
-		leftSideButtons.getChildren().addAll(annuaire, accueil);
+		leftSideButtons.getChildren().addAll(cheminVersListeStagiaire, accueil);
 
 		// Modifier la couleur de fond gauche
 		leftside.setStyle("-fx-background-color:#172428");

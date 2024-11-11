@@ -82,8 +82,8 @@ public class Stagiaire implements Comparable<Stagiaire> {
 	// caractères
 	@Override
 	public String toString() {
-		return "Stagiaire [ nom= " + nom + ", prenom= " + prenom + ", cursus= " + cursus + ", anneePromo= " + anneePromo
-				+ ", departement= " + departement + " ]";
+		return "Nom= " + nom + ", prenom= " + prenom + ", cursus= " + cursus + ", anneePromo= " + anneePromo
+				+ ", departement= " + departement ;
 	}
 
 	// Méthodes pour obtenir des chaînes de longueur fixe (pour le fichier binaire)

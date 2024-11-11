@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,8 +21,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageAccueil extends BorderPane {
-	// on instancie une liste de stagiaires;
-	private ArrayList<Stagiaire> promotion;
+	
+	private ObservableList<Stagiaire> stagiaires;
 
 	// Label pour afficher un message de bienvenue
 	private Label bienvenue = new Label("Bienvenue sur l'annuaire de la Dev'Up academy");
@@ -31,7 +33,7 @@ public class PageAccueil extends BorderPane {
 
 	// Boutons pour les différentes actions disponibles sur la page d'accueil
 	private Button connexion = new Button("Se connecter");
-	private Button recherche = new Button("Rechercher");
+//	private Button recherche = new Button("Rechercher");
 	private Button consulter = new Button("Consulter l'annuaire");
 
 	// Conteneurs HBox et VBox utilisés pour organiser les éléments sur la page
@@ -39,12 +41,12 @@ public class PageAccueil extends BorderPane {
 	private VBox mainContent = new VBox(20);
 	private VBox buttonContent = new VBox(20);
 
-	
+	private Annuaire annuaire;
 	// Constructeur de la page d'accueil
-	public PageAccueil() {
+	public PageAccueil(Annuaire annuaire) {
 		super();
+		this.annuaire = annuaire;
 		
-		this.promotion = new ArrayList<Stagiaire>();
 		// Définir la taille de la fenêtre principale
 //		setPrefSize(1370, 1080);
 
@@ -67,7 +69,7 @@ public class PageAccueil extends BorderPane {
 
 		// Style des boutons
 		connexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		recherche.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+//		recherche.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		consulter.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// Configurer la taille du header (barre supérieure)
@@ -92,7 +94,7 @@ public class PageAccueil extends BorderPane {
 		labelContainer.getChildren().addAll(topSpacer, bienvenue, bottomSpacer);
 
 		// Ajouter les boutons à la VBox buttonContent
-		buttonContent.getChildren().addAll(recherche, consulter);
+		buttonContent.getChildren().addAll(consulter);
 
 		// Ajouter le label de bienvenue et les boutons au conteneur principal
 		mainContent.getChildren().addAll(bienvenue, buttonContent);
@@ -106,8 +108,9 @@ public class PageAccueil extends BorderPane {
 		connexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				Annuaire annuaire = new Annuaire();
 				// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
-				PageConnection pageConnection = new PageConnection();
+				PageConnection pageConnection = new PageConnection(annuaire, stagiaires);
 				connexion.getScene().setRoot(pageConnection);
 			}
 		});
@@ -115,7 +118,8 @@ public class PageAccueil extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				PageVisiteurs pageVisiteurs = new PageVisiteurs(promotion);
+				Annuaire annuaire = new Annuaire();
+				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire, stagiaires);
 				consulter.getScene().setRoot(pageVisiteurs);
 
 			}
@@ -156,13 +160,13 @@ public class PageAccueil extends BorderPane {
 		this.connexion = connexion;
 	}
 
-	public Button getRecherche() {
-		return recherche;
-	}
-
-	public void setRecherche(Button recherche) {
-		this.recherche = recherche;
-	}
+//	public Button getRecherche() {
+//		return recherche;
+//	}
+//
+//	public void setRecherche(Button recherche) {
+//		this.recherche = recherche;
+//	}
 
 	public Button getConsulter() {
 		return consulter;
@@ -195,7 +199,7 @@ public class PageAccueil extends BorderPane {
 	public void setButtonContent(VBox buttonContent) {
 		this.buttonContent = buttonContent;
 	}
-	public void setPromotion(ArrayList<Stagiaire> promotion) {
-		this.promotion = promotion;
+	public void setPromotion(ObservableList<Stagiaire> observableList) {
+		this.stagiaires = observableList;
 	}
 }

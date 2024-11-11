@@ -1,6 +1,7 @@
 package fr.isika.cda28.projet1.Annuaire;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -34,7 +35,7 @@ public class GestionDesFichiers {
 
 				// Lire la ligne séparatrice "*" (et l'ignorer)
 				br.readLine();
-				System.out.println(stagiaire);
+				
 				
 				
 				annuaire.ajouterStagiaire(new Noeud(stagiaire, -1, -1));
@@ -47,5 +48,11 @@ public class GestionDesFichiers {
 			// Gestion des exceptions : affichage de la trace d'erreur
 			e.printStackTrace();
 		}
+		
 	}
+	public boolean fichierBinaireRempli() {
+	    File fichierBinaire = new File("src/main/resources/mesFichiers/ListeStagiaires.bin");
+	    return fichierBinaire.exists() && fichierBinaire.length() > 0;
+	}
+
 }
