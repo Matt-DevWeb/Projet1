@@ -1,5 +1,6 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -37,7 +40,7 @@ public class AjouterStagiaire extends BorderPane {
 
 	// Déclaration des boutons
 	private Button cheminVersListeStagiaire = new Button("Annuaire");
-	private Button accueil = new Button("Accueil");
+	private Button boutonAccueil = new Button("Accueil");
 	private Button rechercher = new Button("Rechercher");
 
 	// Bouton valider editeur
@@ -56,8 +59,6 @@ public class AjouterStagiaire extends BorderPane {
 	public AjouterStagiaire(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
 		super();
 
-	
-
 		// dimensions logo
 		logoImageView.setFitWidth(200);
 		logoImageView.setFitHeight(81);
@@ -68,11 +69,11 @@ public class AjouterStagiaire extends BorderPane {
 		// fond blanc
 		setStyle("-fx-background-color:#172428");
 		cheminVersListeStagiaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		accueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAccueil.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		// Definir taille de la VBox + ajout composants
 		leftside.setPrefSize(220, 450);
 		leftside.getChildren().addAll(logoImageView, leftSideButtons);
-		leftSideButtons.getChildren().addAll(cheminVersListeStagiaire, accueil);
+		leftSideButtons.getChildren().addAll(cheminVersListeStagiaire, boutonAccueil);
 
 		// Modifier la couleur de fond gauche
 		leftside.setStyle("-fx-background-color:#172428");
@@ -134,5 +135,29 @@ public class AjouterStagiaire extends BorderPane {
 		dept.add("976");
 		departement.getItems().addAll(dept);
 		departement.getSelectionModel().select(0);
+
+		// on ajoute du comportement au bouton accueil
+		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Annuaire annuaire = new Annuaire();
+				PageAccueil pageAccueil = new PageAccueil(annuaire);
+				try {
+					pageAccueil.setPromotion(annuaire.lireFichierObservable());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				boutonAccueil.getScene().setRoot(pageAccueil);
+			}
+
+		});
+
+		
+		
+		
+		
+
+
 	}
 }

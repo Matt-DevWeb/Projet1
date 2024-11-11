@@ -21,7 +21,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageAccueil extends BorderPane {
-	
+
 	private ObservableList<Stagiaire> stagiaires;
 
 	// Label pour afficher un message de bienvenue
@@ -42,11 +42,12 @@ public class PageAccueil extends BorderPane {
 	private VBox buttonContent = new VBox(20);
 
 	private Annuaire annuaire;
+
 	// Constructeur de la page d'accueil
 	public PageAccueil(Annuaire annuaire) {
 		super();
 		this.annuaire = annuaire;
-		
+
 		// Définir la taille de la fenêtre principale
 //		setPrefSize(1370, 1080);
 
@@ -114,6 +115,7 @@ public class PageAccueil extends BorderPane {
 				connexion.getScene().setRoot(pageConnection);
 			}
 		});
+		
 		consulter.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -199,6 +201,7 @@ public class PageAccueil extends BorderPane {
 	public void setButtonContent(VBox buttonContent) {
 		this.buttonContent = buttonContent;
 	}
+
 	public void setPromotion(ObservableList<Stagiaire> observableList) {
 		this.stagiaires = observableList;
 	}

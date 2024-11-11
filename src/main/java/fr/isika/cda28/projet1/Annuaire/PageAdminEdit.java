@@ -36,8 +36,7 @@ public class PageAdminEdit extends BorderPane {
 
 	private TableView<Stagiaire> tableViewStagiaire;
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
-	
-	
+
 	// On instancie les labels
 	private Label labelBienvenue = new Label("Bienvenue !");
 	private Label labelListeStagiaires = new Label("Liste des stagiaires de l'entreprise.");
@@ -77,7 +76,6 @@ public class PageAdminEdit extends BorderPane {
 
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
 
-
 		setStyle("-fx-background-color:#172428");
 		// logo
 		logoImageView.setFitWidth(140);
@@ -97,7 +95,8 @@ public class PageAdminEdit extends BorderPane {
 			coteGaucheBoutons.getChildren().addAll(boutonMettreAjour, boutonAjoutStagiaire, boutonSuppStagiaire,
 					boutonAjoutEditeur, boutonSuppEditeur, boutonImprimer, boutonAccueil, boutonDeconnexion);
 		} else {
-			coteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil, boutonDeconnexion);
+			coteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil,
+					boutonDeconnexion);
 
 		}
 		// On change la couleur de fond de la partie gauche
@@ -147,7 +146,7 @@ public class PageAdminEdit extends BorderPane {
 		bienvenueContenu.setPadding(new Insets(30, 30, 30, 30));
 
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(zoneRecherche,criteres, boutonRecherche);
+		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, boutonRecherche);
 
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
 		// listeTriContenu
@@ -355,12 +354,23 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
+		
+		boutonDeconnexion.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Annuaire annuaire = new Annuaire();
+				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire, stagiaires);
+				boutonDeconnexion.getScene().setRoot(pageVisiteurs);
+
+			}
+
+		});
 
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
-		
-		
+
 		// Rempliere la ChoiceBox
 		List<String> criters = new ArrayList<String>();
 
@@ -371,10 +381,9 @@ public class PageAdminEdit extends BorderPane {
 		criters.add("promotion");
 		criteres.getItems().addAll(criters);
 		criteres.getSelectionModel().select(0);
-		
-		
 
 	}
+
 	private void filterStagiaires() {
 		String critere = criteres.getValue().toLowerCase();
 		String value = zoneRecherche.getText().toLowerCase();
@@ -499,7 +508,6 @@ public class PageAdminEdit extends BorderPane {
 	public void setRecherche(Button recherche) {
 		this.boutonRecherche = recherche;
 	}
-
 
 	public TextField getZoneRecherche() {
 		return zoneRecherche;
