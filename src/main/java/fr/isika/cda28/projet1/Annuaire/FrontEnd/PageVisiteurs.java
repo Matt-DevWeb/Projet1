@@ -425,6 +425,7 @@ public class PageVisiteurs extends BorderPane {
 			}
 		});
 		tableViewStagiaire.setItems(listFiltre);
+		tableViewStagiaire.refresh();
 	}
 
 	public void proposerTelechargementPDF() throws IOException {

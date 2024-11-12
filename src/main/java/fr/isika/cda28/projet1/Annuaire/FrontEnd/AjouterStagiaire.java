@@ -53,7 +53,7 @@ public class AjouterStagiaire extends BorderPane {
 	private TextField champPromotion = new TextField();
 
 	private Label departementLabel = new Label("Departement");
-	private ComboBox<String> comboBoxDepartement = new ComboBox<>();
+	private TextField champDepartement = new TextField();
 
 	// Déclaration des boutons
 	private Button cheminVersListeStagiaire = new Button("Annuaire");
@@ -121,6 +121,9 @@ public class AjouterStagiaire extends BorderPane {
 		champPromotion.setPromptText("Entrez l'année de promotion du stagiaire");
 
 		departementLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+		champDepartement.setPadding(new Insets(10, 15, 10, 15));
+		champDepartement.setMaxWidth(700);
+		champDepartement.setPromptText("Entrez le département (en chiffre)");
 
 		valider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
@@ -142,7 +145,7 @@ public class AjouterStagiaire extends BorderPane {
 		coteDroit.add(promotionLabel, 1, 5, 1, 1);
 		coteDroit.add(champPromotion, 1, 6, 1, 1);
 		coteDroit.add(departementLabel, 0, 8, 1, 1);
-		coteDroit.add(comboBoxDepartement, 0, 9, 1, 1);
+		coteDroit.add(champDepartement, 0, 9, 1, 1);
 		coteDroit.add(valider, 0, 11, 2, 1);
 
 		GridPane.setHalignment(valider, javafx.geometry.HPos.CENTER);
@@ -154,19 +157,6 @@ public class AjouterStagiaire extends BorderPane {
 		this.setLeft(coteGauche);
 		this.setCenter(coteDroit);
 
-		// liste pour la choiceBox
-
-		List<String> dept = new ArrayList<String>();
-		for (int i = 1; i < 96; i++) {
-			dept.add(String.valueOf(i));
-		}
-		dept.add("971");
-		dept.add("972");
-		dept.add("973");
-		dept.add("974");
-		dept.add("976");
-		comboBoxDepartement.getItems().addAll(dept);
-		comboBoxDepartement.getSelectionModel().select(0);
 
 		// on ajoute du comportement au bouton accueil
 		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
@@ -195,7 +185,7 @@ public class AjouterStagiaire extends BorderPane {
 				String prenom = champPrenom.getText();
 				String cursus = champCursus.getText();
 				int promotion = Integer.parseInt(champPromotion.getText());
-				String departement = comboBoxDepartement.getValue();
+				String departement = champDepartement.getText();
 				Stagiaire nouveauStagiaire = new Stagiaire(nom, prenom, departement, cursus, promotion);
 				Noeud nouveauNoeud = new Noeud(nouveauStagiaire, -1, -1);
 				try {
@@ -213,7 +203,7 @@ public class AjouterStagiaire extends BorderPane {
 				champPrenom.clear();
 				champCursus.clear();
 				champPromotion.clear();
-				comboBoxDepartement.setValue(dept.get(0));
+				champDepartement.clear();
 			}
 		});
 		// on ajoute du comportement au bouton annuaire
@@ -229,34 +219,7 @@ public class AjouterStagiaire extends BorderPane {
 			}
 		});
 		
-		// on ajoute du comportement au bouton departement
-		comboBoxDepartement.setCellFactory(param -> {
-			ListCell<String> cell = new ListCell<String>() {
-				@Override
-				protected void updateItem(String item, boolean empty) {
-					super.updateItem(item, empty);
-					if (item != null) {
-						setText(item);
-						setTextFill(Color.WHITE); // Changer la couleur du texte
-						setStyle("-fx-background-color: #324255;");
-					} else {
-						setText(null);
-					}
-				}
-			};
-			cell.setOnMouseEntered(event -> {
-				cell.setStyle("-fx-background-color: #324255; -fx-border-color: white; -fx-border-width: 1px;"); // Contour
-																													// Blanc
-																													// au
-																													// survol
-
-			});
-
-			cell.setOnMouseExited(event -> {
-				cell.setStyle("-fx-background-color: #324255;"); // Enlever le contour au survol
-			});
-			return cell;
-		});
+		
 
 	}
 }
