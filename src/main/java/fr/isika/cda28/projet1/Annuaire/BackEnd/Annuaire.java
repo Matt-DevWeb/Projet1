@@ -212,10 +212,10 @@ public class Annuaire {
 		}
 	}
 
-	public void ajouterEditeur(Editeur editeur) {
+	public void ajouterEditeur(Editeur editeur, boolean append) {
 
 		try (BufferedWriter writer = new BufferedWriter(
-				new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", true))) {
+				new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", append))) {
 
 			writer.write(editeur.getUserID());
 			writer.newLine();

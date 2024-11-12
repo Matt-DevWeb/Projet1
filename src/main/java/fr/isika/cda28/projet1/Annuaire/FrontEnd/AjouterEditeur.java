@@ -152,7 +152,7 @@ public class AjouterEditeur extends BorderPane {
 
 				Editeur nouveauEditeur = new Editeur(email, motDepasse);
 
-				annuaire.ajouterEditeur(nouveauEditeur);
+				annuaire.ajouterEditeur(nouveauEditeur,true);
 
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Ajout réalisé");

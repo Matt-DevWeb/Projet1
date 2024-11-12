@@ -1,8 +1,10 @@
 package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -47,6 +49,39 @@ public class Authentification {
 		System.out.println("Connexion échec");
 		return null;
 	}
+	
+	public void supprimerEditeur (String userID, Annuaire annuaire) {
+		// on vide le fichier des editeurs pour le recréer
+		try {
+			BufferedWriter writer = new BufferedWriter(
+					new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", false));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// on cherche l'editeur a supprimé
+		for (Utilisateurs utilisateur : utilisateurs) {
+			if (utilisateur.getUserID().equals(userID) && utilisateur.isEditeur()) {
+				utilisateurs.remove(utilisateur) ;
+				System.out.println("Editeur Supprimé");
+				break;
+			}
+		}
+		
+		miseAjourFichierEditeur(annuaire);
+		
+		
+	}
+
+	public void miseAjourFichierEditeur (Annuaire annuaire) {
+		// on cherche les editeurs restants et on les recris dans le fichier
+
+		for (Utilisateurs utilisateur : utilisateurs) {
+			if(utilisateur.isEditeur()) {
+			annuaire.ajouterEditeur((Editeur)utilisateur, true);
+			}
+		}
+		}
 
 
 }
