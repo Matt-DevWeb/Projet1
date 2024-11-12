@@ -227,6 +227,7 @@ public class AjouterStagiaire extends BorderPane {
 				cheminVersListeStagiaire.getScene().setRoot(pageAdminEdit);
 			}
 		});
+		
 		// on ajoute du comportement au bouton departement
 		comboBoxDepartement.setCellFactory(param -> {
 			ListCell<String> cell = new ListCell<String>() {

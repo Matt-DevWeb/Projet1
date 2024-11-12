@@ -27,6 +27,8 @@ import javafx.scene.layout.VBox;
 public class AjouterEditeur extends BorderPane {
 	// On instancie un label "Ajouter un éditeur"
 	private Label ajouterEditeur = new Label("Ajouter un éditeur");
+	private Utilisateurs utilisateurs;
+
 
 	// Déclaration des labels et textfields pour le gridPane
 	private Label labelUtilisateur = new Label("Nom d'utilisateur");
@@ -51,8 +53,9 @@ public class AjouterEditeur extends BorderPane {
 	GridPane coteDroit = new GridPane(); // Conteneur droite pour le GridPane
 
 	// Constructeur
-	public AjouterEditeur(Annuaire annuaire, Utilisateurs utilisateur) {
+	public AjouterEditeur(Annuaire annuaire, Utilisateurs utilisateurs) {
 		super();
+		this.utilisateurs = utilisateurs;
 
 		// dimensions logo
 		logoImageView.setFitWidth(140);
@@ -137,6 +140,8 @@ public class AjouterEditeur extends BorderPane {
 
 		});
 
+		// on ajoute du comportement au bouton valider
+
 		valider.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -155,6 +160,19 @@ public class AjouterEditeur extends BorderPane {
 				alert.setContentText("L'éditeur a été ajouté avec succès");
 				alert.showAndWait();
 
+			}
+		});
+		
+		// on ajoute du comportement au bouton annuaire
+
+		cheminVersListeStagiaire.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Annuaire annuaire = new Annuaire();
+				PageAdminEdit pageAdminEdit = new PageAdminEdit(annuaire, utilisateurs);
+
+				cheminVersListeStagiaire.getScene().setRoot(pageAdminEdit);
 			}
 		});
 	}

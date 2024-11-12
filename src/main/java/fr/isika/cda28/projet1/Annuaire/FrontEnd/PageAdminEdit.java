@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Noeud;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Utilisateurs;
 import javafx.collections.FXCollections;
@@ -80,9 +81,9 @@ public class PageAdminEdit extends BorderPane {
 	// On instancie la ChoiceBox
 	private ComboBox<String> criteres = new ComboBox();
 
-
 	public PageAdminEdit(Annuaire annuaire, Utilisateurs utilisateurConnecte) {
 		super();
+		this.utilisateurs = utilisateurConnecte;
 		this.annuaire = annuaire;
 		try {
 			this.stagiaires = FXCollections.observableArrayList(annuaire.afficherListeOrdreAlphabetique());
@@ -204,6 +205,7 @@ public class PageAdminEdit extends BorderPane {
 		// permet de selectionner de multiples éléments
 		tableViewStagiaire.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableViewStagiaire.setStyle("-fx-background-color: #324255");
+
 		// Changer la couleur du texte dans la colonne nom
 		colonneNom.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
@@ -312,7 +314,40 @@ public class PageAdminEdit extends BorderPane {
 		rechercheContenu.setAlignment(Pos.CENTER);
 		listeTriContenu.setAlignment(Pos.CENTER);
 
-		// on affiche et on cache les boutons en fontion du profil
+		// ***********************************************************************************************
+		// on récupère la sélection souris du tableView dans une variable
+		tableViewStagiaire.getSelectionModel().selectedItemProperty()
+				.addListener((obs, ancienElement, nouvelElement) -> {
+					if (nouvelElement != null) {
+						Stagiaire stagiaireSelectionne = nouvelElement;
+						System.out.println(stagiaireSelectionne);
+
+						boutonSuppStagiaire.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								Noeud noeudASupprimer = new Noeud(stagiaireSelectionne, -1, -1);
+								PageAdminEdit pageAdminEdit = new PageAdminEdit(annuaire, utilisateurs);
+
+								try {
+									annuaire.supprimerStagiaire(noeudASupprimer);
+
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							
+//								tableViewStagiaire.getItems().clear();
+//								boutonSuppStagiaire.getScene().setRoot(pageAdminEdit);
+
+							}
+						});
+
+
+					}
+					
+				});
+		// ****************************************************************************************************
 
 		// on ajoute du comportement au bouton accueil
 		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
@@ -343,9 +378,7 @@ public class PageAdminEdit extends BorderPane {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 			}
-
 		});
 
 		// on ajoute du comportement au bouton ajouterStagiare
@@ -381,8 +414,8 @@ public class PageAdminEdit extends BorderPane {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
-				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire);
-				boutonDeconnexion.getScene().setRoot(pageVisiteurs);
+				PageConnection pageConnection = new PageConnection(annuaire);
+				boutonDeconnexion.getScene().setRoot(pageConnection);
 
 			}
 
@@ -643,9 +676,6 @@ public class PageAdminEdit extends BorderPane {
 		this.tableViewStagiaire = tableViewStagiaire;
 	}
 
-	// public void setPromotion(ObservableList<Stagiaire> observableList) {
-//		this.tableViewStagiaire = observableList;
-//	}
 	// Méthode pour créer des Labels avec style pour les titres des colonnes de
 	// TableView
 	private Label titreTableView(String title, Color color, int fontSize) {
