@@ -234,7 +234,7 @@ public class PageAdminEdit extends BorderPane {
 		colonnePrenom.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
 
-	@Override
+				@Override
 				protected void updateItem(String item, boolean empty) {
 					super.updateItem(item, empty);
 					if (item == null || empty) {
@@ -345,62 +345,77 @@ public class PageAdminEdit extends BorderPane {
 						Stagiaire stagiaireSelectionne = nouvelElement;
 						System.out.println(stagiaireSelectionne);
 
-						boutonSuppStagiaire.setOnAction(new EventHandler<ActionEvent>() {
+						boutonSuppStagiaire.setOnAction(event -> {
+							// Afficher une alerte de confirmation avant la suppression
+							Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+							alert.setTitle("Confirmation de suppression");
+							alert.setHeaderText("Êtes-vous sûr de vouloir supprimer ce stagiaire ?");
+							alert.setContentText("Cette action est irréversible.");
 
-							@Override
-							public void handle(ActionEvent event) {
-								Noeud noeudASupprimer = new Noeud(stagiaireSelectionne, -1, -1);
+							// Attendre la réponse de l'utilisateur
+							alert.showAndWait().ifPresent(reponse -> {
+								if (reponse == ButtonType.OK) {
+									// L'utilisateur a confirmé, procéder à la suppression
+									Noeud noeudASupprimer = new Noeud(stagiaireSelectionne, -1, -1);
 
+									try {
+										annuaire.supprimerStagiaire(noeudASupprimer);
+										tableViewStagiaire.getItems().remove(stagiaireSelectionne); // Retirer l'élément
+																									// de la liste
+																									// observable
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+
+									// Rafraîchir la TableView pour mettre à jour l'affichage
+									tableViewStagiaire.refresh();
+								} else {
+									// L'utilisateur a annulé la suppression
+									System.out.println("Suppression annulée.");
+								}
+							});
+						});
+					}
+				});
+
+		tableViewStagiaire.getSelectionModel().selectedItemProperty()
+				.addListener((obs, ancienElement, nouvelElement) -> {
+					if (nouvelElement != null) {
+						Stagiaire stagiaireSelectionne = nouvelElement;
+
+						boutonMettreAjour.setOnAction(event -> {
+							Optional<Stagiaire> result = afficherDialogueModification(stagiaireSelectionne);
+
+							result.ifPresent(stagiaireModifie -> {
 								try {
-									annuaire.supprimerStagiaire(noeudASupprimer);
-									tableViewStagiaire.getItems().remove(stagiaireSelectionne); // Retirer l'élément de
-																								// la liste observable
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
+									// Mise à jour dans l'annuaire et dans la TableView
+									annuaire.modifierStagiaire(stagiaireSelectionne, stagiaireModifie);
+									tableViewStagiaire.getItems().remove(stagiaireSelectionne);
+
+									tableViewStagiaire.getItems().add(stagiaireModifie); // Ajout du stagiaire à la
+																							// nouvelle position
+									tableViewStagiaire.getItems().sort(Comparator.comparing(Stagiaire::getNom)); // Exemple
+																													// de
+																													// tri
+																													// par
+																													// nom
+									tableViewStagiaire.refresh(); // Rafraîchit l'affichage de la TableView
+									tableViewStagiaire.getSelectionModel().select(stagiaireModifie);
+									tableViewStagiaire.scrollTo(stagiaireModifie);
+								} catch (Exception e) {
 									e.printStackTrace();
 								}
-								tableViewStagiaire.refresh();
-//								tableViewStagiaire.getItems().clear();
-//								boutonSuppStagiaire.getScene().setRoot(pageAdminEdit);
-
-							}
+							});
 						});
-
 					}
-
 				});
-		tableViewStagiaire.getSelectionModel().selectedItemProperty().addListener((obs, ancienElement, nouvelElement) -> {
-		    if (nouvelElement != null) {
-		        Stagiaire stagiaireSelectionne = nouvelElement;
-
-		        boutonMettreAjour.setOnAction(event -> {
-		            Optional<Stagiaire> result = afficherDialogueModification(stagiaireSelectionne);
-
-		            result.ifPresent(stagiaireModifie -> {
-		                try {
-		                    // Mise à jour dans l'annuaire et dans la TableView
-		                    annuaire.modifierStagiaire(stagiaireSelectionne, stagiaireModifie);
-		                    tableViewStagiaire.getItems().remove(stagiaireSelectionne);
-		                    
-		                    tableViewStagiaire.getItems().add(stagiaireModifie); // Ajout du stagiaire à la nouvelle position
-		                    tableViewStagiaire.getItems().sort(Comparator.comparing(Stagiaire::getNom));  // Exemple de tri par nom
-		                    tableViewStagiaire.refresh();  // Rafraîchit l'affichage de la TableView
-		                    tableViewStagiaire.getSelectionModel().select(stagiaireModifie);
-		                    tableViewStagiaire.scrollTo(stagiaireModifie);
-		                } catch (Exception e) {
-		                    e.printStackTrace();
-		                }
-		            });
-		        });
-		    }
-		});
 
 		// ****************************************************************************************************
 
 		// on ajoute du comportement au bouton accueil
 		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
 
-	@Override
+			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				PageAccueil pageAccueil = new PageAccueil(annuaire);
@@ -744,7 +759,7 @@ public class PageAdminEdit extends BorderPane {
 		TextField cursusField = new TextField(stagiaire.getCursus());
 		TextField departementField = new TextField(stagiaire.getDepartement());
 		TextField promoField = new TextField(String.valueOf(stagiaire.getAnneePromo()));
-		
+
 		// Configurer le layout de la boîte de dialogue
 		GridPane grid = new GridPane();
 		grid.add(new Label("Nom:"), 0, 0);
@@ -759,8 +774,8 @@ public class PageAdminEdit extends BorderPane {
 		grid.add(promoField, 1, 4);
 		// Ajouter d'autres champs de manière similaire
 		grid.setVgap(15); // Exemple de configuration des espaces
-	    grid.setHgap(15);
-	    
+		grid.setHgap(15);
+
 		dialog.getDialogPane().setContent(grid);
 		// Boutons de validation
 		ButtonType modifierButtonType = new ButtonType("Modifier");
@@ -781,11 +796,11 @@ public class PageAdminEdit extends BorderPane {
 				stagiaire.setAnneePromo(Integer.parseInt(promoField.getText()));
 				// Mettre à jour d'autres champs si nécessaire
 				return stagiaire;
-				
+
 			}
 			return null;
 		});
-		
+
 		return dialog.showAndWait();
 	}
 
