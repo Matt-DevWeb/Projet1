@@ -64,7 +64,7 @@ public class Noeud {
 
 	public void ecrireNoeud(Noeud stagiaire, RandomAccessFile raf) throws IOException {
 
-		raf.writeChars(stagiaire.getStagiaire().getNomLong());
+		raf.writeChars(stagiaire.getStagiaire().getNomLong().toUpperCase());
 		raf.writeChars(stagiaire.getStagiaire().getPrenomLong());
 		raf.writeChars(stagiaire.getStagiaire().getDepartementLong());
 		raf.writeChars(stagiaire.getStagiaire().getCursusLong());

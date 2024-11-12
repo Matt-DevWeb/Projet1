@@ -21,6 +21,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableView;
 
 public class Annuaire {
 	// Attributs
@@ -161,7 +162,7 @@ public class Annuaire {
 		return afficherListeOrdreAlphabetique(); // Retourner directement la liste triée
 	}
 
-	public void creerPDF(String cheminFichierPDF) {
+	public void creerPDF(TableView<Stagiaire> tableView, String cheminFichierPDF) {
 		Document document = new Document();
 
 		try {
@@ -184,7 +185,7 @@ public class Annuaire {
 			table.addCell("Année de la promo");
 
 			// Récupération de la liste triée
-			List<Stagiaire> listeImpression = imprimerListeOrdreAlphabetique();
+			List<Stagiaire> listeImpression = tableView.getItems();
 			if (listeImpression == null || listeImpression.isEmpty()) {
 				System.out.println("La Liste est vide ou null, ou il n'y aucun stagiaire à afficher");
 				document.add(new Paragraph("Aucun stagiaire à afficher"));

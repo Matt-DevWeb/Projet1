@@ -587,7 +587,7 @@ public class PageAdminEdit extends BorderPane {
 			}
 			System.out.println("Fichier sélectionné : " + fichier.getAbsolutePath());
 			// Créer le PDF à l'emplacement sélectionné
-			annuaire.creerPDF(fichier.getAbsolutePath());
+			annuaire.creerPDF(tableViewStagiaire, fichier.getAbsolutePath());
 			System.out.println("Le fichier PDF a été créé avec succès à : " + fichier.getAbsolutePath());
 			try {
 				File pdfFile = new File(fichier.getPath());
