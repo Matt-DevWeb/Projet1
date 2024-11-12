@@ -123,40 +123,36 @@ public class Noeud {
 		if (this.stagiaire.compareTo(nouveauNoeud.getStagiaire()) > 0) {
 
 			if (filsGauche == -1) {
-				// raf.seek(raf.length());
-				// System.out.println("1 FG : " + raf.getFilePointer());
+				
 				raf.seek(raf.getFilePointer() - 8);// on repositionne pour ecrire l'index
-				// System.out.println("après le -8: " +raf.getFilePointer());
+				
 				filsGauche = (int) raf.length() / TAILLE_NOEUD_OCTET;
 				raf.writeInt(filsGauche); // on ecrit l'index dans le parent
 				raf.seek(raf.length());// retour a la fin
-				// System.out.println("2 FG: " + raf.getFilePointer());
+				
 				ecrireNoeud(nouveauNoeud, raf);// ecrire le nouveau noeud (fils gauche)
-				// System.out.println("3 FG: " + raf.getFilePointer());
+				
 			} else {
 				raf.seek(filsGauche * TAILLE_NOEUD_OCTET);
-				// System.out.println("4 FG: " + raf.getFilePointer());
-//				Noeud noeudFilsGauche = new Noeud(new Stagiaire(), -1, -1);
+				
 				Noeud noeudFilsGauche = lireNoeud(raf);
 				noeudFilsGauche.ajoutStagiaireRecursif(nouveauNoeud, raf);
 			}
 
 		} else {
 			if (filsDroit == -1) {
-//				raf.seek(raf.length());
-//				System.out.println("1 FD: " + raf.getFilePointer());
+
 				raf.seek(raf.getFilePointer() - 4);
-				// System.out.println("après le -4: " +raf.getFilePointer());
+				
 				filsDroit = (int) raf.length() / TAILLE_NOEUD_OCTET;
 				raf.writeInt(filsDroit);
 				raf.seek(raf.length());
-				// System.out.println("2 FD: " + raf.getFilePointer());
+				
 				ecrireNoeud(nouveauNoeud, raf);
-				// System.out.println("3 FD: " + raf.getFilePointer());
+				
 			} else {
 				raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
-				// System.out.println("4 FD: " + raf.getFilePointer());
-//				Noeud noeudFilsDroit = new Noeud(new Stagiaire(), -1, -1);
+				
 				Noeud noeudFilsDroit = lireNoeud(raf);
 				noeudFilsDroit.ajoutStagiaireRecursif(nouveauNoeud, raf);
 			}

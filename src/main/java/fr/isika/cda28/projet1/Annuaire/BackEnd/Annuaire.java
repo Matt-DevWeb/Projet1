@@ -79,7 +79,7 @@ public class Annuaire {
 	public Noeud modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
 		if (stagiaireAModifier != null && stagiaireModifie != null) {
 			raf.seek(0); // on se positionne au début du fichier
-			System.out.println(raf.getFilePointer());
+			
 
 			Noeud noeudASupprimer = new Noeud(stagiaireAModifier, -1, -1);
 
@@ -93,6 +93,7 @@ public class Annuaire {
 
 			System.out.println("Noeud modifié: " + nouveauNoeud);
 			ajouterStagiaire(nouveauNoeud);
+			System.out.println("Noeud ajouté: " + nouveauNoeud);
 			supprimerStagiaire(noeudASupprimer);
 			return nouveauNoeud;
 

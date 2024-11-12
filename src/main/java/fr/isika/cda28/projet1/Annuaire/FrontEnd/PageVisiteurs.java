@@ -134,7 +134,7 @@ public class PageVisiteurs extends BorderPane {
 		boutonAfficherListe.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, recherche, boutonAfficherListe);
+		rechercheContenu.getChildren().addAll(criteres,zoneRecherche,  recherche, boutonAfficherListe);
 		rechercheContenu.setPadding(new Insets(10, 0, 40, 0));
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
 

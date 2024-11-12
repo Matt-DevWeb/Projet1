@@ -213,6 +213,7 @@ public class AjouterStagiaire extends BorderPane {
 				champPrenom.clear();
 				champCursus.clear();
 				champPromotion.clear();
+				comboBoxDepartement.setValue(dept.get(0));
 			}
 		});
 		// on ajoute du comportement au bouton annuaire
