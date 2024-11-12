@@ -207,9 +207,12 @@ public class AjouterStagiaire extends BorderPane {
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Ajout réalisé");
 				alert.setHeaderText(null);
-				alert.setContentText("Félicitations vous avez ajouter un nouveau stagiaire");
+				alert.setContentText("Félicitations vous avez ajouté un nouveau stagiaire");
 				alert.showAndWait();
-
+				champNom.clear();
+				champPrenom.clear();
+				champCursus.clear();
+				champPromotion.clear();
 			}
 		});
 		// on ajoute du comportement au bouton annuaire
