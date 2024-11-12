@@ -1,10 +1,9 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
-import java.io.IOException;
 import java.util.List;
 
 public class LanceurTest {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		// Création d'un objet Annuaire
 		Annuaire annuaire = new Annuaire();
 		GestionDesFichiers fichiers = new GestionDesFichiers();
@@ -36,14 +35,14 @@ public class LanceurTest {
 //		annuaire.ajouterStagiaire(new Noeud(stagiaire4, -1, -1));
 //		annuaire.ajouterStagiaire(new Noeud(stagiaire5, -1, -1));
 
-		annuaire.supprimerStagiaire(potin);
-		annuaire.supprimerStagiaire(roignant);
+		annuaire.modifierStagiaire(new Stagiaire ("POTIN", "Thomas", "75","ATOD 21", 2014), new Stagiaire ("POLINO", "TOMA", "75", "ATOD 21", 2023));
+		
 		List<Stagiaire> stagiaires = annuaire.afficherListeOrdreAlphabetique();
 
 		for(Stagiaire stag : stagiaires) {
 			System.out.println(stag);
 		}
-		annuaire.creerPDF("src/main/resources/mesFichiers/ListeStagiaires.pdf");
+//		annuaire.creerPDF("src/main/resources/mesFichiers/ListeStagiaires.pdf");
 //		for (int i = 0; i < 4; i++) {
 //			annuaire.getRaf().seek(i * Noeud.TAILLE_NOEUD_OCTET);
 //			System.out.println(annuaire.noeud.lireNoeud(annuaire.getRaf()));

@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Utilisateurs;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;

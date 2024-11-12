@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
 public class Stagiaire implements Comparable<Stagiaire> {
 	// Constantes pour la taille maximale des chaînes de caractères

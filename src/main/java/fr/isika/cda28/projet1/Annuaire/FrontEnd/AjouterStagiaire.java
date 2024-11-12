@@ -1,9 +1,12 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Noeud;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

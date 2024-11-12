@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
 public class Editeur extends Utilisateurs {
 	String nom;

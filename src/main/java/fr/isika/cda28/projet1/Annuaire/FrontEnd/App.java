@@ -1,10 +1,12 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.GestionDesFichiers;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

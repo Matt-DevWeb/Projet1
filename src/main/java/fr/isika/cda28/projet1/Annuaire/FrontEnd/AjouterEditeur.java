@@ -1,6 +1,9 @@
 
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Editeur;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

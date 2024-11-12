@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -136,33 +136,19 @@ public class Annuaire {
 	}
 
 	// Méthode pour modifier un stagiaire dans l'annuaire
-     public Noeud modifierStagiaireDansAnnuaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
-    	raf.seek(0);
-    	
-    	
-    	Noeud racine = new Noeud();
-    	racine.lireNoeud(raf);
-    	
-        try (RandomAccessFile raf = new RandomAccessFile("fichierBinaire.bin", "rw")) {
-            // Appel de la méthode pour modifier le stagiaire dans le fichier binaire via la classe Noeud
-            Noeud modifie = noeud.modifierStagiaire(stagiaireAModifier, stagiaireModifie, raf);
+	public Noeud modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
+		raf.seek(0); // on se positionne au début du fichier
 
-            if (modifie != null) {
-                System.out.println("Le stagiaire a été modifié dans le fichier binaire.");
-            } else {
-                System.out.println("Le stagiaire à modifier n'a pas été trouvé.");
-            }
+		Noeud noeudASupprimer = noeud.rechercheNoeud(stagiaireAModifier, raf, raf.getFilePointer()); // On vient rechercher le noeud à modifier
 
-            return modifie;
-        } catch (IOException e) {
-            System.out.println("Erreur lors de la modification du stagiaire : " + e.getMessage());
-            return null;
-        }
-    }
-	
-	
-	
-	
+		noeudASupprimer.lireNoeud(raf); // On lit le noeud
+		noeudASupprimer.supprimerNoeud(noeudASupprimer, raf, (int) raf.getFilePointer()); // On vient supprimer le noeud
+		Noeud nouveauNoeud = new Noeud(stagiaireModifie, -1, -1); // On vient créer un nouveau noeud avec le stagiaire modifie
+		nouveauNoeud.ajoutStagiaireRecursif(nouveauNoeud, raf); // Ajout du nouveau stagaire 
+		return nouveauNoeud;
+
+	}
+
 	public void creerPDF(String cheminFichierPDF) {
 		Document document = new Document();
 

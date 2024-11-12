@@ -1,4 +1,4 @@
-package fr.isika.cda28.projet1.Annuaire;
+package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -230,121 +230,92 @@ public class Noeud {
 		return null;
 	}
 
-	public Noeud modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie, RandomAccessFile raf) throws Exception {
-	    long position = raf.getFilePointer(); // Sauvegarde la position courante dans le fichier
-	    
-	    // Recherche du stagiaire à modifier dans l'arbre binaire
-	    Noeud noeudTrouve = rechercheNoeud(stagiaireAModifier, raf, position);
-	    if (noeudTrouve != null) {
-	        // Positionnement du curseur à la position du stagiaire trouvé
-	        raf.seek(position);
-
-	        // Mise à jour du stagiaire dans le noeud courant avec les informations du stagiaire modifié
-	        noeudTrouve.setStagiaire(stagiaireModifie);
-	        
-	        // Réécriture du noeud modifié dans le fichier binaire
-	        ecrireNoeud(noeudTrouve, raf);
-	        
-	        System.out.println("Le stagiaire " + stagiaireAModifier + " a été modifié avec succès.");
-	    } else {
-	        // Lever une exception si le stagiaire n'est pas trouvé
-	        throw new Exception("Stagiaire " + stagiaireAModifier + " introuvable.");
-	    }
-	    return noeudTrouve;
-	}
-
-	
-	
 	public void supprimerRacine(RandomAccessFile raf, int indexCourant) throws IOException {
-	    // Recherche du successeur du noeud courant
-	    Noeud noeudSuccesseur = this.noeudSuccesseur(raf);
-	    
-	    // Positionnement du curseur sur la racine dans le fichier
-	    raf.seek(indexCourant * TAILLE_NOEUD_OCTET);
-	    
-	    // On remplace les fils du successeur par ceux du noeud courant (racine)
-	    noeudSuccesseur.setFilsGauche(filsGauche);
-	    noeudSuccesseur.setFilsDroit(filsDroit);
-	    
-	    // On écrit le successeur modifié dans le fichier
-	    ecrireNoeud(noeudSuccesseur, raf);
+		// Recherche du successeur du noeud courant
+		Noeud noeudSuccesseur = this.noeudSuccesseur(raf);
 
-	    // On cherche à supprimer le successeur dans le sous-arbre droit de la racine
-	    raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
-	    Noeud noeudDroit = lireNoeud(raf);
-	    
-	    // Suppression récursive du successeur dans le sous-arbre droit
-	    noeudDroit.supprimerNoeud(noeudSuccesseur, raf, indexCourant);
-	    
-	    // Affichage du successeur qui remplace la racine
-	    System.out.println(this.noeudSuccesseur(raf) + " est le successeur de " + this);
+		// Positionnement du curseur sur la racine dans le fichier
+		raf.seek(indexCourant * TAILLE_NOEUD_OCTET);
+
+		// On remplace les fils du successeur par ceux du noeud courant (racine)
+		noeudSuccesseur.setFilsGauche(filsGauche);
+		noeudSuccesseur.setFilsDroit(filsDroit);
+
+		// On écrit le successeur modifié dans le fichier
+		ecrireNoeud(noeudSuccesseur, raf);
+
+		// On cherche à supprimer le successeur dans le sous-arbre droit de la racine
+		raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
+		Noeud noeudDroit = lireNoeud(raf);
+
+		// Suppression récursive du successeur dans le sous-arbre droit
+		noeudDroit.supprimerNoeud(noeudSuccesseur, raf, indexCourant);
+
+		// Affichage du successeur qui remplace la racine
+		System.out.println(this.noeudSuccesseur(raf) + " est le successeur de " + this);
 	}
-
 
 	public void supprimerNoeud(Noeud noeudASupprimer, RandomAccessFile raf, int indexParent) throws IOException {
-	    // Calcul de l'index courant du noeud dans le fichier
-	    int indexCourant = (int) (raf.getFilePointer() - TAILLE_NOEUD_OCTET) / TAILLE_NOEUD_OCTET;
+		// Calcul de l'index courant du noeud dans le fichier
+		int indexCourant = (int) (raf.getFilePointer() - TAILLE_NOEUD_OCTET) / TAILLE_NOEUD_OCTET;
 
-	    // Si le stagiaire du noeud courant correspond à celui à supprimer
-	    if (this.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) == 0) {
-	        // Cas 1 : Le noeud à supprimer est une feuille (sans enfants)
-	        if (this.filsDroit == -1 && this.filsGauche == -1) {
-	            raf.seek(indexParent * TAILLE_NOEUD_OCTET);
-	            Noeud noeudParent = lireNoeud(raf);
-	            
-	            // Mise à jour de l'index du parent pour supprimer le noeud
-	            if (noeudParent.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
-	                raf.seek(raf.getFilePointer() - 4);
-	                raf.writeInt(-1); // Mettre à jour le fils droit du parent à -1
-	            } else {
-	                raf.seek(raf.getFilePointer() - 8);
-	                raf.writeInt(-1); // Mettre à jour le fils gauche du parent à -1
-	            }
-	        } 
-	        // Cas 2 : Le noeud à supprimer a un seul enfant
-	        else if (this.filsDroit == -1 || this.filsGauche == -1) {
-	            raf.seek(indexParent * TAILLE_NOEUD_OCTET);
-	            Noeud noeudParent = lireNoeud(raf);
-	            
-	            // Si le noeud a un fils à gauche ou à droite, on l'affecte au parent
-	            if (noeudParent.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
-	                raf.seek(raf.getFilePointer() - 4);
-	                if (this.filsDroit == -1) {
-	                    raf.writeInt(this.filsGauche); // Remplacer par le fils gauche
-	                } else {
-	                    raf.writeInt(this.filsDroit); // Remplacer par le fils droit
-	                }
-	            } else {
-	                raf.seek(raf.getFilePointer() - 8);
-	                if (this.filsDroit == -1) {
-	                    raf.writeInt(this.filsGauche); // Remplacer par le fils gauche
-	                } else {
-	                    raf.writeInt(this.filsDroit); // Remplacer par le fils droit
-	                }
-	            }
-	        } 
-	        // Cas 3 : Le noeud à supprimer a deux enfants
-	        else {
-	            this.supprimerRacine(raf, indexCourant); // Appel à la méthode supprimerRacine pour gérer ce cas
-	        	
-	        }
-	    } 
-	    // Cas où on cherche à supprimer le noeud dans le sous-arbre droit
-	    else if (this.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
-	        raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
-	        Noeud noeudDroit = lireNoeud(raf);
-	        noeudDroit.supprimerNoeud(noeudASupprimer, raf, indexCourant);
-	    } 
-	    // Cas où on cherche à supprimer le noeud dans le sous-arbre gauche
-	    else {
-	        raf.seek(filsGauche * TAILLE_NOEUD_OCTET);
-	        Noeud noeudGauche = lireNoeud(raf);
-	        noeudGauche.supprimerNoeud(noeudASupprimer, raf, indexCourant);
-	    }
+		// Si le stagiaire du noeud courant correspond à celui à supprimer
+		if (this.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) == 0) {
+			// Cas 1 : Le noeud à supprimer est une feuille (sans enfants)
+			if (this.filsDroit == -1 && this.filsGauche == -1) {
+				raf.seek(indexParent * TAILLE_NOEUD_OCTET);
+				Noeud noeudParent = lireNoeud(raf);
+
+				// Mise à jour de l'index du parent pour supprimer le noeud
+				if (noeudParent.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
+					raf.seek(raf.getFilePointer() - 4);
+					raf.writeInt(-1); // Mettre à jour le fils droit du parent à -1
+				} else {
+					raf.seek(raf.getFilePointer() - 8);
+					raf.writeInt(-1); // Mettre à jour le fils gauche du parent à -1
+				}
+			}
+			// Cas 2 : Le noeud à supprimer a un seul enfant
+			else if (this.filsDroit == -1 || this.filsGauche == -1) {
+				raf.seek(indexParent * TAILLE_NOEUD_OCTET);
+				Noeud noeudParent = lireNoeud(raf);
+
+				// Si le noeud a un fils à gauche ou à droite, on l'affecte au parent
+				if (noeudParent.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
+					raf.seek(raf.getFilePointer() - 4);
+					if (this.filsDroit == -1) {
+						raf.writeInt(this.filsGauche); // Remplacer par le fils gauche
+					} else {
+						raf.writeInt(this.filsDroit); // Remplacer par le fils droit
+					}
+				} else {
+					raf.seek(raf.getFilePointer() - 8);
+					if (this.filsDroit == -1) {
+						raf.writeInt(this.filsGauche); // Remplacer par le fils gauche
+					} else {
+						raf.writeInt(this.filsDroit); // Remplacer par le fils droit
+					}
+				}
+			}
+			// Cas 3 : Le noeud à supprimer a deux enfants
+			else {
+				this.supprimerRacine(raf, indexCourant); // Appel à la méthode supprimerRacine pour gérer ce cas
+
+			}
+		}
+		// Cas où on cherche à supprimer le noeud dans le sous-arbre droit
+		else if (this.getStagiaire().compareTo(noeudASupprimer.getStagiaire()) < 0) {
+			raf.seek(filsDroit * TAILLE_NOEUD_OCTET);
+			Noeud noeudDroit = lireNoeud(raf);
+			noeudDroit.supprimerNoeud(noeudASupprimer, raf, indexCourant);
+		}
+		// Cas où on cherche à supprimer le noeud dans le sous-arbre gauche
+		else {
+			raf.seek(filsGauche * TAILLE_NOEUD_OCTET);
+			Noeud noeudGauche = lireNoeud(raf);
+			noeudGauche.supprimerNoeud(noeudASupprimer, raf, indexCourant);
+		}
 	}
-
-	
-
 
 	public Noeud noeudSuccesseur(RandomAccessFile raf) throws IOException {
 		if (filsDroit != -1) {
@@ -360,7 +331,5 @@ public class Noeud {
 		}
 		return null; // Si le noeud n'a pas de fils droit, il n'a pas de successeur
 	}
-
-
 
 }
