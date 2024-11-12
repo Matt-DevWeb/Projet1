@@ -56,6 +56,7 @@ public class PageVisiteurs extends BorderPane {
 	private Button accueil = new Button("Accueil");
 	private Button recherche = new Button("Lancer la recherche");
 	private Button trier = new Button("Trier");
+	private Button boutonAfficherListe = new Button("Afficher la liste de stagiaires");
 
 	// On instancie le TextField
 	private TextField zoneRecherche = new TextField();
@@ -114,22 +115,19 @@ public class PageVisiteurs extends BorderPane {
 		zoneRecherche.setMaxWidth(300);
 		zoneRecherche.setPrefHeight(30);
 		zoneRecherche.setPromptText("Rechercher un stagiaire");
-		zoneRecherche.setPadding(new Insets(10,40,10,15));
+		zoneRecherche.setPadding(new Insets(10, 40, 10, 15));
 		// On ajoute le label bienvenue et le bouton connexion à la VBox
 		// bienvenueContenu
 		bienvenueContenu.getChildren().addAll(bienvenue, connexion);
 		// On ajoute du padding à la HBox bienvenueContenu
 		bienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
-		
-		
+		// On stylise le bouton AfficherListe
+		boutonAfficherListe.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, recherche);
+		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, recherche, boutonAfficherListe);
 		rechercheContenu.setPadding(new Insets(10, 0, 40, 0));
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
-	
-
-	
 
 		// table VIEW
 		tableViewStagiaire.setEditable(false);
@@ -335,6 +333,7 @@ public class PageVisiteurs extends BorderPane {
 		rechercheContenu.setAlignment(Pos.CENTER);
 		listeTriContenu.setAlignment(Pos.CENTER);
 
+		// on ajoute du comportement au bouton accueil
 		accueil.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -351,8 +350,10 @@ public class PageVisiteurs extends BorderPane {
 
 		});
 
+		// on ajoute du comportement au bouton recherche
 		recherche.setOnAction(event -> filterStagiaires());
 
+		// on ajoute du comportement au bouton imprimer
 		imprimer.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -366,6 +367,15 @@ public class PageVisiteurs extends BorderPane {
 
 			}
 
+		});
+
+		// on ajoute du comportement au bouton afficherListeStagiaire
+		boutonAfficherListe.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				tableViewStagiaire.setItems(stagiaires);
+			}
 		});
 
 		// On instancie les HBox et VBox dans le BorderPane
@@ -461,7 +471,6 @@ public class PageVisiteurs extends BorderPane {
 	public void setBienvenue(Label bienvenue) {
 		this.bienvenue = bienvenue;
 	}
-
 
 	public Image getLogo() {
 		return logo;

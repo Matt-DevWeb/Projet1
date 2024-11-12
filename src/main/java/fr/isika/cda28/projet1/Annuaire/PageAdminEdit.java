@@ -56,7 +56,9 @@ public class PageAdminEdit extends BorderPane {
 	private Button boutonAjoutStagiaire = new Button("Ajouter un stagiaire");
 	private Button boutonSuppStagiaire = new Button("Supprimer un stagiaire");
 	private Button boutonAjoutEditeur = new Button("Ajouter un editeur");
-	private Button boutonSuppEditeur = new Button("Supprimer un editeur ");
+	private Button boutonSuppEditeur = new Button("Supprimer un editeur");
+	private Button boutonAfficherListe = new Button("Afficher la liste de stagiaires");
+
 
 	// On instancie le TextField
 	private TextField zoneRecherche = new TextField();
@@ -69,6 +71,7 @@ public class PageAdminEdit extends BorderPane {
 	private HBox bienvenueContenu = new HBox(350);
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
+	
 	// On instancie la ChoiceBox
 	private ComboBox<String> criteres = new ComboBox();
 
@@ -150,15 +153,9 @@ public class PageAdminEdit extends BorderPane {
 		// On ajoute du padding à la HBox bienvenueContenu
 		bienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, boutonRecherche);
+		rechercheContenu.getChildren().addAll(zoneRecherche, criteres, boutonRecherche, boutonAfficherListe);
 		rechercheContenu.setPadding(new Insets(10, 0, 40, 0));
-
-		// On ajoute le label listeStagiaire et le bouton trier à la HBox
-		// listeTriContenu
-		// listeTriContenu.getChildren().addAll(boutonTrier);
-
-		// On ajoute du padding à la HBox listeTriContenu
-		// listeTriContenu.setPadding(new Insets(30, 30, 30, 30));
+		boutonAfficherListe.setStyle("-fx-background-color: #324255; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// table VIEW
 		tableViewStagiaire.setEditable(true);
@@ -323,6 +320,9 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
+		
+		
+		// on ajoute du comportement au bouton imprimer
 
 		boutonImprimer.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -339,6 +339,8 @@ public class PageAdminEdit extends BorderPane {
 
 		});
 
+		// on ajoute du comportement au bouton ajouterStagiare
+
 		boutonAjoutStagiaire.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -349,6 +351,9 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
+		
+		// on ajoute du comportement au bouton ajoutEditeur
+
 		boutonAjoutEditeur.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -359,6 +364,8 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
+
+		// on ajoute du comportement au bouton Deconnexion
 
 		boutonDeconnexion.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -371,7 +378,22 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
+		
+		// on ajoute du comportement au bouton recherche
+
 		boutonRecherche.setOnAction(event -> filterStagiaires());
+		
+		
+		// on ajoute du comportement au bouton afficherListeStagiaire
+		boutonAfficherListe.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				tableViewStagiaire.setItems(stagiaires);
+			}
+		});
+		
+		
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
