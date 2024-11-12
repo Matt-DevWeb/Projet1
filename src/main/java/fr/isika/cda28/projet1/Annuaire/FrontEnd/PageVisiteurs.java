@@ -40,8 +40,8 @@ import javafx.stage.FileChooser;
 public class PageVisiteurs extends BorderPane {
 
 	private Annuaire annuaire;
+	private List<Stagiaire> stagiaires;
 	public TableView<Stagiaire> tableViewStagiaire;
-
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
 
 	// On instancie les labels
@@ -72,10 +72,17 @@ public class PageVisiteurs extends BorderPane {
 	private HBox listeTriContenu = new HBox(300);
 	private ComboBox<String> criteres = new ComboBox();
 
-	public PageVisiteurs(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
+	public PageVisiteurs(Annuaire annuaire) {
 		super();
 		this.annuaire = annuaire;
-		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
+		try {
+			this.stagiaires = FXCollections.observableArrayList(annuaire.afficherListeOrdreAlphabetique());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// initialisation de la liste de stagiaire avec la liste ordonnée de l'annuaire
+		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(this.stagiaires));
 		// taille de la page
 //		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
@@ -263,8 +270,8 @@ public class PageVisiteurs extends BorderPane {
 			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
 
-		tableViewStagiaire.setItems(stagiaires);
-		datas.addAll(stagiaires);
+		tableViewStagiaire.setItems((ObservableList<Stagiaire>) this.stagiaires);
+		datas.addAll(this.stagiaires);
 		// appel de la methode filterStagiaire lorsqu'on clic sur le bouton de recherche
 
 		// Rempliere la ChoiceBox
@@ -376,7 +383,7 @@ public class PageVisiteurs extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				tableViewStagiaire.setItems(stagiaires);
+				tableViewStagiaire.setItems((ObservableList<Stagiaire>) stagiaires);
 			}
 		});
 
@@ -390,7 +397,7 @@ public class PageVisiteurs extends BorderPane {
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
-				PageConnection pageConnection = new PageConnection(annuaire, stagiaires);
+				PageConnection pageConnection = new PageConnection(annuaire);
 				connexion.getScene().setRoot(pageConnection);
 			}
 		});

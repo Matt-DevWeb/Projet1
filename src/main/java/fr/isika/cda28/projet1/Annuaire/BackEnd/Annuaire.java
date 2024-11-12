@@ -36,22 +36,22 @@ public class Annuaire {
 			System.err.println("Le fichier binaire n'a pas été ouvert");
 			e.printStackTrace();
 		}
-//		try {
-//			FileReader fr1 = new FileReader("src/main/resources/mesFichiers/listeEditeurs.txt");
-//			BufferedReader br1 = new BufferedReader(fr1);
-//			while (br1.ready()) {
-//				String email = br1.readLine();
-//				String nom = br1.readLine();
-//				String prenom = br1.readLine();
-//				String motDePasse = br1.readLine();
-//				Editeur editeur1 = new Editeur(email, motDePasse, nom, prenom);
-//				br1.readLine();
-//
-//			}
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		
+			try {
+				FileReader fr1 = new FileReader("src/main/resources/mesFichiers/listeEditeurs.txt");
+				BufferedReader br1 = new BufferedReader(fr1);
+				while (br1.ready()) {
+					String email = br1.readLine();
+					String motDePasse = br1.readLine();
+					Editeur editeur = new Editeur(email, motDePasse);
+					br1.readLine();
+
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 	}
 
 	// Getters et Setters
@@ -61,7 +61,7 @@ public class Annuaire {
 	}
 
 	// Méthodes
-	
+
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
 
 		if (raf.length() == 0) {
@@ -74,32 +74,31 @@ public class Annuaire {
 		}
 
 	}
-	
+
 	// Méthode pour modifier un stagiaire dans l'annuaire
 	public Noeud modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
 		if (stagiaireAModifier != null && stagiaireModifie != null) {
 			raf.seek(0); // on se positionne au début du fichier
 			System.out.println(raf.getFilePointer());
-			
+
 			Noeud noeudASupprimer = new Noeud(stagiaireAModifier, -1, -1);
-			
+
 			noeudASupprimer.rechercheNoeud(stagiaireAModifier, raf, raf.getFilePointer()); // On vient rechercher le
 			// noeud à modifier
-			
+
 			noeudASupprimer.lireNoeud(raf); // On lit le noeud
-			
+
 			Noeud nouveauNoeud = new Noeud(stagiaireModifie, -1, -1); // On vient créer un nouveau noeud avec le
 			// stagiaire modifie
-			
+
 			System.out.println("Noeud modifié: " + nouveauNoeud);
 			ajouterStagiaire(nouveauNoeud);
 			supprimerStagiaire(noeudASupprimer);
 			return nouveauNoeud;
-			
-		}
-		return null; 
-	}
 
+		}
+		return null;
+	}
 
 	public Noeud rechercherStagiaire(Stagiaire stagiaireARechercher) throws IOException {
 		Noeud resultatRecherche = new Noeud();
@@ -124,9 +123,6 @@ public class Annuaire {
 		}
 	}
 
-
-
-
 	public ObservableList<Stagiaire> lireFichierObservable() throws IOException {
 		ObservableList<Stagiaire> stagiaires = FXCollections.observableArrayList();
 		if (raf == null || !raf.getChannel().isOpen()) {
@@ -146,10 +142,7 @@ public class Annuaire {
 		}
 		return stagiaires;
 	}
-	
-	
-	
-	
+
 	public List<Stagiaire> afficherListeOrdreAlphabetique() throws IOException {
 		List<Stagiaire> listeTriee = new ArrayList<>();
 		if (raf.length() > 0) {
@@ -166,7 +159,6 @@ public class Annuaire {
 	public List<Stagiaire> imprimerListeOrdreAlphabetique() throws IOException {
 		return afficherListeOrdreAlphabetique(); // Retourner directement la liste triée
 	}
-
 
 	public void creerPDF(String cheminFichierPDF) {
 		Document document = new Document();
@@ -222,10 +214,7 @@ public class Annuaire {
 
 		try (BufferedWriter writer = new BufferedWriter(
 				new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", true))) {
-			writer.write(editeur.getNom());
-			writer.newLine();
-			writer.write(editeur.getPrenom());
-			writer.newLine();
+
 			writer.write(editeur.getUserID());
 			writer.newLine();
 			writer.write(editeur.getPassword());

@@ -1,9 +1,10 @@
-
 package fr.isika.cda28.projet1.Annuaire.FrontEnd;
+
+import java.io.IOException;
 
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Editeur;
-import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Utilisateurs;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,7 +19,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 
 public class AjouterEditeur extends BorderPane {
@@ -26,40 +29,34 @@ public class AjouterEditeur extends BorderPane {
 	private Label ajouterEditeur = new Label("Ajouter un éditeur");
 
 	// Déclaration des labels et textfields pour le gridPane
-	private Label nomlabel = new Label("Nom");
-	private TextField champNom = new TextField();
-	private Label prenomlabel = new Label("Prénom");
-	private TextField champPrenom = new TextField();
-	private Label emaillabel = new Label("Email");
-	private TextField champEmail = new TextField();
-	private Label motDePasselabel = new Label("Mot de passe");
-	private PasswordField champMotdepasse = new PasswordField();
+	private Label labelUtilisateur = new Label("Nom d'utilisateur");
+	private TextField champUtilisateur = new TextField();
+	private Label labelMotDePasse = new Label("Mot de passe");
+	private PasswordField champMotDePasse = new PasswordField();
 
 	// Déclaration des boutons
 	private Button cheminVersListeStagiaire = new Button("Annuaire");
-	private Button accueil = new Button("Accueil");
+	private Button boutonAccueil = new Button("Accueil");
 
 	// Bouton valider editeur
 	private Button valider = new Button("Valider");
 
 	// Logo
-	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_blanc_ligne.png"));
+	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_Projet1.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// Declaration VBox et GridPane
-	VBox leftside = new VBox(220); // Conteneur à gauche pour le logo et les boutons
+	VBox coteGauche = new VBox(450); // Conteneur à gauche pour le logo et les boutons
 	VBox leftSideButtons = new VBox(20); // Conteneur des boutons à gauche
-	GridPane rightSide = new GridPane(); // Conteneur droite pour le GridPane
+	GridPane coteDroit = new GridPane(); // Conteneur droite pour le GridPane
 
 	// Constructeur
-	public AjouterEditeur(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
+	public AjouterEditeur(Annuaire annuaire, Utilisateurs utilisateur) {
 		super();
 
-	
-
 		// dimensions logo
-		logoImageView.setFitWidth(200);
-		logoImageView.setFitHeight(81);
+		logoImageView.setFitWidth(140);
+		logoImageView.setFitHeight(140);
 
 		// mettre en gras
 		ajouterEditeur.setStyle("-fx-text-fill:white ;-fx-font-size:30px ;");
@@ -67,79 +64,98 @@ public class AjouterEditeur extends BorderPane {
 		// fond blanc
 		setStyle("-fx-background-color:#172428");
 		cheminVersListeStagiaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		accueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
+		cheminVersListeStagiaire.setPrefSize(200, 20);
+		//Stylisation du bouton d'accueil
+		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAccueil.setPrefSize(200, 20);
 		// Definir taille de la VBox + ajout composants
-		leftside.setPrefSize(220, 450);
-		leftside.getChildren().addAll(logoImageView, leftSideButtons);
-		leftSideButtons.getChildren().addAll(cheminVersListeStagiaire, accueil);
+		coteGauche.setPrefSize(220, 450);
+		coteGauche.getChildren().addAll(logoImageView, leftSideButtons);
+		leftSideButtons.getChildren().addAll(cheminVersListeStagiaire, boutonAccueil);
 
 		// Modifier la couleur de fond gauche
-		leftside.setStyle("-fx-background-color:#172428");
+		coteGauche.setStyle("-fx-background-color:#25333F");
 
 		// alignement dans la VBox
-		leftside.setAlignment(Pos.TOP_CENTER);
-		leftside.setPadding(new Insets(20));
+		coteGauche.setAlignment(Pos.CENTER);
 		leftSideButtons.setAlignment(Pos.CENTER);
 //
 
-		nomlabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
-		champNom.setPromptText("Entrez votre nom");
-		prenomlabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
-		champPrenom.setPromptText("Entrez votre prénom");
-		emaillabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
-		champEmail.setPromptText("Entrez votre email");
-		motDePasselabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
-		champMotdepasse.setPromptText("Entrez votre mot de passe");
+		labelUtilisateur.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+		champUtilisateur.setPromptText("Créez le nom d'utilisateur de l'éditeur");
+		champUtilisateur.setPadding(new Insets(10, 15, 10, 15));
+		champUtilisateur.setMaxWidth(700);
+		
+		labelMotDePasse.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
+		champMotDePasse.setPromptText("Créez le mot de passe de l'éditeur");
+		champMotDePasse.setPadding(new Insets(10, 15, 10, 15));
+		champMotDePasse.setMaxWidth(700);
+		
 		valider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		// la taille GridPane droit
-		rightSide.setPrefSize(580, 450);
+
 
 		// Ajouter les éléments au GridPane (formulaire)
-		rightSide.setAlignment(Pos.CENTER);
-		rightSide.add(ajouterEditeur, 0, 0, 2, 1);
-		rightSide.add(nomlabel, 0, 2, 1, 1);
-		rightSide.add(champNom, 0, 3, 1, 1);
-		rightSide.add(prenomlabel, 2, 2, 1, 1);
-		rightSide.add(champPrenom, 2, 3, 1, 1);
-		rightSide.add(emaillabel, 0, 5, 1, 1);
-		rightSide.add(champEmail, 0, 6, 1, 1);
-		rightSide.add(motDePasselabel, 2, 5, 1, 1);
-		rightSide.add(champMotdepasse, 2, 6, 1, 1);
-		rightSide.add(valider, 1, 8);
+				for (int i = 0; i < 2; i++) {
+					coteDroit.getColumnConstraints().add(new ColumnConstraints(200));
+				}
+				for (int i = 0; i < 5; i++) {
+					coteDroit.getRowConstraints().add(new RowConstraints(40));
+				}
+		// Ajouter les éléments au GridPane (formulaire)
+		coteDroit.setAlignment(Pos.CENTER);
+		coteDroit.add(ajouterEditeur, 0, 0, 2, 1);
+		coteDroit.add(labelUtilisateur, 0, 2, 1, 1);
+		coteDroit.add(champUtilisateur, 0, 3, 1, 1);
+		coteDroit.add(labelMotDePasse, 1, 2, 1, 1);
+		coteDroit.add(champMotDePasse, 1, 3, 1, 1);
+		coteDroit.add(valider, 0, 5, 2, 1);
 
-		// margin du bouton valider
-		GridPane.setMargin(valider, new Insets(20, 0, 0, 0));
+		// Alignement du bouton valider
+		GridPane.setHalignment(valider, javafx.geometry.HPos.CENTER);
 
-		// on donne du comportement au bouton valider
-
-				valider.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						Annuaire annuaire = new Annuaire();
-
-						String nom = champNom.getText();
-						String prenom = champPrenom.getText();
-						String email = champEmail.getText();
-						String motDepasse= champMotdepasse.getText();
-						
-						Editeur nouveauEditeur = new Editeur(email, motDepasse, nom, prenom);
-
-						annuaire.ajouterEditeur(nouveauEditeur);
-		                
-		                			Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Ajout réalisé");
-						alert.setHeaderText(null);
-						alert.setContentText("Félicitations vous avez ajouter un nouveau stagiaire");
-						alert.showAndWait();
-
-					}
-				});
-		
-		rightSide.setVgap(10);
-		rightSide.setHgap(5);
+		coteDroit.setVgap(5);
+		coteDroit.setHgap(50);
 
 		// Ajout VBox gauche et la GridPane dans borderPane
-		this.setLeft(leftside);
-		this.setRight(rightSide);
+		this.setLeft(coteGauche);
+		this.setCenter(coteDroit);
+
+		// on ajoute du comportement au bouton acceuil
+		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Annuaire annuaire = new Annuaire();
+				PageAccueil pageAccueil = new PageAccueil(annuaire);
+				try {
+					pageAccueil.setPromotion(annuaire.lireFichierObservable());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				boutonAccueil.getScene().setRoot(pageAccueil);
+			}
+
+		});
+
+		valider.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Annuaire annuaire = new Annuaire();
+
+				String email = champUtilisateur.getText();
+				String motDepasse = champMotDePasse.getText();
+
+				Editeur nouveauEditeur = new Editeur(email, motDepasse);
+
+				annuaire.ajouterEditeur(nouveauEditeur);
+
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Ajout réalisé");
+				alert.setHeaderText(null);
+				alert.setContentText("L'éditeur a été ajouté avec succès");
+				alert.showAndWait();
+
+			}
+		});
 	}
 }

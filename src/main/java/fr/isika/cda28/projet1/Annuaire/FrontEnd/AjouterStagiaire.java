@@ -7,6 +7,8 @@ import java.util.List;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Noeud;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
+import fr.isika.cda28.projet1.Annuaire.BackEnd.Utilisateurs;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +33,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class AjouterStagiaire extends BorderPane {
+	private Annuaire annuaire;
+	private List<Stagiaire> stagiaires;
+	private Utilisateurs utilisateurs;
 	// On instancie un label "Ajouter un éditeur"
 	private Label ajouterStagiaire = new Label("Ajouter un stagiaire");
 
@@ -68,9 +73,9 @@ public class AjouterStagiaire extends BorderPane {
 	GridPane coteDroit = new GridPane(); // Conteneur droite pour le GridPane
 
 	// Constructeur
-	public AjouterStagiaire(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
+	public AjouterStagiaire(Annuaire annuaire, Utilisateurs utilisateurs) {
 		super();
-
+		this.utilisateurs = utilisateurs;
 		// dimensions logo
 		logoImageView.setFitWidth(140);
 		logoImageView.setFitHeight(140);
@@ -84,7 +89,6 @@ public class AjouterStagiaire extends BorderPane {
 		cheminVersListeStagiaire.setPrefSize(200, 20);
 		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonAccueil.setPrefSize(200, 20);
-		
 
 		// Definir taille de la VBox + ajout composants
 		coteGauche.setPrefSize(220, 450);
@@ -209,16 +213,16 @@ public class AjouterStagiaire extends BorderPane {
 			}
 		});
 		// on ajoute du comportement au bouton annuaire
+
 		cheminVersListeStagiaire.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
-				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire, stagiaires);
-				cheminVersListeStagiaire.getScene().setRoot(pageVisiteurs);
+				PageAdminEdit pageAdminEdit = new PageAdminEdit(annuaire, utilisateurs);
 
+				cheminVersListeStagiaire.getScene().setRoot(pageAdminEdit);
 			}
-
 		});
 		// on ajoute du comportement au bouton departement
 		comboBoxDepartement.setCellFactory(param -> {

@@ -113,7 +113,7 @@ public class PageAccueil extends BorderPane {
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
-				PageConnection pageConnection = new PageConnection(annuaire, stagiaires);
+				PageConnection pageConnection = new PageConnection(annuaire);
 				connexion.getScene().setRoot(pageConnection);
 			}
 		});
@@ -123,7 +123,7 @@ public class PageAccueil extends BorderPane {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
-				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire, stagiaires);
+				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire);
 				consulter.getScene().setRoot(pageVisiteurs);
 
 			}

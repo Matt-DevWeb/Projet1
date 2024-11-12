@@ -2,6 +2,7 @@ package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Administrateur;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
@@ -29,8 +30,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageConnection extends BorderPane {
-	private ObservableList<Stagiaire> stagiaires;
-	
+	private Annuaire annuaire;
+	private List<Stagiaire> stagiaires;
+
 	// Initialisation des éléments de la page "connection"
 	private HBox header = new HBox(20);
 	private VBox mainContent = new VBox(30);
@@ -53,9 +55,17 @@ public class PageConnection extends BorderPane {
 	PasswordField champMotDePasse = new PasswordField();
 
 	// Constructeur
-	public PageConnection(Annuaire annuaire, ObservableList<Stagiaire> stagiaires) {
+
+	public PageConnection(Annuaire annuaire) {
 		super();
-		// Initialisation de la liste des stagiaires (peut être une liste vide ou chargée d'une source de données)
+		// Initialisation de la liste des stagiaires (peut être une liste vide ou
+		// chargée d'une source de données)
+		try {
+			this.stagiaires = FXCollections.observableArrayList(annuaire.afficherListeOrdreAlphabetique());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// ajout du style au graphe + logos
 		logoImageView.setFitWidth(200);
@@ -116,9 +126,9 @@ public class PageConnection extends BorderPane {
 
 				Utilisateurs utilisateurConnecte = authentifcation.authenticate(userID, password);
 
-				if (utilisateurConnecte!=null) {
+				if (utilisateurConnecte != null) {
 					Annuaire annuaire = new Annuaire();
-					PageAdminEdit pageAdminEdit  = new PageAdminEdit(annuaire, stagiaires, utilisateurConnecte);
+					PageAdminEdit pageAdminEdit = new PageAdminEdit(annuaire, utilisateurConnecte);
 					boutonValider.getScene().setRoot(pageAdminEdit);
 				} else {
 					Alert alert = new Alert(AlertType.INFORMATION);
@@ -221,6 +231,7 @@ public class PageConnection extends BorderPane {
 	public void setMainContent(VBox mainContent) {
 		this.mainContent = mainContent;
 	}
+
 	public void setPromotion(ObservableList<Stagiaire> observableList) {
 		this.stagiaires = observableList;
 	}

@@ -39,6 +39,9 @@ import javafx.stage.FileChooser;
 
 public class PageAdminEdit extends BorderPane {
 
+	private Annuaire annuaire;
+	private List<Stagiaire> stagiaires;
+	private Utilisateurs utilisateurs;
 	private TableView<Stagiaire> tableViewStagiaire;
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
 
@@ -62,7 +65,6 @@ public class PageAdminEdit extends BorderPane {
 	private Button boutonSuppEditeur = new Button("Supprimer un editeur");
 	private Button boutonAfficherListe = new Button("Afficher la liste de stagiaires");
 
-
 	// On instancie le TextField
 	private TextField zoneRecherche = new TextField();
 
@@ -74,15 +76,20 @@ public class PageAdminEdit extends BorderPane {
 	private HBox bienvenueContenu = new HBox(350);
 	private HBox rechercheContenu = new HBox(5);
 	private HBox listeTriContenu = new HBox(300);
-	
+
 	// On instancie la ChoiceBox
 	private ComboBox<String> criteres = new ComboBox();
 
-	private Annuaire annuaire;
 
-	public PageAdminEdit(Annuaire annuaire, ObservableList<Stagiaire> stagiaires, Utilisateurs utilisateurConnecte) {
+	public PageAdminEdit(Annuaire annuaire, Utilisateurs utilisateurConnecte) {
 		super();
 		this.annuaire = annuaire;
+		try {
+			this.stagiaires = FXCollections.observableArrayList(annuaire.afficherListeOrdreAlphabetique());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(stagiaires));
 
@@ -291,7 +298,7 @@ public class PageAdminEdit extends BorderPane {
 			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
 
-		tableViewStagiaire.setItems(stagiaires);
+		tableViewStagiaire.setItems((ObservableList<Stagiaire>) this.stagiaires);
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		// contenuPrincipal
@@ -323,8 +330,7 @@ public class PageAdminEdit extends BorderPane {
 			}
 
 		});
-		
-		
+
 		// on ajoute du comportement au bouton imprimer
 
 		boutonImprimer.setOnAction(new EventHandler<ActionEvent>() {
@@ -348,20 +354,20 @@ public class PageAdminEdit extends BorderPane {
 
 			@Override
 			public void handle(ActionEvent event) {
-				AjouterStagiaire ajouterStagiaire = new AjouterStagiaire(annuaire, stagiaires);
+				AjouterStagiaire ajouterStagiaire = new AjouterStagiaire(annuaire, utilisateurs);
 				boutonAjoutStagiaire.getScene().setRoot(ajouterStagiaire);
 
 			}
 
 		});
-		
+
 		// on ajoute du comportement au bouton ajoutEditeur
 
 		boutonAjoutEditeur.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				AjouterEditeur ajouterEditeur = new AjouterEditeur(annuaire, stagiaires);
+				AjouterEditeur ajouterEditeur = new AjouterEditeur(annuaire, utilisateurs);
 				boutonAjoutEditeur.getScene().setRoot(ajouterEditeur);
 
 			}
@@ -375,35 +381,33 @@ public class PageAdminEdit extends BorderPane {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
-				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire, stagiaires);
+				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire);
 				boutonDeconnexion.getScene().setRoot(pageVisiteurs);
 
 			}
 
 		});
-		
+
 		// on ajoute du comportement au bouton recherche
 
 		boutonRecherche.setOnAction(event -> filterStagiaires());
-		
-		
+
 		// on ajoute du comportement au bouton afficherListeStagiaire
 		boutonAfficherListe.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				tableViewStagiaire.setItems(stagiaires);
+				tableViewStagiaire.setItems((ObservableList<Stagiaire>) stagiaires);
 			}
 		});
-		
-		
+
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(coteGauche);
 		this.setCenter(contenuPrincipal);
-		datas.addAll(stagiaires);
+		datas.addAll(this.stagiaires);
 		// Rempliere la ChoiceBox
 		List<String> criters = new ArrayList<String>();
-		
+
 		criters.add("Rechercher par :");
 		criters.add("Nom");
 		criters.add("Prenom");
@@ -412,7 +416,7 @@ public class PageAdminEdit extends BorderPane {
 		criters.add("Promotion");
 		criteres.getItems().addAll(criters);
 		criteres.getSelectionModel().select(0);
-		
+
 		criteres.setCellFactory(param -> {
 			ListCell<String> cell = new ListCell<String>() {
 				@Override

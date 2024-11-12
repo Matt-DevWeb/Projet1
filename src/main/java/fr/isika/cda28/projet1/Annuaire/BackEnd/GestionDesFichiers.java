@@ -18,7 +18,7 @@ public class GestionDesFichiers {
 	public void chargerStagiairesDepuisFichier() {
 		try {
 			// Ouverture du fichier texte contenant les informations des stagiaires
-			FileReader fr = new FileReader("src/main/resources/mesFichiers/STAGIAIRES2.DON");
+			FileReader fr = new FileReader("src/main/resources/mesFichiers/STAGIAIRES.DON");
 			BufferedReader br = new BufferedReader(fr);
 
 			// Lire chaque ligne du fichier texte et créer les objets Stagiaire
