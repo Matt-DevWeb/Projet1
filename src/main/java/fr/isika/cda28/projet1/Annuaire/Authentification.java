@@ -12,8 +12,8 @@ public class Authentification {
 	public Authentification() {
 
 		// Ajouter des utilisateurs pour l'exemple
-		utilisateurs.add(new Editeur("editeur1", "1234"));
-		utilisateurs.add(new Editeur("editeur2", "1234"));
+		utilisateurs.add(new Editeur("editeur1", "1234", "John", "Doe"));
+		utilisateurs.add(new Editeur("editeur2", "1234", "Kevin", "Hart"));
 		utilisateurs.add(new Administrateur("admin", "1234"));
 
 	}

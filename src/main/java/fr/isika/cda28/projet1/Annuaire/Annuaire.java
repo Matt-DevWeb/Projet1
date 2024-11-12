@@ -1,9 +1,13 @@
 package fr.isika.cda28.projet1.Annuaire;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-// Sert à faire la transition entre front et fichier binaire
+
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +36,22 @@ public class Annuaire {
 			System.err.println("Le fichier binaire n'a pas été ouvert");
 			e.printStackTrace();
 		}
-
+//		try {
+//			FileReader fr1 = new FileReader("src/main/resources/mesFichiers/listeEditeurs.txt");
+//			BufferedReader br1 = new BufferedReader(fr1);
+//			while (br1.ready()) {
+//				String email = br1.readLine();
+//				String nom = br1.readLine();
+//				String prenom = br1.readLine();
+//				String motDePasse = br1.readLine();
+//				Editeur editeur1 = new Editeur(email, motDePasse, nom, prenom);
+//				br1.readLine();
+//
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	// Getters et Setters
@@ -98,7 +117,6 @@ public class Annuaire {
 			racine.supprimerNoeud(stagiaireASupprimer, raf, 0);
 		}
 	}
-	
 
 	public List<Stagiaire> afficherListeOrdreAlphabetique() throws IOException {
 		List<Stagiaire> listeTriee = new ArrayList<>();
@@ -117,6 +135,34 @@ public class Annuaire {
 		return afficherListeOrdreAlphabetique(); // Retourner directement la liste triée
 	}
 
+	// Méthode pour modifier un stagiaire dans l'annuaire
+     public Noeud modifierStagiaireDansAnnuaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
+    	raf.seek(0);
+    	
+    	
+    	Noeud racine = new Noeud();
+    	racine.lireNoeud(raf);
+    	
+        try (RandomAccessFile raf = new RandomAccessFile("fichierBinaire.bin", "rw")) {
+            // Appel de la méthode pour modifier le stagiaire dans le fichier binaire via la classe Noeud
+            Noeud modifie = noeud.modifierStagiaire(stagiaireAModifier, stagiaireModifie, raf);
+
+            if (modifie != null) {
+                System.out.println("Le stagiaire a été modifié dans le fichier binaire.");
+            } else {
+                System.out.println("Le stagiaire à modifier n'a pas été trouvé.");
+            }
+
+            return modifie;
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la modification du stagiaire : " + e.getMessage());
+            return null;
+        }
+    }
+	
+	
+	
+	
 	public void creerPDF(String cheminFichierPDF) {
 		Document document = new Document();
 
@@ -164,6 +210,26 @@ public class Annuaire {
 			if (document.isOpen()) {
 				document.close();
 			}
+		}
+	}
+
+	public void ajouterEditeur(Editeur editeur) {
+
+		try (BufferedWriter writer = new BufferedWriter(
+				new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", true))) {
+			writer.write(editeur.getNom());
+			writer.newLine();
+			writer.write(editeur.getPrenom());
+			writer.newLine();
+			writer.write(editeur.getUserID());
+			writer.newLine();
+			writer.write(editeur.getPassword());
+			writer.newLine();
+			writer.write("*");
+			writer.newLine();
+			System.out.println("Le contenu a été écrit dans le fichier avec succès.");
+		} catch (IOException e) {
+			System.err.println("Une erreur s'est produite lors de l'écriture dans le fichier : " + e.getMessage());
 		}
 	}
 

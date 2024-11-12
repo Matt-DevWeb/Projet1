@@ -1,8 +1,13 @@
+
 package fr.isika.cda28.projet1.Annuaire;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -19,13 +24,13 @@ public class AjouterEditeur extends BorderPane {
 
 	// Déclaration des labels et textfields pour le gridPane
 	private Label nomlabel = new Label("Nom");
-	private TextField nom = new TextField();
+	private TextField champNom = new TextField();
 	private Label prenomlabel = new Label("Prénom");
-	private TextField prenom = new TextField();
+	private TextField champPrenom = new TextField();
 	private Label emaillabel = new Label("Email");
-	private TextField email = new TextField();
+	private TextField champEmail = new TextField();
 	private Label motDePasselabel = new Label("Mot de passe");
-	private PasswordField motdepasse = new PasswordField();
+	private PasswordField champMotdepasse = new PasswordField();
 
 	// Déclaration des boutons
 	private Button cheminVersListeStagiaire = new Button("Annuaire");
@@ -75,13 +80,13 @@ public class AjouterEditeur extends BorderPane {
 //
 
 		nomlabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
-		nom.setPromptText("Entrez votre nom");
+		champNom.setPromptText("Entrez votre nom");
 		prenomlabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
-		prenom.setPromptText("Entrez votre prénom");
+		champPrenom.setPromptText("Entrez votre prénom");
 		emaillabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
-		email.setPromptText("Entrez votre email");
+		champEmail.setPromptText("Entrez votre email");
 		motDePasselabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
-		motdepasse.setPromptText("Entrez votre mot de passe");
+		champMotdepasse.setPromptText("Entrez votre mot de passe");
 		valider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		// la taille GridPane droit
 		rightSide.setPrefSize(580, 450);
@@ -90,18 +95,43 @@ public class AjouterEditeur extends BorderPane {
 		rightSide.setAlignment(Pos.CENTER);
 		rightSide.add(ajouterEditeur, 0, 0, 2, 1);
 		rightSide.add(nomlabel, 0, 2, 1, 1);
-		rightSide.add(nom, 0, 3, 1, 1);
+		rightSide.add(champNom, 0, 3, 1, 1);
 		rightSide.add(prenomlabel, 2, 2, 1, 1);
-		rightSide.add(prenom, 2, 3, 1, 1);
+		rightSide.add(champPrenom, 2, 3, 1, 1);
 		rightSide.add(emaillabel, 0, 5, 1, 1);
-		rightSide.add(email, 0, 6, 1, 1);
+		rightSide.add(champEmail, 0, 6, 1, 1);
 		rightSide.add(motDePasselabel, 2, 5, 1, 1);
-		rightSide.add(motdepasse, 2, 6, 1, 1);
+		rightSide.add(champMotdepasse, 2, 6, 1, 1);
 		rightSide.add(valider, 1, 8);
 
 		// margin du bouton valider
 		GridPane.setMargin(valider, new Insets(20, 0, 0, 0));
 
+		// on donne du comportement au bouton valider
+
+				valider.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						Annuaire annuaire = new Annuaire();
+
+						String nom = champNom.getText();
+						String prenom = champPrenom.getText();
+						String email = champEmail.getText();
+						String motDepasse= champMotdepasse.getText();
+						
+						Editeur nouveauEditeur = new Editeur(email, motDepasse, nom, prenom);
+
+						annuaire.ajouterEditeur(nouveauEditeur);
+		                
+		                			Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Ajout réalisé");
+						alert.setHeaderText(null);
+						alert.setContentText("Félicitations vous avez ajouter un nouveau stagiaire");
+						alert.showAndWait();
+
+					}
+				});
+		
 		rightSide.setVgap(10);
 		rightSide.setHgap(5);
 
