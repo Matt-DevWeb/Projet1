@@ -61,27 +61,7 @@ public class Annuaire {
 	}
 
 	// Méthodes
-
-	public ObservableList<Stagiaire> lireFichierObservable() throws IOException {
-		ObservableList<Stagiaire> stagiaires = FXCollections.observableArrayList();
-		if (raf == null || !raf.getChannel().isOpen()) {
-			System.err.println("Le fichier binaire raf n'est pas initialisé.");
-			return stagiaires; // Retourne une liste vide
-		}
-		if (raf.length() == 0) {
-			System.out.println("Le fichier binaire est vide.");
-			return stagiaires; // Retourne une liste vide
-		}
-
-		Noeud tmp = new Noeud();
-		for (int position = 0; position < raf.length(); position += tmp.TAILLE_NOEUD_OCTET) {
-			raf.seek(position);
-			Noeud nouveauNoeud = tmp.lireNoeud(this.raf);
-			stagiaires.add(nouveauNoeud.getStagiaire());
-		}
-		return stagiaires;
-	}
-
+	
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
 
 		if (raf.length() == 0) {
@@ -94,6 +74,32 @@ public class Annuaire {
 		}
 
 	}
+	
+	// Méthode pour modifier un stagiaire dans l'annuaire
+	public Noeud modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
+		if (stagiaireAModifier != null && stagiaireModifie != null) {
+			raf.seek(0); // on se positionne au début du fichier
+			System.out.println(raf.getFilePointer());
+			
+			Noeud noeudASupprimer = new Noeud(stagiaireAModifier, -1, -1);
+			
+			noeudASupprimer.rechercheNoeud(stagiaireAModifier, raf, raf.getFilePointer()); // On vient rechercher le
+			// noeud à modifier
+			
+			noeudASupprimer.lireNoeud(raf); // On lit le noeud
+			
+			Noeud nouveauNoeud = new Noeud(stagiaireModifie, -1, -1); // On vient créer un nouveau noeud avec le
+			// stagiaire modifie
+			
+			System.out.println("Noeud modifié: " + nouveauNoeud);
+			ajouterStagiaire(nouveauNoeud);
+			supprimerStagiaire(noeudASupprimer);
+			return nouveauNoeud;
+			
+		}
+		return null; 
+	}
+
 
 	public Noeud rechercherStagiaire(Stagiaire stagiaireARechercher) throws IOException {
 		Noeud resultatRecherche = new Noeud();
@@ -118,6 +124,32 @@ public class Annuaire {
 		}
 	}
 
+
+
+
+	public ObservableList<Stagiaire> lireFichierObservable() throws IOException {
+		ObservableList<Stagiaire> stagiaires = FXCollections.observableArrayList();
+		if (raf == null || !raf.getChannel().isOpen()) {
+			System.err.println("Le fichier binaire raf n'est pas initialisé.");
+			return stagiaires; // Retourne une liste vide
+		}
+		if (raf.length() == 0) {
+			System.out.println("Le fichier binaire est vide.");
+			return stagiaires; // Retourne une liste vide
+		}
+
+		Noeud tmp = new Noeud();
+		for (int position = 0; position < raf.length(); position += tmp.TAILLE_NOEUD_OCTET) {
+			raf.seek(position);
+			Noeud nouveauNoeud = tmp.lireNoeud(this.raf);
+			stagiaires.add(nouveauNoeud.getStagiaire());
+		}
+		return stagiaires;
+	}
+	
+	
+	
+	
 	public List<Stagiaire> afficherListeOrdreAlphabetique() throws IOException {
 		List<Stagiaire> listeTriee = new ArrayList<>();
 		if (raf.length() > 0) {
@@ -135,19 +167,6 @@ public class Annuaire {
 		return afficherListeOrdreAlphabetique(); // Retourner directement la liste triée
 	}
 
-	// Méthode pour modifier un stagiaire dans l'annuaire
-	public Noeud modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
-		raf.seek(0); // on se positionne au début du fichier
-
-		Noeud noeudASupprimer = noeud.rechercheNoeud(stagiaireAModifier, raf, raf.getFilePointer()); // On vient rechercher le noeud à modifier
-
-		noeudASupprimer.lireNoeud(raf); // On lit le noeud
-		noeudASupprimer.supprimerNoeud(noeudASupprimer, raf, (int) raf.getFilePointer()); // On vient supprimer le noeud
-		Noeud nouveauNoeud = new Noeud(stagiaireModifie, -1, -1); // On vient créer un nouveau noeud avec le stagiaire modifie
-		nouveauNoeud.ajoutStagiaireRecursif(nouveauNoeud, raf); // Ajout du nouveau stagaire 
-		return nouveauNoeud;
-
-	}
 
 	public void creerPDF(String cheminFichierPDF) {
 		Document document = new Document();
