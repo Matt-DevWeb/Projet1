@@ -19,6 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -33,6 +34,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -562,6 +564,7 @@ public class PageAdminEdit extends BorderPane {
 			}
 		});
 		tableViewStagiaire.setItems(listFiltre);
+		tableViewStagiaire.refresh();
 	}
 
 	public void proposerTelechargementPDF() throws IOException {
@@ -766,6 +769,11 @@ public class PageAdminEdit extends BorderPane {
 		// Créer l'action de validation
 		dialog.setResultConverter(dialogButton -> {
 			if (dialogButton == modifierButtonType) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Modification réalisée");
+				alert.setHeaderText(null);
+				alert.setContentText("Vous avez modifié correctement le stagiaire");
+				alert.showAndWait();
 				stagiaire.setNom(nomField.getText().toUpperCase());
 				stagiaire.setPrenom(prenomField.getText());
 				stagiaire.setCursus(cursusField.getText());
@@ -773,10 +781,11 @@ public class PageAdminEdit extends BorderPane {
 				stagiaire.setAnneePromo(Integer.parseInt(promoField.getText()));
 				// Mettre à jour d'autres champs si nécessaire
 				return stagiaire;
+				
 			}
 			return null;
 		});
-
+		
 		return dialog.showAndWait();
 	}
 
