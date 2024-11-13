@@ -1,10 +1,7 @@
 package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import fr.isika.cda28.projet1.Annuaire.BackEnd.Administrateur;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Authentification;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
@@ -29,13 +26,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-public class PageConnection extends BorderPane {
+public class PageConnexion extends BorderPane {
+	
+	// Attributs
 	private Annuaire annuaire;
 	private List<Stagiaire> stagiaires;
 
 	// Initialisation des éléments de la page "connection"
-	private HBox header = new HBox(20);
-	private VBox mainContent = new VBox(30);
+	private HBox hBoxHeader = new HBox(20);
+	private VBox vBoxMainContent = new VBox(30);
 
 	// Initialisation des label invitant à se connecter
 	private Label labelTitre = new Label("Connectez-vous");
@@ -54,12 +53,10 @@ public class PageConnection extends BorderPane {
 	TextField champEmail = new TextField();
 	PasswordField champMotDePasse = new PasswordField();
 
-	// Constructeur
-
-	public PageConnection(Annuaire annuaire) {
+	// Constructeur de la page Connexion
+	public PageConnexion(Annuaire annuaire) {
 		super();
-		// Initialisation de la liste des stagiaires (peut être une liste vide ou
-		// chargée d'une source de données)
+		// Initialisation de la liste des stagiaires (peut être une liste vide ou chargée d'une source de données)
 		try {
 			this.stagiaires = FXCollections.observableArrayList(annuaire.afficherListeOrdreAlphabetique());
 		} catch (IOException e) {
@@ -86,36 +83,35 @@ public class PageConnection extends BorderPane {
 		champMotDePasse.setPromptText("Entrez votre Mot de Passe");
 
 		// on définit les espaces et positions
-		header.setPadding(new Insets(20, 20, 20, 20));
-		mainContent.setAlignment(Pos.CENTER);
-		header.setPrefSize(800, 80); // Taille fixe pour le header
+		hBoxHeader.setPadding(new Insets(20, 20, 20, 20));
+		vBoxMainContent.setAlignment(Pos.CENTER);
+		hBoxHeader.setPrefSize(800, 80); // Taille fixe pour le header
 		HBox.setHgrow(logoImageView, Priority.ALWAYS); // L'image peut s'étirer
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS);
 		VBox.setMargin(labelTitre, new Insets(0, 0, 50, 0));
 
 		// j'ajoute mon logo et mon bouton accueil au header
-		header.getChildren().addAll(logoImageView, spacer, boutonAccueil);
+		hBoxHeader.getChildren().addAll(logoImageView, spacer, boutonAccueil);
 
 		// j'ajoute mes labels, mes champs et mon bouton valider au mainContent
-		mainContent.getChildren().addAll(labelTitre, labelEmail, champEmail, labelMotDePasse, champMotDePasse,
+		vBoxMainContent.getChildren().addAll(labelTitre, labelEmail, champEmail, labelMotDePasse, champMotDePasse,
 				boutonValider);
 
 		// j'ajoute mon header et mon mainContent au BorderPane
-		this.setTop(header);
-		this.setCenter(mainContent);
+		this.setTop(hBoxHeader);
+		this.setCenter(vBoxMainContent);
 
 		// Ajout du comportement au bouton "accueil"
 		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				PageAccueil pageAccueil = new PageAccueil(annuaire);
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
-
 		});
+		
 		// Ajout du comportement au bouton "valider"
 		boutonValider.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -138,12 +134,10 @@ public class PageConnection extends BorderPane {
 					alert.showAndWait();
 				}
 			}
-
 		});
-	}
+	} // *************** Ici se termine le constructeur de la page PageConnexion ***************
 
 	// Getters et Setters
-
 	public Label getLabelTitre() {
 		return labelTitre;
 	}
@@ -217,23 +211,22 @@ public class PageConnection extends BorderPane {
 	}
 
 	public HBox getHeader() {
-		return header;
+		return hBoxHeader;
 	}
 
 	public void setHeader(HBox header) {
-		this.header = header;
+		this.hBoxHeader = header;
 	}
 
 	public VBox getMainContent() {
-		return mainContent;
+		return vBoxMainContent;
 	}
 
 	public void setMainContent(VBox mainContent) {
-		this.mainContent = mainContent;
+		this.vBoxMainContent = mainContent;
 	}
 
 	public void setPromotion(ObservableList<Stagiaire> observableList) {
 		this.stagiaires = observableList;
 	}
-
 }

@@ -3,10 +3,8 @@ package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
 import javafx.collections.FXCollections;
@@ -17,7 +15,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -39,39 +36,40 @@ import javafx.stage.FileChooser;
 
 public class PageVisiteurs extends BorderPane {
 
+	// Attributs
 	private Annuaire annuaire;
 	private List<Stagiaire> stagiaires;
 	public TableView<Stagiaire> tableViewStagiaire;
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
 
 	// On instancie les labels
-	private Label bienvenue = new Label("Annuaire des stagiaires de la Dev'Up Academy !");
-	private Label listeStagiaire = new Label("Liste des stagiaires de l'entreprise.");
+	private Label labelBienvenue = new Label("Annuaire des stagiaires de la Dev'Up Academy !");
 
 	// On instancie l'image
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_Projet1.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// On instancie nos boutons
-	private Button connexion = new Button("Se connecter");
-	private Button imprimer = new Button("Imprimer la liste");
-	private Button accueil = new Button("Accueil");
-	private Button recherche = new Button("Lancer la recherche");
-	private Button trier = new Button("Trier");
+	private Button boutonConnexion = new Button("Se connecter");
+	private Button boutonImprimer = new Button("Imprimer la liste");
+	private Button boutonAccueil = new Button("Accueil");
+	private Button boutonRecherche = new Button("Lancer la recherche");
+	private Button boutonTrier = new Button("Trier");
 	private Button boutonAfficherListe = new Button("Afficher la liste de stagiaires");
 
 	// On instancie le TextField
-	private TextField zoneRecherche = new TextField();
+	private TextField champZoneRecherche = new TextField();
 
 	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
-	private VBox coteGauche = new VBox(450);
-	private VBox coteGaucheBoutons = new VBox(20);
-	private VBox contenuPrincipal = new VBox();
-	private HBox bienvenueContenu = new HBox(350);
-	private HBox rechercheContenu = new HBox(20);
-	private HBox listeTriContenu = new HBox(300);
-	private ComboBox<String> criteres = new ComboBox();
+	private VBox vBoxCoteGauche = new VBox(450);
+	private VBox vBoxCoteGaucheBoutons = new VBox(20);
+	private VBox vBoxContenuPrincipal = new VBox();
+	private HBox hBoxBienvenueContenu = new HBox(350);
+	private HBox hBoxRechercheContenu = new HBox(20);
+	private HBox hBoxListeTriContenu = new HBox(300);
+	private ComboBox<String> comboBoxCriteres = new ComboBox();
 
+	// Constructeur de la page Visiteurs
 	public PageVisiteurs(Annuaire annuaire) {
 		super();
 		this.annuaire = annuaire;
@@ -81,61 +79,66 @@ public class PageVisiteurs extends BorderPane {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		// initialisation de la liste de stagiaire avec la liste ordonnée de l'annuaire
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(this.stagiaires));
+		
 		// taille de la page
-//		setPrefSize(1366, 768);
 		setStyle("-fx-background-color:#172428");
+		
 		// logo
 		logoImageView.setFitWidth(140);
 		logoImageView.setFitHeight(140);
 
 		// COTE GAUCHE
-
+		
 		// on initialise la taille de la VBox coteGauche
-		coteGauche.setPrefSize(220, 450);
+		vBoxCoteGauche.setPrefSize(220, 450);
 
 		// On ajoute les images et la VBox du coteGauche
-		coteGauche.getChildren().addAll(logoImageView, coteGaucheBoutons);
+		vBoxCoteGauche.getChildren().addAll(logoImageView, vBoxCoteGaucheBoutons);
 
 		// on ajoute nos boutons a la VBox coteGauche
-		coteGaucheBoutons.getChildren().addAll(imprimer, accueil);
+		vBoxCoteGaucheBoutons.getChildren().addAll(boutonImprimer, boutonAccueil);
 
 		// On chane la change la couleur de fond de la partie gauche
-		coteGauche.setStyle("-fx-background-color:#25333F");
-		imprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		imprimer.setPrefSize(200, 20);
-		accueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
-		accueil.setPrefSize(200, 20);
+		vBoxCoteGauche.setStyle("-fx-background-color:#25333F");
+		boutonImprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonImprimer.setPrefSize(200, 20);
+		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAccueil.setPrefSize(200, 20);
+		
 		// CENTRE DE PAGE
-		recherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		connexion.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		criteres.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		criteres.setPrefWidth(180); // Limite la largeur du ComboBox
-		criteres.setMaxHeight(300); // Limite la hauteur du ComboBox, si nécessaire
-
-//				trier.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		
+		boutonRecherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonConnexion.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		comboBoxCriteres.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		comboBoxCriteres.setPrefWidth(180); // Limite la largeur du ComboBox
+		comboBoxCriteres.setMaxHeight(300); // Limite la hauteur du ComboBox, si nécessaire
 
 		// On change la couleur du texte des labels
-		bienvenue.setStyle("-fx-text-fill: white; -fx-font-size:20px;");
-		// listeStagiaire.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
-
+		labelBienvenue.setStyle("-fx-text-fill: white; -fx-font-size:20px;");
+		
 		// On stylise le textField zoneRecherche
-		zoneRecherche.setMaxWidth(300);
-		zoneRecherche.setPrefHeight(30);
-		zoneRecherche.setPromptText("Rechercher un stagiaire");
-		zoneRecherche.setPadding(new Insets(10, 40, 10, 15));
+		champZoneRecherche.setMaxWidth(300);
+		champZoneRecherche.setPrefHeight(30);
+		champZoneRecherche.setPromptText("Rechercher un stagiaire");
+		champZoneRecherche.setPadding(new Insets(10, 40, 10, 15));
+		
 		// On ajoute le label bienvenue et le bouton connexion à la VBox
 		// bienvenueContenu
-		bienvenueContenu.getChildren().addAll(bienvenue, connexion);
+		hBoxBienvenueContenu.getChildren().addAll(labelBienvenue, boutonConnexion);
+		
 		// On ajoute du padding à la HBox bienvenueContenu
-		bienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
+		hBoxBienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
+		
 		// On stylise le bouton AfficherListe
 		boutonAfficherListe.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(criteres,zoneRecherche,  recherche, boutonAfficherListe);
-		rechercheContenu.setPadding(new Insets(10, 0, 40, 0));
+		hBoxRechercheContenu.getChildren().addAll(comboBoxCriteres,champZoneRecherche,  boutonRecherche, boutonAfficherListe);
+		hBoxRechercheContenu.setPadding(new Insets(10, 0, 40, 0));
+		
 		// On ajoute le label listeStagiaire et le bouton trier à la HBox
 
 		// table VIEW
@@ -161,15 +164,17 @@ public class PageVisiteurs extends BorderPane {
 		colonnePromo.setMinWidth(100);
 		colonnePromo.setCellValueFactory(new PropertyValueFactory<Stagiaire, Integer>("anneePromo"));
 
-		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus,
-				colonnePromo);
+		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus, colonnePromo);
 
 		tableViewStagiaire.setPlaceholder(new Label("Aucun stagiaire trouvé."));
+		
 		// permet au colonne d'utiliser tout l'espace disponible
 		tableViewStagiaire.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		
 		// permet de selectionner de multiples éléments
 		tableViewStagiaire.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableViewStagiaire.setStyle("-fx-background-color: #324255");
+		
 		// Définition des en-têtes avec couleurs personnalisées
 		colonneNom.setGraphic(titreTableView("Nom", Color.WHITE, 14));
 		colonnePrenom.setGraphic(titreTableView("Prenom", Color.WHITE, 14));
@@ -193,6 +198,8 @@ public class PageVisiteurs extends BorderPane {
 				}
 			};
 		});
+		
+		// Changer la couleur du texte dans la colonne prenom
 		colonnePrenom.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
 				@Override
@@ -208,6 +215,8 @@ public class PageVisiteurs extends BorderPane {
 				}
 			};
 		});
+		
+		// Changer la couleur du texte dans la colonne departement
 		colonneDepartement.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
 				@Override
@@ -223,6 +232,8 @@ public class PageVisiteurs extends BorderPane {
 				}
 			};
 		});
+		
+		// Changer la couleur du texte dans la colonne cursus
 		colonneCursus.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
 				@Override
@@ -238,6 +249,8 @@ public class PageVisiteurs extends BorderPane {
 				}
 			};
 		});
+		
+		// Changer la couleur du texte dans la colonne promo
 		colonnePromo.setCellFactory(col -> {
 			return new TableCell<Stagiaire, Integer>() {
 				@Override
@@ -253,6 +266,8 @@ public class PageVisiteurs extends BorderPane {
 				}
 			};
 		});
+		
+		// Ajout de style pour les lignes lorsqu'elles sont sélectionnées par l'utilisateur
 		tableViewStagiaire.setRowFactory(tv -> {
 			TableRow<Stagiaire> row = new TableRow<>();
 			row.setStyle("-fx-background-color: #324255;");
@@ -266,15 +281,16 @@ public class PageVisiteurs extends BorderPane {
 			return row;
 		});
 
+		// Ajout de style pour les colonnes
 		tableViewStagiaire.getColumns().forEach(column -> {
 			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
-
+		
+		// On charge la liste dans la tableview
 		tableViewStagiaire.setItems((ObservableList<Stagiaire>) this.stagiaires);
 		datas.addAll(this.stagiaires);
-		// appel de la methode filterStagiaire lorsqu'on clic sur le bouton de recherche
-
-		// Rempliere la ChoiceBox
+		
+		// Remplire la ChoiceBox
 		List<String> criters = new ArrayList<String>();
 
 		criters.add("Rechercher par :");
@@ -283,11 +299,11 @@ public class PageVisiteurs extends BorderPane {
 		criters.add("Cursus");
 		criters.add("Departement");
 		criters.add("Promotion");
-		criteres.getItems().addAll(criters);
-		criteres.getSelectionModel().select(0);
-		criteres.setEditable(false);
+		comboBoxCriteres.getItems().addAll(criters);
+		comboBoxCriteres.getSelectionModel().select(0);
+		comboBoxCriteres.setEditable(false);
 
-		criteres.setCellFactory(param -> {
+		comboBoxCriteres.setCellFactory(param -> {
 			ListCell<String> cell = new ListCell<String>() {
 				@Override
 				protected void updateItem(String item, boolean empty) {
@@ -302,8 +318,8 @@ public class PageVisiteurs extends BorderPane {
 				}
 			};
 			cell.setOnMouseEntered(event -> {
-				criteres.setPrefWidth(179); // Limite la largeur du ComboBox
-				criteres.setMaxHeight(299);
+				comboBoxCriteres.setPrefWidth(179); // Limite la largeur du ComboBox
+				comboBoxCriteres.setMaxHeight(299);
 				cell.setStyle("-fx-background-color: #324255; -fx-border-color: white; -fx-border-width: 1px;"); // Contour
 																													// Blanc
 																													// au
@@ -317,7 +333,7 @@ public class PageVisiteurs extends BorderPane {
 			return cell;
 		});
 
-		criteres.setButtonCell(new ListCell<String>() {
+		comboBoxCriteres.setButtonCell(new ListCell<String>() {
 			@Override
 			protected void updateItem(String item, boolean empty) {
 				super.updateItem(item, empty);
@@ -332,19 +348,18 @@ public class PageVisiteurs extends BorderPane {
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		// contenuPrincipal
-		contenuPrincipal.getChildren().addAll(bienvenueContenu, rechercheContenu, listeTriContenu, tableViewStagiaire);
+		vBoxContenuPrincipal.getChildren().addAll(hBoxBienvenueContenu, hBoxRechercheContenu, hBoxListeTriContenu, tableViewStagiaire);
 
 		// on initialise les espaces et positions des VBox et HBox
-		coteGauche.setAlignment(Pos.CENTER);
-		coteGaucheBoutons.setAlignment(Pos.CENTER);
-		contenuPrincipal.setAlignment(Pos.CENTER);
-		bienvenueContenu.setAlignment(Pos.CENTER);
-		rechercheContenu.setAlignment(Pos.CENTER);
-		listeTriContenu.setAlignment(Pos.CENTER);
+		vBoxCoteGauche.setAlignment(Pos.CENTER);
+		vBoxCoteGaucheBoutons.setAlignment(Pos.CENTER);
+		vBoxContenuPrincipal.setAlignment(Pos.CENTER);
+		hBoxBienvenueContenu.setAlignment(Pos.CENTER);
+		hBoxRechercheContenu.setAlignment(Pos.CENTER);
+		hBoxListeTriContenu.setAlignment(Pos.CENTER);
 
 		// on ajoute du comportement au bouton accueil
-		accueil.setOnAction(new EventHandler<ActionEvent>() {
-
+		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
@@ -354,33 +369,27 @@ public class PageVisiteurs extends BorderPane {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				accueil.getScene().setRoot(pageAccueil);
+				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
-
 		});
 
 		// on ajoute du comportement au bouton recherche
-		recherche.setOnAction(event -> filterStagiaires());
+		boutonRecherche.setOnAction(event -> filterStagiaires());
 
 		// on ajoute du comportement au bouton imprimer
-		imprimer.setOnAction(new EventHandler<ActionEvent>() {
-
+		boutonImprimer.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-
 				try {
 					proposerTelechargementPDF();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 			}
-
 		});
 
 		// on ajoute du comportement au bouton afficherListeStagiaire
 		boutonAfficherListe.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				tableViewStagiaire.setItems((ObservableList<Stagiaire>) stagiaires);
@@ -388,25 +397,150 @@ public class PageVisiteurs extends BorderPane {
 		});
 
 		// On instancie les HBox et VBox dans le BorderPane
-		this.setLeft(coteGauche);
-		this.setCenter(contenuPrincipal);
+		this.setLeft(vBoxCoteGauche);
+		this.setCenter(vBoxContenuPrincipal);
 
 		// Ajouter le comportement au bouton "connexion" pour changer de page
-		connexion.setOnAction(new EventHandler<ActionEvent>() {
+		boutonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
-				PageConnection pageConnection = new PageConnection(annuaire);
-				connexion.getScene().setRoot(pageConnection);
+				PageConnexion pageConnection = new PageConnexion(annuaire);
+				boutonConnexion.getScene().setRoot(pageConnection);
 			}
 		});
 
+	} // *************** Ici se termine le constructeur de la page Visiteurs ***************
+
+	// Getters et Setters
+
+	public Label getBienvenue() {
+		return labelBienvenue;
 	}
 
+	public void setBienvenue(Label bienvenue) {
+		this.labelBienvenue = bienvenue;
+	}
+
+	public Image getLogo() {
+		return logo;
+	}
+
+	public void setLogo(Image logo) {
+		this.logo = logo;
+	}
+
+	public ImageView getLogoImageView() {
+		return logoImageView;
+	}
+
+	public void setLogoImageView(ImageView logoImageView) {
+		this.logoImageView = logoImageView;
+	}
+
+	public Button getConnexion() {
+		return boutonConnexion;
+	}
+
+	public void setConnexion(Button connexion) {
+		this.boutonConnexion = connexion;
+	}
+
+	public Button getImprimer() {
+		return boutonImprimer;
+	}
+
+	public void setImprimer(Button imprimer) {
+		this.boutonImprimer = imprimer;
+	}
+
+	public Button getAccueil() {
+		return boutonAccueil;
+	}
+
+	public void setAccueil(Button accueil) {
+		this.boutonAccueil = accueil;
+	}
+
+	public Button getRecherche() {
+		return boutonRecherche;
+	}
+
+	public void setRecherche(Button recherche) {
+		this.boutonRecherche = recherche;
+	}
+
+	public Button getTrier() {
+		return boutonTrier;
+	}
+
+	public void setTrier(Button trier) {
+		this.boutonTrier = trier;
+	}
+
+	public TextField getZoneRecherche() {
+		return champZoneRecherche;
+	}
+
+	public void setZoneRecherche(TextField zoneRecherche) {
+		this.champZoneRecherche = zoneRecherche;
+	}
+
+	public VBox getCoteGauche() {
+		return vBoxCoteGauche;
+	}
+
+	public void setCoteGauche(VBox coteGauche) {
+		this.vBoxCoteGauche = coteGauche;
+	}
+
+	public VBox getCoteGaucheBoutons() {
+		return vBoxCoteGaucheBoutons;
+	}
+
+	public void setCoteGaucheBoutons(VBox coteGaucheBoutons) {
+		this.vBoxCoteGaucheBoutons = coteGaucheBoutons;
+	}
+
+	public VBox getContenuPrincipal() {
+		return vBoxContenuPrincipal;
+	}
+
+	public void setContenuPrincipal(VBox contenuPrincipal) {
+		this.vBoxContenuPrincipal = contenuPrincipal;
+	}
+
+	public HBox getBienvenueContenu() {
+		return hBoxBienvenueContenu;
+	}
+
+	public void setBienvenueContenu(HBox bienvenueContenu) {
+		this.hBoxBienvenueContenu = bienvenueContenu;
+	}
+
+	public HBox getRechercheContenu() {
+		return hBoxRechercheContenu;
+	}
+
+	public void setRechercheContenu(HBox rechercheContenu) {
+		this.hBoxRechercheContenu = rechercheContenu;
+	}
+
+	public HBox getListeTriContenu() {
+		return hBoxListeTriContenu;
+	}
+
+	public void setListeTriContenu(HBox listeTriContenu) {
+		this.hBoxListeTriContenu = listeTriContenu;
+	}
+	
+	//METHODES********************************************************************
+
+	// Méthode pour FILTRER
 	private void filterStagiaires() {
-		String critere = criteres.getValue().toLowerCase();
-		String value = zoneRecherche.getText().toLowerCase();
+		String critere = comboBoxCriteres.getValue().toLowerCase();
+		String value = champZoneRecherche.getText().toLowerCase();
 
 		FilteredList<Stagiaire> listFiltre = new FilteredList<>(datas, stagiaire -> {
 			switch (critere) {
@@ -428,6 +562,7 @@ public class PageVisiteurs extends BorderPane {
 		tableViewStagiaire.refresh();
 	}
 
+	// Méthode pour IMPRIMER
 	public void proposerTelechargementPDF() throws IOException {
 		Annuaire annuaire = new Annuaire();
 		// Créer une instance de FileChooser
@@ -474,126 +609,6 @@ public class PageVisiteurs extends BorderPane {
 
 	}
 
-	public Label getBienvenue() {
-		return bienvenue;
-	}
-
-	public void setBienvenue(Label bienvenue) {
-		this.bienvenue = bienvenue;
-	}
-
-	public Image getLogo() {
-		return logo;
-	}
-
-	public void setLogo(Image logo) {
-		this.logo = logo;
-	}
-
-	public ImageView getLogoImageView() {
-		return logoImageView;
-	}
-
-	public void setLogoImageView(ImageView logoImageView) {
-		this.logoImageView = logoImageView;
-	}
-
-	public Button getConnexion() {
-		return connexion;
-	}
-
-	public void setConnexion(Button connexion) {
-		this.connexion = connexion;
-	}
-
-	public Button getImprimer() {
-		return imprimer;
-	}
-
-	public void setImprimer(Button imprimer) {
-		this.imprimer = imprimer;
-	}
-
-	public Button getAccueil() {
-		return accueil;
-	}
-
-	public void setAccueil(Button accueil) {
-		this.accueil = accueil;
-	}
-
-	public Button getRecherche() {
-		return recherche;
-	}
-
-	public void setRecherche(Button recherche) {
-		this.recherche = recherche;
-	}
-
-	public Button getTrier() {
-		return trier;
-	}
-
-	public void setTrier(Button trier) {
-		this.trier = trier;
-	}
-
-	public TextField getZoneRecherche() {
-		return zoneRecherche;
-	}
-
-	public void setZoneRecherche(TextField zoneRecherche) {
-		this.zoneRecherche = zoneRecherche;
-	}
-
-	public VBox getCoteGauche() {
-		return coteGauche;
-	}
-
-	public void setCoteGauche(VBox coteGauche) {
-		this.coteGauche = coteGauche;
-	}
-
-	public VBox getCoteGaucheBoutons() {
-		return coteGaucheBoutons;
-	}
-
-	public void setCoteGaucheBoutons(VBox coteGaucheBoutons) {
-		this.coteGaucheBoutons = coteGaucheBoutons;
-	}
-
-	public VBox getContenuPrincipal() {
-		return contenuPrincipal;
-	}
-
-	public void setContenuPrincipal(VBox contenuPrincipal) {
-		this.contenuPrincipal = contenuPrincipal;
-	}
-
-	public HBox getBienvenueContenu() {
-		return bienvenueContenu;
-	}
-
-	public void setBienvenueContenu(HBox bienvenueContenu) {
-		this.bienvenueContenu = bienvenueContenu;
-	}
-
-	public HBox getRechercheContenu() {
-		return rechercheContenu;
-	}
-
-	public void setRechercheContenu(HBox rechercheContenu) {
-		this.rechercheContenu = rechercheContenu;
-	}
-
-	public HBox getListeTriContenu() {
-		return listeTriContenu;
-	}
-
-	public void setListeTriContenu(HBox listeTriContenu) {
-		this.listeTriContenu = listeTriContenu;
-	}
-
 	// Méthode pour créer des Labels avec style pour les titres des colonnes de
 	// TableView
 	private Label titreTableView(String title, Color color, int fontSize) {
@@ -602,5 +617,4 @@ public class PageVisiteurs extends BorderPane {
 		titreColonne.setFont(new Font("Arial", fontSize)); // Police et taille
 		return titreColonne;
 	}
-
 }

@@ -1,26 +1,18 @@
 package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Noeud;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Utilisateurs;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -30,14 +22,16 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
-public class AjouterStagiaire extends BorderPane {
+public class PageAjouterStagiaire extends BorderPane {
+	
+	// Attributs
 	private Annuaire annuaire;
 	private List<Stagiaire> stagiaires;
 	private Utilisateurs utilisateurs;
+	
 	// On instancie un label "Ajouter un éditeur"
-	private Label ajouterStagiaire = new Label("Ajouter un stagiaire");
+	private Label labelAjouterStagiaire = new Label("Ajouter un stagiaire");
 
 	// Déclaration des labels et textfields pour le gridPane
 	private Label nomLabel = new Label("Nom");
@@ -56,12 +50,11 @@ public class AjouterStagiaire extends BorderPane {
 	private TextField champDepartement = new TextField();
 
 	// Déclaration des boutons
-	private Button cheminVersListeStagiaire = new Button("Annuaire");
+	private Button boutonAnnuaire = new Button("Annuaire");
 	private Button boutonAccueil = new Button("Accueil");
-	private Button rechercher = new Button("Rechercher");
 
 	// Bouton valider editeur
-	private Button valider = new Button("Valider");
+	private Button boutonValider = new Button("Valider");
 
 	// Logo
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_Projet1.png"));
@@ -72,8 +65,8 @@ public class AjouterStagiaire extends BorderPane {
 	VBox coteGaucheBoutons = new VBox(20); // Conteneur des boutons à gauche
 	GridPane coteDroit = new GridPane(); // Conteneur droite pour le GridPane
 
-	// Constructeur
-	public AjouterStagiaire(Annuaire annuaire, Utilisateurs utilisateurs) {
+	// Constructeur de la page AjouterStagiaire
+	public PageAjouterStagiaire(Annuaire annuaire, Utilisateurs utilisateurs) {
 		super();
 		this.utilisateurs = utilisateurs;
 		// dimensions logo
@@ -81,12 +74,12 @@ public class AjouterStagiaire extends BorderPane {
 		logoImageView.setFitHeight(140);
 
 		// mettre en gras
-		ajouterStagiaire.setStyle("-fx-text-fill:white ;-fx-font-size:20px ;");
+		labelAjouterStagiaire.setStyle("-fx-text-fill:white ;-fx-font-size:20px ;");
 
 		// fond blanc
 		setStyle("-fx-background-color:#172428");
-		cheminVersListeStagiaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		cheminVersListeStagiaire.setPrefSize(200, 20);
+		boutonAnnuaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAnnuaire.setPrefSize(200, 20);
 		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonAccueil.setPrefSize(200, 20);
 
@@ -94,7 +87,7 @@ public class AjouterStagiaire extends BorderPane {
 		coteGauche.setPrefSize(220, 450);
 		coteGauche.setStyle("-fx-background-color:#25333F");
 		coteGauche.getChildren().addAll(logoImageView, coteGaucheBoutons);
-		coteGaucheBoutons.getChildren().addAll(cheminVersListeStagiaire, boutonAccueil);
+		coteGaucheBoutons.getChildren().addAll(boutonAnnuaire, boutonAccueil);
 
 		// alignement dans la VBox
 		coteGauche.setAlignment(Pos.CENTER);
@@ -125,7 +118,7 @@ public class AjouterStagiaire extends BorderPane {
 		champDepartement.setMaxWidth(700);
 		champDepartement.setPromptText("Entrez le département (en chiffre)");
 
-		valider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonValider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// Ajouter les éléments au GridPane (formulaire)
 		for (int i = 0; i < 2; i++) {
@@ -135,7 +128,7 @@ public class AjouterStagiaire extends BorderPane {
 			coteDroit.getRowConstraints().add(new RowConstraints(40));
 		}
 		coteDroit.setAlignment(Pos.CENTER);
-		coteDroit.add(ajouterStagiaire, 0, 0, 2, 1);
+		coteDroit.add(labelAjouterStagiaire, 0, 0, 2, 1);
 		coteDroit.add(nomLabel, 0, 2, 1, 1);
 		coteDroit.add(champNom, 0, 3, 1, 1);
 		coteDroit.add(prenomLabel, 1, 2, 1, 1);
@@ -146,9 +139,9 @@ public class AjouterStagiaire extends BorderPane {
 		coteDroit.add(champPromotion, 1, 6, 1, 1);
 		coteDroit.add(departementLabel, 0, 8, 1, 1);
 		coteDroit.add(champDepartement, 0, 9, 1, 1);
-		coteDroit.add(valider, 0, 11, 2, 1);
+		coteDroit.add(boutonValider, 0, 11, 2, 1);
 
-		GridPane.setHalignment(valider, javafx.geometry.HPos.CENTER);
+		GridPane.setHalignment(boutonValider, javafx.geometry.HPos.CENTER);
 
 		coteDroit.setVgap(5);
 		coteDroit.setHgap(50);
@@ -157,10 +150,8 @@ public class AjouterStagiaire extends BorderPane {
 		this.setLeft(coteGauche);
 		this.setCenter(coteDroit);
 
-
 		// on ajoute du comportement au bouton accueil
 		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
@@ -172,11 +163,10 @@ public class AjouterStagiaire extends BorderPane {
 				}
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
-
 		});
+		
 		// on ajoute du comportement au bouton valider
-
-		valider.setOnAction(new EventHandler<ActionEvent>() {
+		boutonValider.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
@@ -206,20 +196,15 @@ public class AjouterStagiaire extends BorderPane {
 				champDepartement.clear();
 			}
 		});
+		
 		// on ajoute du comportement au bouton annuaire
-
-		cheminVersListeStagiaire.setOnAction(new EventHandler<ActionEvent>() {
-
+		boutonAnnuaire.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				PageAdminEdit pageAdminEdit = new PageAdminEdit(annuaire, utilisateurs);
-
-				cheminVersListeStagiaire.getScene().setRoot(pageAdminEdit);
+				boutonAnnuaire.getScene().setRoot(pageAdminEdit);
 			}
 		});
-		
-		
-
-	}
+	}// *************** Ici se termine le constructeur de la page AjouterStagiaire ***************
 }

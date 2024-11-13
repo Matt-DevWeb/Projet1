@@ -1,11 +1,9 @@
 package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
 import java.io.IOException;
-
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Editeur;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Utilisateurs;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -24,11 +22,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 
-public class AjouterEditeur extends BorderPane {
-	// On instancie un label "Ajouter un éditeur"
-	private Label ajouterEditeur = new Label("Ajouter un éditeur");
+public class PageAjouterEditeur extends BorderPane {
+	
+	// Attributs
 	private Utilisateurs utilisateurs;
 
+	// On instancie un label "Ajouter un éditeur"
+	private Label labelAjouterEditeur = new Label("Ajouter un éditeur");
 
 	// Déclaration des labels et textfields pour le gridPane
 	private Label labelUtilisateur = new Label("Nom d'utilisateur");
@@ -37,23 +37,23 @@ public class AjouterEditeur extends BorderPane {
 	private PasswordField champMotDePasse = new PasswordField();
 
 	// Déclaration des boutons
-	private Button cheminVersListeStagiaire = new Button("Annuaire");
+	private Button boutonAnnuaire = new Button("Annuaire");
 	private Button boutonAccueil = new Button("Accueil");
 
 	// Bouton valider editeur
-	private Button valider = new Button("Valider");
+	private Button boutonValider = new Button("Valider");
 
 	// Logo
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_Projet1.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// Declaration VBox et GridPane
-	VBox coteGauche = new VBox(450); // Conteneur à gauche pour le logo et les boutons
-	VBox leftSideButtons = new VBox(20); // Conteneur des boutons à gauche
+	VBox vBoxCoteGauche = new VBox(450); // Conteneur à gauche pour le logo et les boutons
+	VBox vBoxLeftSideButtons = new VBox(20); // Conteneur des boutons à gauche
 	GridPane coteDroit = new GridPane(); // Conteneur droite pour le GridPane
 
-	// Constructeur
-	public AjouterEditeur(Annuaire annuaire, Utilisateurs utilisateurs) {
+	// Constructeur de la page AjouterEditeur
+	public PageAjouterEditeur(Annuaire annuaire, Utilisateurs utilisateurs) {
 		super();
 		this.utilisateurs = utilisateurs;
 
@@ -62,27 +62,28 @@ public class AjouterEditeur extends BorderPane {
 		logoImageView.setFitHeight(140);
 
 		// mettre en gras
-		ajouterEditeur.setStyle("-fx-text-fill:white ;-fx-font-size:30px ;");
+		labelAjouterEditeur.setStyle("-fx-text-fill:white ;-fx-font-size:30px ;");
 
 		// fond blanc
 		setStyle("-fx-background-color:#172428");
-		cheminVersListeStagiaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		cheminVersListeStagiaire.setPrefSize(200, 20);
+		boutonAnnuaire.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonAnnuaire.setPrefSize(200, 20);
+		
 		//Stylisation du bouton d'accueil
 		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonAccueil.setPrefSize(200, 20);
+		
 		// Definir taille de la VBox + ajout composants
-		coteGauche.setPrefSize(220, 450);
-		coteGauche.getChildren().addAll(logoImageView, leftSideButtons);
-		leftSideButtons.getChildren().addAll(cheminVersListeStagiaire, boutonAccueil);
+		vBoxCoteGauche.setPrefSize(220, 450);
+		vBoxCoteGauche.getChildren().addAll(logoImageView, vBoxLeftSideButtons);
+		vBoxLeftSideButtons.getChildren().addAll(boutonAnnuaire, boutonAccueil);
 
 		// Modifier la couleur de fond gauche
-		coteGauche.setStyle("-fx-background-color:#25333F");
+		vBoxCoteGauche.setStyle("-fx-background-color:#25333F");
 
 		// alignement dans la VBox
-		coteGauche.setAlignment(Pos.CENTER);
-		leftSideButtons.setAlignment(Pos.CENTER);
-//
+		vBoxCoteGauche.setAlignment(Pos.CENTER);
+		vBoxLeftSideButtons.setAlignment(Pos.CENTER);
 
 		labelUtilisateur.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
 		champUtilisateur.setPromptText("Créez le nom d'utilisateur de l'éditeur");
@@ -94,8 +95,7 @@ public class AjouterEditeur extends BorderPane {
 		champMotDePasse.setPadding(new Insets(10, 15, 10, 15));
 		champMotDePasse.setMaxWidth(700);
 		
-		valider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-
+		boutonValider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// Ajouter les éléments au GridPane (formulaire)
 				for (int i = 0; i < 2; i++) {
@@ -104,28 +104,27 @@ public class AjouterEditeur extends BorderPane {
 				for (int i = 0; i < 5; i++) {
 					coteDroit.getRowConstraints().add(new RowConstraints(40));
 				}
+				
 		// Ajouter les éléments au GridPane (formulaire)
 		coteDroit.setAlignment(Pos.CENTER);
-		coteDroit.add(ajouterEditeur, 0, 0, 2, 1);
+		coteDroit.add(labelAjouterEditeur, 0, 0, 2, 1);
 		coteDroit.add(labelUtilisateur, 0, 2, 1, 1);
 		coteDroit.add(champUtilisateur, 0, 3, 1, 1);
 		coteDroit.add(labelMotDePasse, 1, 2, 1, 1);
 		coteDroit.add(champMotDePasse, 1, 3, 1, 1);
-		coteDroit.add(valider, 0, 5, 2, 1);
+		coteDroit.add(boutonValider, 0, 5, 2, 1);
 
 		// Alignement du bouton valider
-		GridPane.setHalignment(valider, javafx.geometry.HPos.CENTER);
-
+		GridPane.setHalignment(boutonValider, javafx.geometry.HPos.CENTER);
 		coteDroit.setVgap(5);
 		coteDroit.setHgap(50);
 
 		// Ajout VBox gauche et la GridPane dans borderPane
-		this.setLeft(coteGauche);
+		this.setLeft(vBoxCoteGauche);
 		this.setCenter(coteDroit);
 
 		// on ajoute du comportement au bouton acceuil
 		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
@@ -137,21 +136,17 @@ public class AjouterEditeur extends BorderPane {
 				}
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
-
 		});
 
 		// on ajoute du comportement au bouton valider
-
-		valider.setOnAction(new EventHandler<ActionEvent>() {
+		boutonValider.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
-
 				String email = champUtilisateur.getText();
 				String motDepasse = champMotDePasse.getText();
-
 				Editeur nouveauEditeur = new Editeur(email, motDepasse);
-
+				
 				annuaire.ajouterEditeur(nouveauEditeur,true);
 
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -159,21 +154,17 @@ public class AjouterEditeur extends BorderPane {
 				alert.setHeaderText(null);
 				alert.setContentText("L'éditeur a été ajouté avec succès");
 				alert.showAndWait();
-
 			}
 		});
 		
 		// on ajoute du comportement au bouton annuaire
-
-		cheminVersListeStagiaire.setOnAction(new EventHandler<ActionEvent>() {
-
+		boutonAnnuaire.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				PageAdminEdit pageAdminEdit = new PageAdminEdit(annuaire, utilisateurs);
-
-				cheminVersListeStagiaire.getScene().setRoot(pageAdminEdit);
+				boutonAnnuaire.getScene().setRoot(pageAdminEdit);
 			}
 		});
-	}
+	} // *************** Ici se termine le constructeur de la page AjouterEditeur ***************
 }

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Authentification;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Noeud;
@@ -23,7 +22,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -31,14 +29,12 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -51,6 +47,7 @@ import javafx.stage.FileChooser;
 
 public class PageAdminEdit extends BorderPane {
 
+	// Attributs
 	private Annuaire annuaire;
 	private List<Stagiaire> stagiaires;
 	private Utilisateurs utilisateurs;
@@ -59,7 +56,6 @@ public class PageAdminEdit extends BorderPane {
 
 	// On instancie les labels
 	private Label labelBienvenue = new Label("Annuaire des stagiaires de la Dev'Up Academy !");
-	private Label labelListeStagiaires = new Label("Liste des stagiaires de l'entreprise.");
 
 	// On instancie l'image
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_Projet1.png"));
@@ -78,20 +74,20 @@ public class PageAdminEdit extends BorderPane {
 	private Button boutonAfficherListe = new Button("Afficher la liste de stagiaires");
 
 	// On instancie le TextField
-	private TextField zoneRecherche = new TextField();
+	private TextField champZoneRecherche = new TextField();
 
 	// On instancie les HBox et VBox qui sont contenu dans le BorderPane
-	private VBox coteGauche = new VBox(180);
-
-	private VBox coteGaucheBoutons = new VBox(20);
-	private VBox contenuPrincipal = new VBox();
-	private HBox bienvenueContenu = new HBox(350);
-	private HBox rechercheContenu = new HBox(5);
-	private HBox listeTriContenu = new HBox(300);
+	private VBox vBoxCoteGauche = new VBox(180);
+	private VBox vBoxCoteGaucheBoutons = new VBox(20);
+	private VBox vBoxContenuPrincipal = new VBox();
+	private HBox hBoxBienvenueContenu = new HBox(350);
+	private HBox hBoxRechercheContenu = new HBox(5);
+	private HBox hBoxListeTriContenu = new HBox(300);
 
 	// On instancie la ChoiceBox
-	private ComboBox<String> criteres = new ComboBox();
+	private ComboBox<String> choiceBoxCriteres = new ComboBox();
 
+	// Constructeur de la page AdminEdit
 	public PageAdminEdit(Annuaire annuaire, Utilisateurs utilisateurConnecte) {
 		super();
 		this.utilisateurs = utilisateurConnecte;
@@ -103,32 +99,32 @@ public class PageAdminEdit extends BorderPane {
 			e.printStackTrace();
 		}
 
+		// *****A COMPLETER*****
 		tableViewStagiaire = new TableView<>(FXCollections.observableArrayList(this.stagiaires));
 
+		// Définir le style général de la page
 		setStyle("-fx-background-color:#172428");
-		// logo
+		
+		// Définir la taille du logo
 		logoImageView.setFitWidth(140);
 		logoImageView.setFitHeight(140);
 
-		// COTE GAUCHE
-
-		// on initialise la taille de la VBox coteGauche
-		coteGauche.setPrefSize(220, 450);
+		// On initialise la taille de la VBox coteGauche
+		vBoxCoteGauche.setPrefSize(220, 450);
 
 		// On ajoute les images et la VBox du coteGauche
-		coteGauche.getChildren().addAll(logoImageView, coteGaucheBoutons);
+		vBoxCoteGauche.getChildren().addAll(logoImageView, vBoxCoteGaucheBoutons);
 
-		// on ajoute nos boutons a la VBox coteGauche
-
+		// on ajoute nos boutons a la VBox coteGauche en fonction du profil qui est connecté
 		if (utilisateurConnecte.isAdmin()) {
-			coteGaucheBoutons.getChildren().addAll(boutonMettreAjour, boutonAjoutStagiaire, boutonSuppStagiaire,
+			vBoxCoteGaucheBoutons.getChildren().addAll(boutonMettreAjour, boutonAjoutStagiaire, boutonSuppStagiaire,
 					boutonAjoutEditeur, boutonSuppEditeur, boutonImprimer, boutonAccueil);
 		} else {
-			coteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil);
-
+			vBoxCoteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil);
 		}
+		
 		// On change la couleur de fond de la partie gauche
-		coteGauche.setStyle("-fx-background-color:#25333F");
+		vBoxCoteGauche.setStyle("-fx-background-color:#25333F");
 
 		boutonImprimer.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonImprimer.setPrefSize(200, 20);
@@ -153,30 +149,33 @@ public class PageAdminEdit extends BorderPane {
 
 		boutonDeconnexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonDeconnexion.setPrefSize(200, 20);
+		
 		// CENTRE DE PAGE
 		boutonRecherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		criteres.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		criteres.setPrefWidth(180); // Limite la largeur du ComboBox
-		criteres.setMaxHeight(300); // Limite la hauteur du ComboBox, si nécessaire
+		
+		//On ajoute du style à notre choiceBox
+		choiceBoxCriteres.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		choiceBoxCriteres.setPrefWidth(180); // Limite la largeur du ComboBox
+		choiceBoxCriteres.setMaxHeight(300); // Limite la hauteur du ComboBox, si nécessaire
+		
 		// On change la couleur du texte des labels
 		labelBienvenue.setStyle("-fx-text-fill: white; -fx-font-size:20px;");
-		// labelListeStagiaires.setStyle("-fx-text-fill: white; -fx-font-size:16px;");
 
 		// On stylise le textField zoneRecherche
-		zoneRecherche.setPadding(new Insets(10, 40, 10, 15));
-		zoneRecherche.setMaxWidth(300);
-		zoneRecherche.setPrefHeight(30);
-		zoneRecherche.setPromptText("Rechercher un stagiaire");
+		champZoneRecherche.setPadding(new Insets(10, 40, 10, 15));
+		champZoneRecherche.setMaxWidth(300);
+		champZoneRecherche.setPrefHeight(30);
+		champZoneRecherche.setPromptText("Rechercher un stagiaire");
 
 		// On ajoute le label bienvenue et le bouton connexion à la VBox
-		// bienvenueContenu
-		bienvenueContenu.getChildren().addAll(labelBienvenue, boutonDeconnexion);
+		hBoxBienvenueContenu.getChildren().addAll(labelBienvenue, boutonDeconnexion);
 
 		// On ajoute du padding à la HBox bienvenueContenu
-		bienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
+		hBoxBienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
+		
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		rechercheContenu.getChildren().addAll(criteres, zoneRecherche, boutonRecherche, boutonAfficherListe);
-		rechercheContenu.setPadding(new Insets(10, 0, 40, 0));
+		hBoxRechercheContenu.getChildren().addAll(choiceBoxCriteres, champZoneRecherche, boutonRecherche, boutonAfficherListe);
+		hBoxRechercheContenu.setPadding(new Insets(10, 0, 40, 0));
 		boutonAfficherListe.setStyle("-fx-background-color: #324255; -fx-text-fill: white; -fx-font-size: 16px;");
 
 		// table VIEW
@@ -207,12 +206,13 @@ public class PageAdminEdit extends BorderPane {
 		colonnePromo.setGraphic(titreTableView("Promo", Color.WHITE, 14));
 		colonnePromo.setCellValueFactory(new PropertyValueFactory<>("anneePromo"));
 
-		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus,
-				colonnePromo);
+		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus, colonnePromo);
 
 		tableViewStagiaire.setPlaceholder(new Label("Aucun stagiaire trouvé."));
+		
 		// permet au colonne d'utiliser tout l'espace disponible
 		tableViewStagiaire.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		
 		// permet de selectionner de multiples éléments
 		tableViewStagiaire.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableViewStagiaire.setStyle("-fx-background-color: #324255");
@@ -233,6 +233,8 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 		});
+		
+		// Changer la couleur du texte dans la colonne prénom
 		colonnePrenom.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
 
@@ -249,6 +251,8 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 		});
+		
+		// Changer la couleur du texte dans la colonne departement
 		colonneDepartement.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
 				@Override
@@ -264,6 +268,8 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 		});
+		
+		// Changer la couleur du texte dans la colonne cursus
 		colonneCursus.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
 				@Override
@@ -279,6 +285,8 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 		});
+		
+		// Changer la couleur du texte dans la colonne promo
 		colonnePromo.setCellFactory(col -> {
 			return new TableCell<Stagiaire, Integer>() {
 				@Override
@@ -295,6 +303,7 @@ public class PageAdminEdit extends BorderPane {
 			};
 		});
 
+		// Ajout de style pour les lignes lorsqu'elles sont sélectionnées par l'utilisateur
 		tableViewStagiaire.setRowFactory(tv -> {
 			TableRow<Stagiaire> row = new TableRow<>();
 			row.setStyle("-fx-background-color: #324255;");
@@ -308,39 +317,26 @@ public class PageAdminEdit extends BorderPane {
 			return row;
 		});
 
+		// Ajout de style pour les colonnes
 		tableViewStagiaire.getColumns().forEach(column -> {
 			column.setStyle("-fx-background-color: #324255; -fx-text-fill: white;");
 		});
 
+		// On charge la liste dans la tableview
 		tableViewStagiaire.setItems((ObservableList<Stagiaire>) this.stagiaires);
 
-		// Etape5 j'ajoute une gestionnaire d'évènement pour les cellules de ma colonne
-//		colonneNom.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Stagiaire, String>>() {
-//			@Override
-//			public void handle(CellEditEvent<Stagiaire, String> event) {
-//				// Je récupère l'objet qui correspond à la ligne modifiée
-//				((Stagiaire) tableViewStagiaire.getItems().get((event.getTablePosition().getRow())))
-//						.setNom(event.getNewValue());// On récupère la nouvelle valeur dans l'event
-//				colonneNom.setCellFactory(TextFieldTableCell.forTableColumn()); // On autotrise à transformer la case en
-//			}
-//		});
-//																		// Textfield
-//		colonneNom.setEditable(true);// on autorise la modification des colonnes
-
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
-		// contenuPrincipal
-		contenuPrincipal.getChildren().addAll(bienvenueContenu, rechercheContenu, listeTriContenu, tableViewStagiaire);
+		vBoxContenuPrincipal.getChildren().addAll(hBoxBienvenueContenu, hBoxRechercheContenu, hBoxListeTriContenu, tableViewStagiaire);
 
 		// on initialise les espaces et positions des VBox et HBox
-		coteGauche.setAlignment(Pos.CENTER);
-		coteGaucheBoutons.setAlignment(Pos.CENTER);
-		contenuPrincipal.setAlignment(Pos.CENTER);
-		bienvenueContenu.setAlignment(Pos.CENTER);
-		rechercheContenu.setAlignment(Pos.CENTER);
-		listeTriContenu.setAlignment(Pos.CENTER);
+		vBoxCoteGauche.setAlignment(Pos.CENTER);
+		vBoxCoteGaucheBoutons.setAlignment(Pos.CENTER);
+		vBoxContenuPrincipal.setAlignment(Pos.CENTER);
+		hBoxBienvenueContenu.setAlignment(Pos.CENTER);
+		hBoxRechercheContenu.setAlignment(Pos.CENTER);
+		hBoxListeTriContenu.setAlignment(Pos.CENTER);
 
-		// ***********************************************************************************************
-		// on récupère la sélection souris du tableView dans une variable
+		// on récupère la sélection souris du tableView dans une variable pour SUPPRIMER
 		tableViewStagiaire.getSelectionModel().selectedItemProperty()
 				.addListener((obs, ancienElement, nouvelElement) -> {
 					if (nouvelElement != null) {
@@ -380,6 +376,7 @@ public class PageAdminEdit extends BorderPane {
 					}
 				});
 
+		// on récupère la sélection souris du tableView dans une variable pour MODIFIER
 		tableViewStagiaire.getSelectionModel().selectedItemProperty()
 				.addListener((obs, ancienElement, nouvelElement) -> {
 					if (nouvelElement != null) {
@@ -412,8 +409,6 @@ public class PageAdminEdit extends BorderPane {
 					}
 				});
 
-		// ****************************************************************************************************
-
 		// on ajoute du comportement au bouton accueil
 		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -428,11 +423,9 @@ public class PageAdminEdit extends BorderPane {
 				}
 				boutonAccueil.getScene().setRoot(pageAccueil);
 			}
-
 		});
 
 		// on ajoute du comportement au bouton imprimer
-
 		boutonImprimer.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -447,52 +440,39 @@ public class PageAdminEdit extends BorderPane {
 		});
 
 		// on ajoute du comportement au bouton ajouterStagiare
-
 		boutonAjoutStagiaire.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				AjouterStagiaire ajouterStagiaire = new AjouterStagiaire(annuaire, utilisateurs);
+				PageAjouterStagiaire ajouterStagiaire = new PageAjouterStagiaire(annuaire, utilisateurs);
 				boutonAjoutStagiaire.getScene().setRoot(ajouterStagiaire);
-
 			}
-
 		});
 
 		// on ajoute du comportement au bouton ajoutEditeur
-
 		boutonAjoutEditeur.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-				AjouterEditeur ajouterEditeur = new AjouterEditeur(annuaire, utilisateurs);
+				PageAjouterEditeur ajouterEditeur = new PageAjouterEditeur(annuaire, utilisateurs);
 				boutonAjoutEditeur.getScene().setRoot(ajouterEditeur);
-
 			}
-
 		});
 
 		// on ajoute du comportement au bouton Deconnexion
-
 		boutonDeconnexion.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
-				PageConnection pageConnection = new PageConnection(annuaire);
+				PageConnexion pageConnection = new PageConnexion(annuaire);
 				boutonDeconnexion.getScene().setRoot(pageConnection);
-
 			}
-
 		});
 
 		// on ajoute du comportement au bouton recherche
-
 		boutonRecherche.setOnAction(event -> filterStagiaires());
 
 		// on ajoute du comportement au bouton afficherListeStagiaire
 		boutonAfficherListe.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				tableViewStagiaire.setItems((ObservableList<Stagiaire>) stagiaires);
@@ -500,7 +480,6 @@ public class PageAdminEdit extends BorderPane {
 		});
 		
 		boutonSuppEditeur.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				TextInputDialog dialog = new TextInputDialog();
@@ -514,16 +493,15 @@ public class PageAdminEdit extends BorderPane {
 		        	Authentification authentification = new Authentification();
 		        	authentification.supprimerEditeur(name, annuaire);
 		        	});
-
 			}
-
 		});
 
 		// On instancie les HBox et VBox dans le BorderPane
-		this.setLeft(coteGauche);
-		this.setCenter(contenuPrincipal);
+		this.setLeft(vBoxCoteGauche);
+		this.setCenter(vBoxContenuPrincipal);
 		datas.addAll(this.stagiaires);
-		// Rempliere la ChoiceBox
+		
+		// Remplire la ChoiceBox
 		List<String> criters = new ArrayList<String>();
 
 		criters.add("Rechercher par :");
@@ -532,10 +510,10 @@ public class PageAdminEdit extends BorderPane {
 		criters.add("Cursus");
 		criters.add("Departement");
 		criters.add("Promotion");
-		criteres.getItems().addAll(criters);
-		criteres.getSelectionModel().select(0);
+		choiceBoxCriteres.getItems().addAll(criters);
+		choiceBoxCriteres.getSelectionModel().select(0);
 
-		criteres.setCellFactory(param -> {
+		choiceBoxCriteres.setCellFactory(param -> {
 			ListCell<String> cell = new ListCell<String>() {
 				@Override
 				protected void updateItem(String item, boolean empty) {
@@ -550,8 +528,8 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 			cell.setOnMouseEntered(event -> {
-				criteres.setPrefWidth(179); // Limite la largeur du ComboBox
-				criteres.setMaxHeight(299);
+				choiceBoxCriteres.setPrefWidth(179); // Limite la largeur du ComboBox
+				choiceBoxCriteres.setMaxHeight(299);
 				cell.setStyle("-fx-background-color: #324255; -fx-border-color: white; -fx-border-width: 1px;"); // Contour
 																													// Blanc
 																													// au
@@ -565,7 +543,7 @@ public class PageAdminEdit extends BorderPane {
 			return cell;
 		});
 
-		criteres.setButtonCell(new ListCell<String>() {
+		choiceBoxCriteres.setButtonCell(new ListCell<String>() {
 			@Override
 			protected void updateItem(String item, boolean empty) {
 				super.updateItem(item, empty);
@@ -578,77 +556,8 @@ public class PageAdminEdit extends BorderPane {
 			}
 		});
 
-	}
-
-	private void filterStagiaires() {
-		String critere = criteres.getValue().toLowerCase();
-		String value = zoneRecherche.getText().toLowerCase();
-
-		FilteredList<Stagiaire> listFiltre = new FilteredList<>(datas, stagiaire -> {
-			switch (critere) {
-			case "nom":
-				return stagiaire.getNom().equalsIgnoreCase(value);
-			case "prenom":
-				return stagiaire.getPrenom().equalsIgnoreCase(value);
-			case "departement":
-				return stagiaire.getDepartement().equalsIgnoreCase(value);
-			case "cursus":
-				return stagiaire.getCursus().equalsIgnoreCase(value);
-			case "promotion":
-				return String.valueOf(stagiaire.getAnneePromo()).equalsIgnoreCase(value);
-			default:
-				return true;
-			}
-		});
-		tableViewStagiaire.setItems(listFiltre);
-		tableViewStagiaire.refresh();
-	}
-
-	public void proposerTelechargementPDF() throws IOException {
-		Annuaire annuaire = new Annuaire();
-		// Créer une instance de FileChooser
-		FileChooser fileChooser = new FileChooser();
-
-		// Définir un filtre pour n'accepter que les fichiers PDF
-		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("PDF Files", "*.pdf");
-		fileChooser.getExtensionFilters().add(filter);
-
-		// Ouvrir une boîte de dialogue pour choisir le fichier
-		File fichier = fileChooser.showSaveDialog(null);
-
-		// Vérifier si l'utilisateur a sélectionné un fichier
-		if (fichier != null) {
-			if (!fichier.getName().endsWith(".pdf")) {
-				// Ajouter l'extension .pdf si nécessaire
-				fichier = new File(fichier.getAbsolutePath() + ".pdf");
-			}
-			System.out.println("Fichier sélectionné : " + fichier.getAbsolutePath());
-			// Créer le PDF à l'emplacement sélectionné
-			annuaire.creerPDF(tableViewStagiaire, fichier.getAbsolutePath());
-			System.out.println("Le fichier PDF a été créé avec succès à : " + fichier.getAbsolutePath());
-			try {
-				File pdfFile = new File(fichier.getPath());
-				if (pdfFile.exists()) {
-					if (Desktop.isDesktopSupported()) {
-
-						// Ouvrir le fichier
-						Desktop desktop = Desktop.getDesktop();
-						desktop.open(pdfFile);
-					} else {
-						System.out.println("Le système ne supporte pas l'ouverture de fichiers par défaut.");
-					}
-
-				} else {
-					System.out.println("Le fichier PDF n'existe pas.");
-				}
-			} catch (IOException e) {
-				System.out.println("Erreur lors de l'ouverture du fichier PDF : " + e.getMessage());
-			}
-		} else {
-			System.out.println("L'utilisateur a annulé la selection du fichier");
-		}
-	}
-
+	} // *************** Ici se termine le constructeur de la page AdminEdit ***************
+	
 	// Getters et Setters
 	public Label getBienvenue() {
 		return labelBienvenue;
@@ -699,59 +608,59 @@ public class PageAdminEdit extends BorderPane {
 	}
 
 	public TextField getZoneRecherche() {
-		return zoneRecherche;
+		return champZoneRecherche;
 	}
 
 	public void setZoneRecherche(TextField zoneRecherche) {
-		this.zoneRecherche = zoneRecherche;
+		this.champZoneRecherche = zoneRecherche;
 	}
 
 	public VBox getCoteGauche() {
-		return coteGauche;
+		return vBoxCoteGauche;
 	}
 
 	public void setCoteGauche(VBox coteGauche) {
-		this.coteGauche = coteGauche;
+		this.vBoxCoteGauche = coteGauche;
 	}
 
 	public VBox getCoteGaucheBoutons() {
-		return coteGaucheBoutons;
+		return vBoxCoteGaucheBoutons;
 	}
 
 	public void setCoteGaucheBoutons(VBox coteGaucheBoutons) {
-		this.coteGaucheBoutons = coteGaucheBoutons;
+		this.vBoxCoteGaucheBoutons = coteGaucheBoutons;
 	}
 
 	public VBox getContenuPrincipal() {
-		return contenuPrincipal;
+		return vBoxContenuPrincipal;
 	}
 
 	public void setContenuPrincipal(VBox contenuPrincipal) {
-		this.contenuPrincipal = contenuPrincipal;
+		this.vBoxContenuPrincipal = contenuPrincipal;
 	}
 
 	public HBox getBienvenueContenu() {
-		return bienvenueContenu;
+		return hBoxBienvenueContenu;
 	}
 
 	public void setBienvenueContenu(HBox bienvenueContenu) {
-		this.bienvenueContenu = bienvenueContenu;
+		this.hBoxBienvenueContenu = bienvenueContenu;
 	}
 
 	public HBox getRechercheContenu() {
-		return rechercheContenu;
+		return hBoxRechercheContenu;
 	}
 
 	public void setRechercheContenu(HBox rechercheContenu) {
-		this.rechercheContenu = rechercheContenu;
+		this.hBoxRechercheContenu = rechercheContenu;
 	}
 
 	public HBox getListeTriContenu() {
-		return listeTriContenu;
+		return hBoxListeTriContenu;
 	}
 
 	public void setListeTriContenu(HBox listeTriContenu) {
-		this.listeTriContenu = listeTriContenu;
+		this.hBoxListeTriContenu = listeTriContenu;
 	}
 
 	public TableView<Stagiaire> getTableViewStagiaire() {
@@ -761,9 +670,81 @@ public class PageAdminEdit extends BorderPane {
 	public void setTableViewStagiaire(TableView<Stagiaire> tableViewStagiaire) {
 		this.tableViewStagiaire = tableViewStagiaire;
 	}
+	
+	//METHODES********************************************************************
+	
+	// Méthode pour Imprimer en PDF
+	public void proposerTelechargementPDF() throws IOException {
+		Annuaire annuaire = new Annuaire();
+		// Créer une instance de FileChooser
+		FileChooser fileChooser = new FileChooser();
 
-	// Méthode pour créer des Labels avec style pour les titres des colonnes de
-	// TableView
+		// Définir un filtre pour n'accepter que les fichiers PDF
+		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("PDF Files", "*.pdf");
+		fileChooser.getExtensionFilters().add(filter);
+
+		// Ouvrir une boîte de dialogue pour choisir le fichier
+		File fichier = fileChooser.showSaveDialog(null);
+
+		// Vérifier si l'utilisateur a sélectionné un fichier
+		if (fichier != null) {
+			if (!fichier.getName().endsWith(".pdf")) {
+				// Ajouter l'extension .pdf si nécessaire
+				fichier = new File(fichier.getAbsolutePath() + ".pdf");
+			}
+			System.out.println("Fichier sélectionné : " + fichier.getAbsolutePath());
+			// Créer le PDF à l'emplacement sélectionné
+			annuaire.creerPDF(tableViewStagiaire, fichier.getAbsolutePath());
+			System.out.println("Le fichier PDF a été créé avec succès à : " + fichier.getAbsolutePath());
+			try {
+				File pdfFile = new File(fichier.getPath());
+				if (pdfFile.exists()) {
+					if (Desktop.isDesktopSupported()) {
+
+						// Ouvrir le fichier
+						Desktop desktop = Desktop.getDesktop();
+						desktop.open(pdfFile);
+					} else {
+						System.out.println("Le système ne supporte pas l'ouverture de fichiers par défaut.");
+					}
+
+				} else {
+					System.out.println("Le fichier PDF n'existe pas.");
+				}
+			} catch (IOException e) {
+				System.out.println("Erreur lors de l'ouverture du fichier PDF : " + e.getMessage());
+			}
+		} else {
+			System.out.println("L'utilisateur a annulé la selection du fichier");
+		}
+	}
+	
+	// Méthode pour FILTRER
+	private void filterStagiaires() {
+		String critere = choiceBoxCriteres.getValue().toLowerCase();
+		String value = champZoneRecherche.getText().toLowerCase();
+
+		FilteredList<Stagiaire> listFiltre = new FilteredList<>(datas, stagiaire -> {
+			switch (critere) {
+			case "nom":
+				return stagiaire.getNom().equalsIgnoreCase(value);
+			case "prenom":
+				return stagiaire.getPrenom().equalsIgnoreCase(value);
+			case "departement":
+				return stagiaire.getDepartement().equalsIgnoreCase(value);
+			case "cursus":
+				return stagiaire.getCursus().equalsIgnoreCase(value);
+			case "promotion":
+				return String.valueOf(stagiaire.getAnneePromo()).equalsIgnoreCase(value);
+			default:
+				return true;
+			}
+		});
+		tableViewStagiaire.setItems(listFiltre);
+		tableViewStagiaire.refresh();
+	}
+
+	// Méthode pour créer des Labels avec style pour les titres des colonnes de TableView
 	private Label titreTableView(String title, Color color, int fontSize) {
 		Label titreColonne = new Label(title);
 		titreColonne.setTextFill(color); // Couleur de la police
@@ -771,6 +752,7 @@ public class PageAdminEdit extends BorderPane {
 		return titreColonne;
 	}
 
+	// Méthode pour MODIFIER dans une fenetre 
 	public Optional<Stagiaire> afficherDialogueModification(Stagiaire stagiaire) {
 		Dialog<Stagiaire> dialog = new Dialog<>();
 		dialog.setTitle("Modifier Stagiaire");
@@ -794,11 +776,12 @@ public class PageAdminEdit extends BorderPane {
 		grid.add(departementField, 1, 3);
 		grid.add(new Label("Année de la Promo:"), 0, 4);
 		grid.add(promoField, 1, 4);
+		
 		// Ajouter d'autres champs de manière similaire
 		grid.setVgap(15); // Exemple de configuration des espaces
 		grid.setHgap(15);
-
 		dialog.getDialogPane().setContent(grid);
+		
 		// Boutons de validation
 		ButtonType modifierButtonType = new ButtonType("Modifier");
 		dialog.getDialogPane().getButtonTypes().addAll(modifierButtonType, ButtonType.CANCEL);
@@ -818,12 +801,9 @@ public class PageAdminEdit extends BorderPane {
 				stagiaire.setAnneePromo(Integer.parseInt(promoField.getText()));
 				// Mettre à jour d'autres champs si nécessaire
 				return stagiaire;
-
 			}
 			return null;
 		});
-
 		return dialog.showAndWait();
 	}
-
 }

@@ -6,5 +6,6 @@ module fr.isika.cda28.projet1.Annuaire {
 	requires itextpdf;
     exports fr.isika.cda28.projet1.Annuaire.BackEnd;
     exports fr.isika.cda28.projet1.Annuaire.FrontEnd;
+    exports fr.isika.cda28.projet1.Launcher;
    
 }

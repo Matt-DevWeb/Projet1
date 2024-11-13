@@ -1,12 +1,7 @@
 package fr.isika.cda28.projet1.Annuaire.FrontEnd;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
-
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Annuaire;
 import fr.isika.cda28.projet1.Annuaire.BackEnd.Stagiaire;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,35 +18,31 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class PageAccueil extends BorderPane {
-
+	
+	// Attributs
 	private ObservableList<Stagiaire> stagiaires;
+	private Annuaire annuaire;
 
 	// Label pour afficher un message de bienvenue
-	private Label bienvenue = new Label("Bienvenue sur l'annuaire \nde Dev'Up academy");
+	private Label labelBienvenue = new Label("Bienvenue sur l'annuaire \nde Dev'Up academy");
 
 	// ImageView pour afficher le logo de l'entreprise
 	private Image logo = new Image(getClass().getResourceAsStream("/mesFichiers/logo_blanc_ligne.png"));
 	private ImageView logoImageView = new ImageView(logo);
 
 	// Boutons pour les différentes actions disponibles sur la page d'accueil
-	private Button connexion = new Button("Se connecter");
-//	private Button recherche = new Button("Rechercher");
-	private Button consulter = new Button("Consulter l'annuaire");
+	private Button boutonConnexion = new Button("Se connecter");
+	private Button boutonConsulter = new Button("Consulter l'annuaire");
 
 	// Conteneurs HBox et VBox utilisés pour organiser les éléments sur la page
-	private HBox header = new HBox(20);
-	private VBox mainContent = new VBox(20);
-	private VBox buttonContent = new VBox(20);
-
-	private Annuaire annuaire;
+	private HBox hBoxHeader = new HBox(20);
+	private VBox vBoxMainContent = new VBox(20);
+	private VBox vBoxButtonContent = new VBox(20);
 
 	// Constructeur de la page d'accueil
 	public PageAccueil(Annuaire annuaire) {
 		super();
 		this.annuaire = annuaire;
-
-		// Définir la taille de la fenêtre principale
-//		setPrefSize(1370, 1080);
 
 		// Définir la taille du logo
 		logoImageView.setFitWidth(200);
@@ -59,28 +50,28 @@ public class PageAccueil extends BorderPane {
 
 		// Définir le style général de la page
 		setStyle("-fx-background-color:#172428");
-		bienvenue.setStyle("-fx-text-fill:white ;-fx-font-size:40px; -fx-text-alignment : center;");
+		labelBienvenue.setStyle("-fx-text-fill:white ;-fx-font-size:40px; -fx-text-alignment : center;");
 
 		// Configurer les espaces et l'alignement des conteneurs
-		header.setPadding(new Insets(20, 20, 20, 20));
-		mainContent.setAlignment(Pos.CENTER);
-		buttonContent.setAlignment(Pos.CENTER);
+		hBoxHeader.setPadding(new Insets(20, 20, 20, 20));
+		vBoxMainContent.setAlignment(Pos.CENTER);
+		vBoxButtonContent.setAlignment(Pos.CENTER);
 
 		// Créer un espaceur pour pousser les éléments à gauche ou à droite
 		Region spacer = new Region();
 		HBox.setHgrow(spacer, Priority.ALWAYS); // Permet au spacer de prendre tout l'espace disponible
 
 		// Style des boutons
-		connexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-//		recherche.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		consulter.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		consulter.setPrefSize(200, 20);
+		boutonConnexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonConsulter.setStyle("-fx-background-color: #334255 ; -fx-text-fill: white; -fx-font-size: 16px;");
+		boutonConsulter.setPrefSize(200, 20);
+
 		// Configurer la taille du header (barre supérieure)
-		header.setPrefSize(800, 80); // Taille fixe pour le header
+		hBoxHeader.setPrefSize(800, 80); // Taille fixe pour le header
 		HBox.setHgrow(logoImageView, Priority.ALWAYS); // Permet au logo de s'étendre si nécessaire
 
 		// Ajouter le logo et le bouton de connexion au header
-		header.getChildren().addAll(logoImageView, spacer, connexion);
+		hBoxHeader.getChildren().addAll(logoImageView, spacer, boutonConnexion);
 
 		// Espaces pour ajuster la position verticale du label de bienvenue
 		Region topSpacer = new Region(); // Espace en haut
@@ -89,55 +80,54 @@ public class PageAccueil extends BorderPane {
 		VBox.setVgrow(bottomSpacer, Priority.ALWAYS);
 
 		// Définir une marge pour remonter le label de bienvenue
-		VBox.setMargin(bienvenue, new Insets(0, 0, 100, 0));
+		VBox.setMargin(labelBienvenue, new Insets(0, 0, 100, 0));
 
 		// Conteneur pour centrer le label de bienvenue verticalement
 		VBox labelContainer = new VBox(20);
 		labelContainer.setAlignment(Pos.CENTER);
-		labelContainer.getChildren().addAll(topSpacer, bienvenue, bottomSpacer);
+		labelContainer.getChildren().addAll(topSpacer, labelBienvenue, bottomSpacer);
 
 		// Ajouter les boutons à la VBox buttonContent
-		buttonContent.getChildren().addAll(consulter);
+		vBoxButtonContent.getChildren().addAll(boutonConsulter);
 
 		// Ajouter le label de bienvenue et les boutons au conteneur principal
-		mainContent.getChildren().addAll(bienvenue, buttonContent);
-		VBox.setVgrow(bienvenue, Priority.ALWAYS); // Le label peut s'étendre verticalement si nécessaire
+		vBoxMainContent.getChildren().addAll(labelBienvenue, vBoxButtonContent);
+		VBox.setVgrow(labelBienvenue, Priority.ALWAYS); // Le label peut s'étendre verticalement si nécessaire
 
 		// Ajouter le header (haut de page) et le contenu principal (centre de la page)
-		this.setTop(header);
-		this.setCenter(mainContent);
+		this.setTop(hBoxHeader);
+		this.setCenter(vBoxMainContent);
 
-		// Ajouter le comportement au bouton "connexion" pour changer de page
-		connexion.setOnAction(new EventHandler<ActionEvent>() {
+		// Ajouter le comportement au bouton "connexion"
+		boutonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				// Lorsque le bouton "Se connecter" est cliqué, passer à la page de connexion
-				PageConnection pageConnection = new PageConnection(annuaire);
-				connexion.getScene().setRoot(pageConnection);
+				PageConnexion pageConnection = new PageConnexion(annuaire);
+				boutonConnexion.getScene().setRoot(pageConnection);
 			}
 		});
 
-		consulter.setOnAction(new EventHandler<ActionEvent>() {
-
+		// Ajouter le comportement au bouton "consulter"
+		boutonConsulter.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Annuaire annuaire = new Annuaire();
 				PageVisiteurs pageVisiteurs = new PageVisiteurs(annuaire);
-				consulter.getScene().setRoot(pageVisiteurs);
-
+				boutonConsulter.getScene().setRoot(pageVisiteurs);
 			}
-
 		});
-	}
+
+	} // *************** Ici se termine le constructeur de la page d'accueil ***************
 
 	// Getters et Setters pour les éléments de la page
 	public Label getBienvenue() {
-		return bienvenue;
+		return labelBienvenue;
 	}
 
 	public void setBienvenue(Label bienvenue) {
-		this.bienvenue = bienvenue;
+		this.labelBienvenue = bienvenue;
 	}
 
 	public Image getLogo() {
@@ -157,51 +147,43 @@ public class PageAccueil extends BorderPane {
 	}
 
 	public Button getConnexion() {
-		return connexion;
+		return boutonConnexion;
 	}
 
 	public void setConnexion(Button connexion) {
-		this.connexion = connexion;
+		this.boutonConnexion = connexion;
 	}
 
-//	public Button getRecherche() {
-//		return recherche;
-//	}
-//
-//	public void setRecherche(Button recherche) {
-//		this.recherche = recherche;
-//	}
-
 	public Button getConsulter() {
-		return consulter;
+		return boutonConsulter;
 	}
 
 	public void setConsulter(Button consulter) {
-		this.consulter = consulter;
+		this.boutonConsulter = consulter;
 	}
 
 	public HBox getHeader() {
-		return header;
+		return hBoxHeader;
 	}
 
 	public void setHeader(HBox header) {
-		this.header = header;
+		this.hBoxHeader = header;
 	}
 
 	public VBox getMainContent() {
-		return mainContent;
+		return vBoxMainContent;
 	}
 
 	public void setMainContent(VBox mainContent) {
-		this.mainContent = mainContent;
+		this.vBoxMainContent = mainContent;
 	}
 
 	public VBox getButtonContent() {
-		return buttonContent;
+		return vBoxButtonContent;
 	}
 
 	public void setButtonContent(VBox buttonContent) {
-		this.buttonContent = buttonContent;
+		this.vBoxButtonContent = buttonContent;
 	}
 
 	public void setPromotion(ObservableList<Stagiaire> observableList) {
