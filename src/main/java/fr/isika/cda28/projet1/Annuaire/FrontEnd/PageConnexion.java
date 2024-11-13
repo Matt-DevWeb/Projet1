@@ -38,7 +38,7 @@ public class PageConnexion extends BorderPane {
 
 	// Initialisation des label invitant à se connecter
 	private Label labelTitre = new Label("Connectez-vous");
-	private Label labelEmail = new Label("Email");
+	private Label labelLogin = new Label("Login");
 	private Label labelMotDePasse = new Label("Mot de passe");
 
 	// Initialisation de l'image
@@ -70,7 +70,7 @@ public class PageConnexion extends BorderPane {
 
 		setStyle("-fx-background-color:#172428");
 		labelTitre.setStyle("-fx-text-fill:white ;-fx-font-size:40px ;");
-		labelEmail.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
+		labelLogin.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
 		labelMotDePasse.setStyle("-fx-text-fill:white ;-fx-font-size:15px ;");
 		champEmail.setMaxWidth(200);
 		champEmail.setPrefHeight(30);
@@ -79,7 +79,7 @@ public class PageConnexion extends BorderPane {
 		boutonValider.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonAccueil.setStyle("-fx-background-color: #4C5A6B ; -fx-text-fill: white; -fx-font-size: 16px;");
 
-		champEmail.setPromptText("Entrez votre Email");
+		champEmail.setPromptText("Entrez votre Login");
 		champMotDePasse.setPromptText("Entrez votre Mot de Passe");
 
 		// on définit les espaces et positions
@@ -95,7 +95,7 @@ public class PageConnexion extends BorderPane {
 		hBoxHeader.getChildren().addAll(logoImageView, spacer, boutonAccueil);
 
 		// j'ajoute mes labels, mes champs et mon bouton valider au mainContent
-		vBoxMainContent.getChildren().addAll(labelTitre, labelEmail, champEmail, labelMotDePasse, champMotDePasse,
+		vBoxMainContent.getChildren().addAll(labelTitre, labelLogin, champEmail, labelMotDePasse, champMotDePasse,
 				boutonValider);
 
 		// j'ajoute mon header et mon mainContent au BorderPane
@@ -147,11 +147,11 @@ public class PageConnexion extends BorderPane {
 	}
 
 	public Label getLabelEmail() {
-		return labelEmail;
+		return labelLogin;
 	}
 
 	public void setLabelEmail(Label labelEmail) {
-		this.labelEmail = labelEmail;
+		this.labelLogin = labelEmail;
 	}
 
 	public Label getLabelMotDePasse() {

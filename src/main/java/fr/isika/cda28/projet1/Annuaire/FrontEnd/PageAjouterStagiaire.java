@@ -43,7 +43,7 @@ public class PageAjouterStagiaire extends BorderPane {
 	private Label cursusLabel = new Label("Cursus");
 	private TextField champCursus = new TextField();
 
-	private Label promotionLabel = new Label("Promotion");
+	private Label promotionLabel = new Label("Année de la promotion");
 	private TextField champPromotion = new TextField();
 
 	private Label departementLabel = new Label("Departement");
