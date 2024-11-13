@@ -7,28 +7,26 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 public class Annuaire {
+	
 	// Attributs
 	private RandomAccessFile raf;
 	public Noeud noeud;
 
-// Constructeur vide qui contient le raf initialisé
+// Constructeur de la page Annuaire
 	public Annuaire() {
 		try {
 			File fichier = new File("src/main/resources/mesFichiers/ListeStagiaires.bin");
@@ -37,7 +35,6 @@ public class Annuaire {
 			System.err.println("Le fichier binaire n'a pas été ouvert");
 			e.printStackTrace();
 		}
-		
 			try {
 				FileReader fr1 = new FileReader("src/main/resources/mesFichiers/listeEditeurs.txt");
 				BufferedReader br1 = new BufferedReader(fr1);
@@ -46,14 +43,12 @@ public class Annuaire {
 					String motDePasse = br1.readLine();
 					Editeur editeur = new Editeur(email, motDePasse);
 					br1.readLine();
-
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
-	}
+	} // *************** Ici se termine le constructeur de la page Annuaire ***************
 
 	// Getters et Setters
 
@@ -61,10 +56,10 @@ public class Annuaire {
 		return raf;
 	}
 
-	// Méthodes
+	//METHODES*************************************************************************
 
+	//Méthode pour ajouter un stagiaire
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
-
 		if (raf.length() == 0) {
 			raf.seek(0);
 			stagiaire.ecrireNoeud(stagiaire, raf);
@@ -73,35 +68,30 @@ public class Annuaire {
 			Noeud racine = stagiaire.lireNoeud(raf);
 			racine.ajoutStagiaireRecursif(stagiaire, raf);
 		}
-
 	}
 
 	// Méthode pour modifier un stagiaire dans l'annuaire
 	public Noeud modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
 		if (stagiaireAModifier != null && stagiaireModifie != null) {
 			raf.seek(0); // on se positionne au début du fichier
-			
-
 			Noeud noeudASupprimer = new Noeud(stagiaireAModifier, -1, -1);
-
 			noeudASupprimer.rechercheNoeud(stagiaireAModifier, raf, raf.getFilePointer()); // On vient rechercher le
+			
 			// noeud à modifier
-
 			noeudASupprimer.lireNoeud(raf); // On lit le noeud
-
 			Noeud nouveauNoeud = new Noeud(stagiaireModifie, -1, -1); // On vient créer un nouveau noeud avec le
+			
 			// stagiaire modifie
-
 			System.out.println("Noeud modifié: " + nouveauNoeud);
 			ajouterStagiaire(nouveauNoeud);
 			System.out.println("Noeud ajouté: " + nouveauNoeud);
 			supprimerStagiaire(noeudASupprimer);
 			return nouveauNoeud;
-
 		}
 		return null;
 	}
 
+	// Méthode pour rechercher un stagiaire dans l'annuaire
 	public Noeud rechercherStagiaire(Stagiaire stagiaireARechercher) throws IOException {
 		Noeud resultatRecherche = new Noeud();
 		if (raf.length() == 0) {
@@ -115,6 +105,7 @@ public class Annuaire {
 		return resultatRecherche;
 	}
 
+	// Méthode pour supprimer un stagiaire dans l'annuaire
 	public void supprimerStagiaire(Noeud stagiaireASupprimer) throws IOException {
 		if (raf.length() == 0) {
 			System.out.println("L'annuaire est vide ");
@@ -125,6 +116,7 @@ public class Annuaire {
 		}
 	}
 
+	// Méthode pour lire le fichier
 	public ObservableList<Stagiaire> lireFichierObservable() throws IOException {
 		ObservableList<Stagiaire> stagiaires = FXCollections.observableArrayList();
 		if (raf == null || !raf.getChannel().isOpen()) {
@@ -135,7 +127,6 @@ public class Annuaire {
 			System.out.println("Le fichier binaire est vide.");
 			return stagiaires; // Retourne une liste vide
 		}
-
 		Noeud tmp = new Noeud();
 		for (int position = 0; position < raf.length(); position += tmp.TAILLE_NOEUD_OCTET) {
 			raf.seek(position);
@@ -145,6 +136,7 @@ public class Annuaire {
 		return stagiaires;
 	}
 
+	// Méthode pour afficher la liste par ordre alphabétique
 	public List<Stagiaire> afficherListeOrdreAlphabetique() throws IOException {
 		List<Stagiaire> listeTriee = new ArrayList<>();
 		if (raf.length() > 0) {
@@ -158,13 +150,14 @@ public class Annuaire {
 		return listeTriee;
 	}
 
+	// Méthode pour imprimer la liste par ordre alphabétique
 	public List<Stagiaire> imprimerListeOrdreAlphabetique() throws IOException {
 		return afficherListeOrdreAlphabetique(); // Retourner directement la liste triée
 	}
 
+	// Méthode pour créer le fichier PDF
 	public void creerPDF(TableView<Stagiaire> tableView, String cheminFichierPDF) {
 		Document document = new Document();
-
 		try {
 			PdfWriter.getInstance(document, new FileOutputStream(cheminFichierPDF));
 			document.open();
@@ -212,11 +205,9 @@ public class Annuaire {
 		}
 	}
 
+	// Méthode pour ajouter un éditeur
 	public void ajouterEditeur(Editeur editeur, boolean append) {
-
-		try (BufferedWriter writer = new BufferedWriter(
-				new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", append))) {
-
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", append))) {
 			writer.write(editeur.getUserID());
 			writer.newLine();
 			writer.write(editeur.getPassword());
@@ -229,6 +220,7 @@ public class Annuaire {
 		}
 	}
 
+	// Méthode pour fermer le RAF
 	public void close() {
 		try {
 			if (raf != null) {
@@ -239,9 +231,9 @@ public class Annuaire {
 		}
 	}
 
+	// Méthode toString pour l'annuaire
 	@Override
 	public String toString() {
 		return "Annuaire [raf=" + raf + ", noeud=" + noeud + "]";
 	}
-
 }

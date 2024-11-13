@@ -1,6 +1,7 @@
 package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
 public class Stagiaire implements Comparable<Stagiaire> {
+	
 	// Constantes pour la taille maximale des chaînes de caractères
 	public final static int TAILLE_MAX_NOM = 20;
 	public final static int TAILLE_MAX_PRENOM = 20;
@@ -78,8 +79,9 @@ public class Stagiaire implements Comparable<Stagiaire> {
 		this.departement = departement;
 	}
 
-	// Méthode toString pour représenter un Stagiaire sous forme de chaîne de
-	// caractères
+	//METHODES*************************************************************************
+	
+	// Méthode toString pour représenter un Stagiaire sous forme de chaîne de caractères
 	@Override
 	public String toString() {
 		return "Nom= " + nom + ", prenom= " + prenom + ", cursus= " + cursus + ", anneePromo= " + anneePromo
@@ -149,6 +151,5 @@ public class Stagiaire implements Comparable<Stagiaire> {
 			}
 		}
 		return i;
-		
 	}
 }

@@ -7,12 +7,15 @@ import java.io.IOException;
 
 public class GestionDesFichiers {
 
+	// Attributs
 	private Annuaire annuaire;
 
 	// Constructeur pour initialiser l'annuaire
 	public GestionDesFichiers() {
 		this.annuaire = new Annuaire();
 	}
+
+	//METHODES*************************************************************************
 
 	// Méthode pour charger les stagiaires depuis un fichier texte
 	public void chargerStagiairesDepuisFichier() {
@@ -23,6 +26,7 @@ public class GestionDesFichiers {
 
 			// Lire chaque ligne du fichier texte et créer les objets Stagiaire
 			while (br.ready()) {
+				
 				// Création d'un objet Stagiaire vide avec des valeurs par défaut
 				Stagiaire stagiaire = new Stagiaire();
 
@@ -35,9 +39,7 @@ public class GestionDesFichiers {
 
 				// Lire la ligne séparatrice "*" (et l'ignorer)
 				br.readLine();
-				
-				
-				
+		
 				annuaire.ajouterStagiaire(new Noeud(stagiaire, -1, -1));
 			}
 
@@ -48,11 +50,11 @@ public class GestionDesFichiers {
 			// Gestion des exceptions : affichage de la trace d'erreur
 			e.printStackTrace();
 		}
-		
 	}
+	
+	// Méthode pour vérifier si un fichier BIN existe avant de charger la liste
 	public boolean fichierBinaireRempli() {
 	    File fichierBinaire = new File("src/main/resources/mesFichiers/ListeStagiaires.bin");
 	    return fichierBinaire.exists() && fichierBinaire.length() > 0;
 	}
-
 }

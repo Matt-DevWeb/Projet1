@@ -38,7 +38,7 @@ public class PageVisiteurs extends BorderPane {
 
 	// Attributs
 	private Annuaire annuaire;
-	private List<Stagiaire> stagiaires;
+	private ObservableList<Stagiaire> stagiaires;
 	public TableView<Stagiaire> tableViewStagiaire;
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
 
@@ -287,7 +287,7 @@ public class PageVisiteurs extends BorderPane {
 		});
 		
 		// On charge la liste dans la tableview
-		tableViewStagiaire.setItems((ObservableList<Stagiaire>) this.stagiaires);
+		tableViewStagiaire.setItems(this.stagiaires);
 		datas.addAll(this.stagiaires);
 		
 		// Remplire la ChoiceBox
@@ -410,7 +410,11 @@ public class PageVisiteurs extends BorderPane {
 				boutonConnexion.getScene().setRoot(pageConnection);
 			}
 		});
-
+		
+		// réinitialisation de la liste de stagiaires pour prendre en compte les modifications
+		datas.clear();
+		datas.addAll(this.stagiaires);
+		
 	} // *************** Ici se termine le constructeur de la page Visiteurs ***************
 
 	// Getters et Setters

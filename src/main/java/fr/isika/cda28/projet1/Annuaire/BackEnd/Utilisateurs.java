@@ -1,7 +1,5 @@
 package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
-
-
 public class Utilisateurs {
 	
 	//Attributs
@@ -13,13 +11,10 @@ public class Utilisateurs {
 	
 	//Constructeurs
 	public Utilisateurs(String userID, String password, String role) {
-		
 		this.userID = userID;
 		this.password = password;
 		this.role = role;
-
 	}
-	
 	
 	// getters et setters
 
@@ -47,6 +42,8 @@ public class Utilisateurs {
 		this.role = role;
 	}
 	
+	//METHODES*************************************************************************
+	
 	//Methode pour renvoyer true si utilisateur est un admin
 	public boolean isAdmin() {
 		return role.equals(_ADMIN);
@@ -56,6 +53,4 @@ public class Utilisateurs {
 	public boolean isEditeur() {
 		return role.equals(_EDITEUR);
 		}
-	
-	
 }

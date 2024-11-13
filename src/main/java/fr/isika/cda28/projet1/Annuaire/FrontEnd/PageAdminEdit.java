@@ -49,7 +49,7 @@ public class PageAdminEdit extends BorderPane {
 
 	// Attributs
 	private Annuaire annuaire;
-	private List<Stagiaire> stagiaires;
+	private ObservableList<Stagiaire> stagiaires;
 	private Utilisateurs utilisateurs;
 	private TableView<Stagiaire> tableViewStagiaire;
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
@@ -323,7 +323,7 @@ public class PageAdminEdit extends BorderPane {
 		});
 
 		// On charge la liste dans la tableview
-		tableViewStagiaire.setItems((ObservableList<Stagiaire>) this.stagiaires);
+		tableViewStagiaire.setItems(this.stagiaires);
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		vBoxContenuPrincipal.getChildren().addAll(hBoxBienvenueContenu, hBoxRechercheContenu, hBoxListeTriContenu, tableViewStagiaire);
@@ -341,7 +341,6 @@ public class PageAdminEdit extends BorderPane {
 				.addListener((obs, ancienElement, nouvelElement) -> {
 					if (nouvelElement != null) {
 						Stagiaire stagiaireSelectionne = nouvelElement;
-						System.out.println(stagiaireSelectionne);
 
 						boutonSuppStagiaire.setOnAction(event -> {
 							// Afficher une alerte de confirmation avant la suppression
@@ -358,9 +357,8 @@ public class PageAdminEdit extends BorderPane {
 
 									try {
 										annuaire.supprimerStagiaire(noeudASupprimer);
-										tableViewStagiaire.getItems().remove(stagiaireSelectionne); // Retirer l'élément
-																									// de la liste
-																									// observable
+										stagiaires.remove(stagiaireSelectionne); // Retirer l'élément
+										datas.remove(stagiaireSelectionne); // de la liste
 									} catch (IOException e) {
 										e.printStackTrace();
 									}
@@ -555,7 +553,11 @@ public class PageAdminEdit extends BorderPane {
 				}
 			}
 		});
-
+		
+		// réinitialisation de la liste de stagiaires pour prendre en compte les modifications
+		datas.clear();
+		datas.addAll(this.stagiaires);
+		
 	} // *************** Ici se termine le constructeur de la page AdminEdit ***************
 	
 	// Getters et Setters
