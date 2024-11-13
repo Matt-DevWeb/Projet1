@@ -104,7 +104,7 @@ public class PageAdminEdit extends BorderPane {
 
 		// Définir le style général de la page
 		setStyle("-fx-background-color:#172428");
-		
+
 		// Définir la taille du logo
 		logoImageView.setFitWidth(140);
 		logoImageView.setFitHeight(140);
@@ -115,14 +115,15 @@ public class PageAdminEdit extends BorderPane {
 		// On ajoute les images et la VBox du coteGauche
 		vBoxCoteGauche.getChildren().addAll(logoImageView, vBoxCoteGaucheBoutons);
 
-		// on ajoute nos boutons a la VBox coteGauche en fonction du profil qui est connecté
+		// on ajoute nos boutons a la VBox coteGauche en fonction du profil qui est
+		// connecté
 		if (utilisateurConnecte.isAdmin()) {
 			vBoxCoteGaucheBoutons.getChildren().addAll(boutonMettreAjour, boutonAjoutStagiaire, boutonSuppStagiaire,
 					boutonAjoutEditeur, boutonSuppEditeur, boutonImprimer, boutonAccueil);
 		} else {
 			vBoxCoteGaucheBoutons.getChildren().addAll(boutonAjoutStagiaire, boutonImprimer, boutonAccueil);
 		}
-		
+
 		// On change la couleur de fond de la partie gauche
 		vBoxCoteGauche.setStyle("-fx-background-color:#25333F");
 
@@ -149,15 +150,15 @@ public class PageAdminEdit extends BorderPane {
 
 		boutonDeconnexion.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		boutonDeconnexion.setPrefSize(200, 20);
-		
+
 		// CENTRE DE PAGE
 		boutonRecherche.setStyle("-fx-background-color: #324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
-		
-		//On ajoute du style à notre choiceBox
+
+		// On ajoute du style à notre choiceBox
 		choiceBoxCriteres.setStyle("-fx-background-color:#324255 ; -fx-text-fill: white; -fx-font-size: 16px;");
 		choiceBoxCriteres.setPrefWidth(180); // Limite la largeur du ComboBox
 		choiceBoxCriteres.setMaxHeight(300); // Limite la hauteur du ComboBox, si nécessaire
-		
+
 		// On change la couleur du texte des labels
 		labelBienvenue.setStyle("-fx-text-fill: white; -fx-font-size:20px;");
 
@@ -172,9 +173,10 @@ public class PageAdminEdit extends BorderPane {
 
 		// On ajoute du padding à la HBox bienvenueContenu
 		hBoxBienvenueContenu.setPadding(new Insets(30, 30, 130, 30));
-		
+
 		// On ajoute le TextField et le bouton à la HBox rechercheContenu
-		hBoxRechercheContenu.getChildren().addAll(choiceBoxCriteres, champZoneRecherche, boutonRecherche, boutonAfficherListe);
+		hBoxRechercheContenu.getChildren().addAll(choiceBoxCriteres, champZoneRecherche, boutonRecherche,
+				boutonAfficherListe);
 		hBoxRechercheContenu.setPadding(new Insets(10, 0, 40, 0));
 		boutonAfficherListe.setStyle("-fx-background-color: #324255; -fx-text-fill: white; -fx-font-size: 16px;");
 
@@ -206,13 +208,14 @@ public class PageAdminEdit extends BorderPane {
 		colonnePromo.setGraphic(titreTableView("Promo", Color.WHITE, 14));
 		colonnePromo.setCellValueFactory(new PropertyValueFactory<>("anneePromo"));
 
-		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus, colonnePromo);
+		tableViewStagiaire.getColumns().addAll(colonneNom, colonnePrenom, colonneDepartement, colonneCursus,
+				colonnePromo);
 
 		tableViewStagiaire.setPlaceholder(new Label("Aucun stagiaire trouvé."));
-		
+
 		// permet au colonne d'utiliser tout l'espace disponible
 		tableViewStagiaire.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		
+
 		// permet de selectionner de multiples éléments
 		tableViewStagiaire.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableViewStagiaire.setStyle("-fx-background-color: #324255");
@@ -233,7 +236,7 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 		});
-		
+
 		// Changer la couleur du texte dans la colonne prénom
 		colonnePrenom.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
@@ -251,7 +254,7 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 		});
-		
+
 		// Changer la couleur du texte dans la colonne departement
 		colonneDepartement.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
@@ -268,7 +271,7 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 		});
-		
+
 		// Changer la couleur du texte dans la colonne cursus
 		colonneCursus.setCellFactory(col -> {
 			return new TableCell<Stagiaire, String>() {
@@ -285,7 +288,7 @@ public class PageAdminEdit extends BorderPane {
 				}
 			};
 		});
-		
+
 		// Changer la couleur du texte dans la colonne promo
 		colonnePromo.setCellFactory(col -> {
 			return new TableCell<Stagiaire, Integer>() {
@@ -303,7 +306,8 @@ public class PageAdminEdit extends BorderPane {
 			};
 		});
 
-		// Ajout de style pour les lignes lorsqu'elles sont sélectionnées par l'utilisateur
+		// Ajout de style pour les lignes lorsqu'elles sont sélectionnées par
+		// l'utilisateur
 		tableViewStagiaire.setRowFactory(tv -> {
 			TableRow<Stagiaire> row = new TableRow<>();
 			row.setStyle("-fx-background-color: #324255;");
@@ -323,10 +327,12 @@ public class PageAdminEdit extends BorderPane {
 		});
 
 		// On charge la liste dans la tableview
-		tableViewStagiaire.setItems((ObservableList <Stagiaire>) this.stagiaires);
+		tableViewStagiaire.setItems((ObservableList <Stagiaire>)stagiaires);
+		datas.addAll(stagiaires);
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
-		vBoxContenuPrincipal.getChildren().addAll(hBoxBienvenueContenu, hBoxRechercheContenu, hBoxListeTriContenu, tableViewStagiaire);
+		vBoxContenuPrincipal.getChildren().addAll(hBoxBienvenueContenu, hBoxRechercheContenu, hBoxListeTriContenu,
+				tableViewStagiaire);
 
 		// on initialise les espaces et positions des VBox et HBox
 		vBoxCoteGauche.setAlignment(Pos.CENTER);
@@ -357,8 +363,10 @@ public class PageAdminEdit extends BorderPane {
 
 									try {
 										annuaire.supprimerStagiaire(noeudASupprimer);
-										tableViewStagiaire.getItems().remove(stagiaireSelectionne); // Retirer l'élément de la liste
-										
+										stagiaires.remove(stagiaireSelectionne);
+										tableViewStagiaire.setItems((ObservableList <Stagiaire>)this.stagiaires);
+										tableViewStagiaire.refresh();
+
 									} catch (IOException e) {
 										e.printStackTrace();
 									}
@@ -375,34 +383,41 @@ public class PageAdminEdit extends BorderPane {
 				});
 
 		// on récupère la sélection souris du tableView dans une variable pour MODIFIER
-		tableViewStagiaire.getSelectionModel().selectedItemProperty()
-				.addListener((obs, ancienElement, nouvelElement) -> {
-					if (nouvelElement != null) {
-						Stagiaire stagiaireSelectionne = nouvelElement;
+		tableViewStagiaire.getSelectionModel().selectedItemProperty().addListener((obs, ancienElement, nouvelElement) -> {
+		    if (nouvelElement != null) {
+		        Stagiaire stagiaireSelectionne = nouvelElement;
 
-						boutonMettreAjour.setOnAction(event -> {
-							Optional<Stagiaire> result = afficherDialogueModification(stagiaireSelectionne);
+		        boutonMettreAjour.setOnAction(event -> {
+		            Optional<Stagiaire> result = afficherDialogueModification(stagiaireSelectionne);
 
-							result.ifPresent(stagiaireModifie -> {
-								try {
-									// Mise à jour dans l'annuaire et dans la TableView
-									annuaire.modifierStagiaire(stagiaireSelectionne, stagiaireModifie);
-									tableViewStagiaire.getItems().remove(stagiaireSelectionne);
-									
+		            result.ifPresent(stagiaireModifie -> {
+		                try {
+		                    // Mise à jour dans l'annuaire
+		                    annuaire.modifierStagiaire(stagiaireSelectionne, stagiaireModifie);
 
-									tableViewStagiaire.getItems().add(stagiaireModifie); // Ajout du stagiaire à la
-									
-									tableViewStagiaire.getItems().sort(Comparator.comparing(Stagiaire::getNom)); 
-									tableViewStagiaire.refresh(); // Rafraîchit l'affichage de la TableView
-									tableViewStagiaire.getSelectionModel().select(stagiaireModifie);
-									tableViewStagiaire.scrollTo(stagiaireModifie);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							});
-						});
-					}
-				});
+		                    // Mise à jour de la liste des stagiaires
+		                    stagiaires.remove(stagiaireSelectionne); // Supprime l'ancien stagiaire
+		                    stagiaires.add(stagiaireModifie); // Ajoute le stagiaire modifié
+		                    stagiaires.sort(Comparator.comparing(Stagiaire::getNom)); // Trie la liste
+		                    
+		                    
+		                    tableViewStagiaire.setItems((ObservableList <Stagiaire>)this.stagiaires);
+		                    tableViewStagiaire.refresh();
+		                    // Rafraîchit la TableView
+		                    
+
+		                    // Sélectionne et défile jusqu'à l'élément modifié
+		                    tableViewStagiaire.getSelectionModel().select(stagiaireModifie);
+		                    tableViewStagiaire.scrollTo(stagiaireModifie);
+
+		                } catch (Exception e) {
+		                    e.printStackTrace();
+		                }
+		                
+		            });
+		        });
+		    }
+		});
 
 		// on ajoute du comportement au bouton accueil
 		boutonAccueil.setOnAction(new EventHandler<ActionEvent>() {
@@ -473,29 +488,28 @@ public class PageAdminEdit extends BorderPane {
 				tableViewStagiaire.setItems((ObservableList<Stagiaire>) stagiaires);
 			}
 		});
-		
+
 		boutonSuppEditeur.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				TextInputDialog dialog = new TextInputDialog();
-		        dialog.setTitle("Suppression Editeur");
-		        dialog.setHeaderText("Entrez le userID");
-		        dialog.setContentText("User ID de l'editeur:");
+				dialog.setTitle("Suppression Editeur");
+				dialog.setHeaderText("Entrez le userID");
+				dialog.setContentText("User ID de l'editeur:");
 
-		        // Traditional way to get the response value.
-		        Optional<String> result = dialog.showAndWait();
-		        result.ifPresent(name -> {
-		        	Authentification authentification = new Authentification();
-		        	authentification.supprimerEditeur(name, annuaire);
-		        	});
+				// Traditional way to get the response value.
+				Optional<String> result = dialog.showAndWait();
+				result.ifPresent(name -> {
+					Authentification authentification = new Authentification();
+					authentification.supprimerEditeur(name, annuaire);
+				});
 			}
 		});
 
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(vBoxCoteGauche);
 		this.setCenter(vBoxContenuPrincipal);
-		
-		
+
 		// Remplire la ChoiceBox
 		List<String> criters = new ArrayList<String>();
 
@@ -550,10 +564,10 @@ public class PageAdminEdit extends BorderPane {
 				}
 			}
 		});
-		datas.addAll(this.stagiaires);
-		
-	} // *************** Ici se termine le constructeur de la page AdminEdit ***************
-	
+
+	} // *************** Ici se termine le constructeur de la page AdminEdit
+		// ***************
+
 	// Getters et Setters
 	public Label getBienvenue() {
 		return labelBienvenue;
@@ -666,9 +680,9 @@ public class PageAdminEdit extends BorderPane {
 	public void setTableViewStagiaire(TableView<Stagiaire> tableViewStagiaire) {
 		this.tableViewStagiaire = tableViewStagiaire;
 	}
-	
-	//METHODES********************************************************************
-	
+
+	// METHODES********************************************************************
+
 	// Méthode pour Imprimer en PDF
 	public void proposerTelechargementPDF() throws IOException {
 		Annuaire annuaire = new Annuaire();
@@ -714,7 +728,7 @@ public class PageAdminEdit extends BorderPane {
 			System.out.println("L'utilisateur a annulé la selection du fichier");
 		}
 	}
-	
+
 	// Méthode pour FILTRER
 	private void filterStagiaires() {
 		String critere = choiceBoxCriteres.getValue().toLowerCase();
@@ -740,7 +754,8 @@ public class PageAdminEdit extends BorderPane {
 		tableViewStagiaire.refresh();
 	}
 
-	// Méthode pour créer des Labels avec style pour les titres des colonnes de TableView
+	// Méthode pour créer des Labels avec style pour les titres des colonnes de
+	// TableView
 	private Label titreTableView(String title, Color color, int fontSize) {
 		Label titreColonne = new Label(title);
 		titreColonne.setTextFill(color); // Couleur de la police
@@ -748,7 +763,7 @@ public class PageAdminEdit extends BorderPane {
 		return titreColonne;
 	}
 
-	// Méthode pour MODIFIER dans une fenetre 
+	// Méthode pour MODIFIER dans une fenetre
 	public Optional<Stagiaire> afficherDialogueModification(Stagiaire stagiaire) {
 		Dialog<Stagiaire> dialog = new Dialog<>();
 		dialog.setTitle("Modifier Stagiaire");
@@ -772,12 +787,12 @@ public class PageAdminEdit extends BorderPane {
 		grid.add(departementField, 1, 3);
 		grid.add(new Label("Année de la Promo:"), 0, 4);
 		grid.add(promoField, 1, 4);
-		
+
 		// Ajouter d'autres champs de manière similaire
 		grid.setVgap(15); // Exemple de configuration des espaces
 		grid.setHgap(15);
 		dialog.getDialogPane().setContent(grid);
-		
+
 		// Boutons de validation
 		ButtonType modifierButtonType = new ButtonType("Modifier");
 		dialog.getDialogPane().getButtonTypes().addAll(modifierButtonType, ButtonType.CANCEL);
@@ -790,13 +805,14 @@ public class PageAdminEdit extends BorderPane {
 				alert.setHeaderText(null);
 				alert.setContentText("Vous avez modifié correctement le stagiaire");
 				alert.showAndWait();
-				stagiaire.setNom(nomField.getText().toUpperCase());
-				stagiaire.setPrenom(prenomField.getText());
-				stagiaire.setCursus(cursusField.getText());
-				stagiaire.setDepartement(departementField.getText());
-				stagiaire.setAnneePromo(Integer.parseInt(promoField.getText()));
+				Stagiaire stagiaire1 = new Stagiaire();
+				stagiaire1.setNom(nomField.getText().toUpperCase());
+				stagiaire1.setPrenom(prenomField.getText());
+				stagiaire1.setCursus(cursusField.getText());
+				stagiaire1.setDepartement(departementField.getText());
+				stagiaire1.setAnneePromo(Integer.parseInt(promoField.getText()));
 				// Mettre à jour d'autres champs si nécessaire
-				return stagiaire;
+				return stagiaire1;
 			}
 			return null;
 		});

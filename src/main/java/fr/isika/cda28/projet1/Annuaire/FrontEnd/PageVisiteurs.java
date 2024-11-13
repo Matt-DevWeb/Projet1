@@ -288,7 +288,7 @@ public class PageVisiteurs extends BorderPane {
 		
 		// On charge la liste dans la tableview
 		tableViewStagiaire.setItems((ObservableList  <Stagiaire>)this.stagiaires);
-		
+		datas.addAll((ObservableList <Stagiaire>) this.stagiaires);
 		// Remplire la ChoiceBox
 		List<String> criters = new ArrayList<String>();
 
@@ -412,7 +412,7 @@ public class PageVisiteurs extends BorderPane {
 		
 		// réinitialisation de la liste de stagiaires pour prendre en compte les modifications
 		
-		datas.addAll(this.stagiaires);
+		
 		
 		
 	} // *************** Ici se termine le constructeur de la page Visiteurs ***************
