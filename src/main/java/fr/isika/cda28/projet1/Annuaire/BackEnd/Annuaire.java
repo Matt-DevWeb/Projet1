@@ -21,7 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 public class Annuaire {
-	
+
 	// Attributs
 	private RandomAccessFile raf;
 	public Noeud noeud;
@@ -35,20 +35,21 @@ public class Annuaire {
 			System.err.println("Le fichier binaire n'a pas été ouvert");
 			e.printStackTrace();
 		}
-			try {
-				FileReader fr1 = new FileReader("src/main/resources/mesFichiers/listeEditeurs.txt");
-				BufferedReader br1 = new BufferedReader(fr1);
-				while (br1.ready()) {
-					String email = br1.readLine();
-					String motDePasse = br1.readLine();
-					Editeur editeur = new Editeur(email, motDePasse);
-					br1.readLine();
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		try {
+			FileReader fr1 = new FileReader("src/main/resources/mesFichiers/listeEditeurs.txt");
+			BufferedReader br1 = new BufferedReader(fr1);
+			while (br1.ready()) {
+				String email = br1.readLine();
+				String motDePasse = br1.readLine();
+				Editeur editeur = new Editeur(email, motDePasse);
+				br1.readLine();
 			}
-	} // *************** Ici se termine le constructeur de la page Annuaire ***************
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	} // *************** Ici se termine le constructeur de la page Annuaire
+		// ***************
 
 	// Getters et Setters
 
@@ -56,9 +57,9 @@ public class Annuaire {
 		return raf;
 	}
 
-	//METHODES*************************************************************************
+	// METHODES*************************************************************************
 
-	//Méthode pour ajouter un stagiaire
+	// Méthode pour ajouter un stagiaire
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
 		if (raf.length() == 0) {
 			raf.seek(0);
@@ -76,11 +77,11 @@ public class Annuaire {
 			raf.seek(0); // on se positionne au début du fichier
 			Noeud noeudASupprimer = new Noeud(stagiaireAModifier, -1, -1);
 			noeudASupprimer.rechercheNoeud(stagiaireAModifier, raf, raf.getFilePointer()); // On vient rechercher le
-			
+
 			// noeud à modifier
 			noeudASupprimer.lireNoeud(raf); // On lit le noeud
 			Noeud nouveauNoeud = new Noeud(stagiaireModifie, -1, -1); // On vient créer un nouveau noeud avec le
-			
+
 			// stagiaire modifie
 			System.out.println("Noeud modifié: " + nouveauNoeud);
 			ajouterStagiaire(nouveauNoeud);
@@ -207,7 +208,8 @@ public class Annuaire {
 
 	// Méthode pour ajouter un éditeur
 	public void ajouterEditeur(Editeur editeur, boolean append) {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", append))) {
+		try (BufferedWriter writer = new BufferedWriter(
+				new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", append))) {
 			writer.write(editeur.getUserID());
 			writer.newLine();
 			writer.write(editeur.getPassword());

@@ -49,7 +49,7 @@ public class PageAdminEdit extends BorderPane {
 
 	// Attributs
 	private Annuaire annuaire;
-	private ObservableList<Stagiaire> stagiaires;
+	private List<Stagiaire> stagiaires;
 	private Utilisateurs utilisateurs;
 	private TableView<Stagiaire> tableViewStagiaire;
 	private ObservableList<Stagiaire> datas = FXCollections.observableArrayList();
@@ -323,7 +323,7 @@ public class PageAdminEdit extends BorderPane {
 		});
 
 		// On charge la liste dans la tableview
-		tableViewStagiaire.setItems(this.stagiaires);
+		tableViewStagiaire.setItems((ObservableList <Stagiaire>) this.stagiaires);
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		vBoxContenuPrincipal.getChildren().addAll(hBoxBienvenueContenu, hBoxRechercheContenu, hBoxListeTriContenu, tableViewStagiaire);
@@ -357,8 +357,8 @@ public class PageAdminEdit extends BorderPane {
 
 									try {
 										annuaire.supprimerStagiaire(noeudASupprimer);
-										stagiaires.remove(stagiaireSelectionne); // Retirer l'élément
-										datas.remove(stagiaireSelectionne); // de la liste
+										tableViewStagiaire.getItems().remove(stagiaireSelectionne); // Retirer l'élément de la liste
+										
 									} catch (IOException e) {
 										e.printStackTrace();
 									}
@@ -388,14 +388,11 @@ public class PageAdminEdit extends BorderPane {
 									// Mise à jour dans l'annuaire et dans la TableView
 									annuaire.modifierStagiaire(stagiaireSelectionne, stagiaireModifie);
 									tableViewStagiaire.getItems().remove(stagiaireSelectionne);
+									
 
 									tableViewStagiaire.getItems().add(stagiaireModifie); // Ajout du stagiaire à la
-																							// nouvelle position
-									tableViewStagiaire.getItems().sort(Comparator.comparing(Stagiaire::getNom)); // Exemple
-																													// de
-																													// tri
-																													// par
-																													// nom
+									
+									tableViewStagiaire.getItems().sort(Comparator.comparing(Stagiaire::getNom)); 
 									tableViewStagiaire.refresh(); // Rafraîchit l'affichage de la TableView
 									tableViewStagiaire.getSelectionModel().select(stagiaireModifie);
 									tableViewStagiaire.scrollTo(stagiaireModifie);
@@ -497,7 +494,7 @@ public class PageAdminEdit extends BorderPane {
 		// On instancie les HBox et VBox dans le BorderPane
 		this.setLeft(vBoxCoteGauche);
 		this.setCenter(vBoxContenuPrincipal);
-		datas.addAll(this.stagiaires);
+		
 		
 		// Remplire la ChoiceBox
 		List<String> criters = new ArrayList<String>();
@@ -553,9 +550,6 @@ public class PageAdminEdit extends BorderPane {
 				}
 			}
 		});
-		
-		// réinitialisation de la liste de stagiaires pour prendre en compte les modifications
-		datas.clear();
 		datas.addAll(this.stagiaires);
 		
 	} // *************** Ici se termine le constructeur de la page AdminEdit ***************
