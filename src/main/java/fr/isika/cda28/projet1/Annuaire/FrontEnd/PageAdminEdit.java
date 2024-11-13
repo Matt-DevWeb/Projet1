@@ -327,8 +327,8 @@ public class PageAdminEdit extends BorderPane {
 		});
 
 		// On charge la liste dans la tableview
-		tableViewStagiaire.setItems((ObservableList <Stagiaire>)stagiaires);
-		datas.addAll(stagiaires);
+		tableViewStagiaire.setItems((ObservableList <Stagiaire>)this.stagiaires);
+		datas.addAll(this.stagiaires);
 
 		// On ajoute les HBox bienvenueContenu et rechercheContenu à la VBox
 		vBoxContenuPrincipal.getChildren().addAll(hBoxBienvenueContenu, hBoxRechercheContenu, hBoxListeTriContenu,
