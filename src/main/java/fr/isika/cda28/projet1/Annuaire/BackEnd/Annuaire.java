@@ -20,13 +20,23 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
+/**
+ * Class Annuaire
+ * javadoc de la classe Annuaire
+ */
+
 public class Annuaire {
 
 	// Attributs
 	private RandomAccessFile raf;
 	public Noeud noeud;
 
-// Constructeur de la page Annuaire
+	 /**
+     * Constructors
+     * @constructor Annuaire()
+     * Description: Constructeur de la classe Annuaire.
+     */
+	
 	public Annuaire() {
 		try {
 			File fichier = new File("src/main/resources/mesFichiers/ListeStagiaires.bin");
@@ -48,18 +58,29 @@ public class Annuaire {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	} // *************** Ici se termine le constructeur de la page Annuaire
-		// ***************
+	} // *************** Ici se termine le constructeur de la page Annuaire **************
+	
 
-	// Getters et Setters
+	// METHODES*************************************************************************
 
+	/**
+     * Methods
+     * @method getRaf()
+     * Description: Obtient le RandomAccessFile utilisé par l'annuaire.
+     * @return Le RandomAccessFile.
+     */
+	
 	public RandomAccessFile getRaf() {
 		return raf;
 	}
 
-	// METHODES*************************************************************************
 
-	// Méthode pour ajouter un stagiaire
+	/**
+     * @method ajouterStagiaire(Noeud stagiaire)
+     * Description: Ajoute un stagiaire à l'annuaire.
+     * @param stagiaire Le noeud contenant les informations du stagiaire à ajouter.
+     * @throws IOException
+     */
 	public void ajouterStagiaire(Noeud stagiaire) throws IOException {
 		if (raf.length() == 0) {
 			raf.seek(0);
@@ -71,7 +92,14 @@ public class Annuaire {
 		}
 	}
 
-	// Méthode pour modifier un stagiaire dans l'annuaire
+	 /**
+     * @method modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie)
+     * Description: Modifie les informations d'un stagiaire dans l'annuaire.
+     * @param stagiaireAModifier Le stagiaire à modifier.
+     * @param stagiaireModifie Les nouvelles informations du stagiaire.
+     * @return Le nouveau noeud avec les informations modifiées.
+     * @throws Exception
+     */
 	public Noeud modifierStagiaire(Stagiaire stagiaireAModifier, Stagiaire stagiaireModifie) throws Exception {
 		if (stagiaireAModifier != null && stagiaireModifie != null) {
 			raf.seek(0); // on se positionne au début du fichier
@@ -92,7 +120,13 @@ public class Annuaire {
 		return null;
 	}
 
-	// Méthode pour rechercher un stagiaire dans l'annuaire
+	 /**
+     * @method rechercherStagiaire(Stagiaire stagiaireARechercher)
+     * Description: Recherche un stagiaire dans l'annuaire.
+     * @param stagiaireARechercher Le stagiaire à rechercher.
+     * @return Le noeud contenant les informations du stagiaire recherché.
+     * @throws IOException
+     */
 	public Noeud rechercherStagiaire(Stagiaire stagiaireARechercher) throws IOException {
 		Noeud resultatRecherche = new Noeud();
 		if (raf.length() == 0) {
@@ -106,7 +140,12 @@ public class Annuaire {
 		return resultatRecherche;
 	}
 
-	// Méthode pour supprimer un stagiaire dans l'annuaire
+	 /**
+     * @method supprimerStagiaire(Noeud stagiaireASupprimer)
+     * Description: Supprime un stagiaire de l'annuaire.
+     * @param stagiaireASupprimer Le noeud contenant les informations du stagiaire à supprimer.
+     * @throws IOException
+     */
 	public void supprimerStagiaire(Noeud stagiaireASupprimer) throws IOException {
 		if (raf.length() == 0) {
 			System.out.println("L'annuaire est vide ");
@@ -117,7 +156,12 @@ public class Annuaire {
 		}
 	}
 
-	// Méthode pour lire le fichier
+	/**
+     * @method lireFichierObservable()
+     * Description: Lit le fichier binaire et retourne une liste observable de stagiaires.
+     * @return La liste observable de stagiaires.
+     * @throws IOException
+     */
 	public ObservableList<Stagiaire> lireFichierObservable() throws IOException {
 		ObservableList<Stagiaire> stagiaires = FXCollections.observableArrayList();
 		if (raf == null || !raf.getChannel().isOpen()) {
@@ -137,7 +181,12 @@ public class Annuaire {
 		return stagiaires;
 	}
 
-	// Méthode pour afficher la liste par ordre alphabétique
+	 /**
+     * @method afficherListeOrdreAlphabetique()
+     * Description: Affiche la liste des stagiaires par ordre alphabétique.
+     * @return La liste des stagiaires triée par ordre alphabétique.
+     * @throws IOException
+     */
 	public List<Stagiaire> afficherListeOrdreAlphabetique() throws IOException {
 		List<Stagiaire> listeTriee = new ArrayList<>();
 		if (raf.length() > 0) {
@@ -151,12 +200,22 @@ public class Annuaire {
 		return listeTriee;
 	}
 
-	// Méthode pour imprimer la liste par ordre alphabétique
+	/**
+     * @method imprimerListeOrdreAlphabetique()
+     * Description: Imprime la liste des stagiaires par ordre alphabétique.
+     * @return La liste des stagiaires triée par ordre alphabétique.
+     * @throws IOException
+     */
 	public List<Stagiaire> imprimerListeOrdreAlphabetique() throws IOException {
 		return afficherListeOrdreAlphabetique(); // Retourner directement la liste triée
 	}
 
-	// Méthode pour créer le fichier PDF
+	/**
+     * @method creerPDF(TableView<Stagiaire> tableView, String cheminFichierPDF)
+     * Description: Crée un fichier PDF contenant la liste des stagiaires.
+     * @param tableView La TableView contenant les informations des stagiaires.
+     * @param cheminFichierPDF Le chemin du fichier PDF à créer.
+     */
 	public void creerPDF(TableView<Stagiaire> tableView, String cheminFichierPDF) {
 		Document document = new Document();
 		try {
@@ -206,7 +265,12 @@ public class Annuaire {
 		}
 	}
 
-	// Méthode pour ajouter un éditeur
+	/**
+     * @method ajouterEditeur(Editeur editeur, boolean append)
+     * Description: Ajoute un éditeur dans le fichier des éditeurs.
+     * @param editeur L'éditeur à ajouter.
+     * @param append Indique s'il faut ajouter l'éditeur à la fin du fichier.
+     */
 	public void ajouterEditeur(Editeur editeur, boolean append) {
 		try (BufferedWriter writer = new BufferedWriter(
 				new FileWriter("src/main/resources/mesFichiers/listeEditeurs.txt", append))) {
@@ -222,7 +286,10 @@ public class Annuaire {
 		}
 	}
 
-	// Méthode pour fermer le RAF
+	/**
+     * @method close()
+     * Description: Ferme le RandomAccessFile utilisé par l'annuaire.
+     */
 	public void close() {
 		try {
 			if (raf != null) {
@@ -233,7 +300,11 @@ public class Annuaire {
 		}
 	}
 
-	// Méthode toString pour l'annuaire
+	 /**
+     * @method toString()
+     * Description: Retourne une représentation textuelle de l'annuaire.
+     * @return La représentation textuelle de l'annuaire.
+     */
 	@Override
 	public String toString() {
 		return "Annuaire [raf=" + raf + ", noeud=" + noeud + "]";

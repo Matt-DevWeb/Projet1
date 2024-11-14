@@ -4,15 +4,33 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
 
+/**
+ * Class Noeud
+ * javadoc de la classe Noeud
+ */
+
 public class Noeud {
 
-	// ATTRIBUTS
+	/**
+     * Constants
+     * @constant TAILLE_NOEUD_OCTET
+     * Description: Taille en octets d'un noeud.
+     */
 	public final static int TAILLE_NOEUD_OCTET = Stagiaire.TAILLE_STAGIAIRE_OCTET + 4 + 4;
+	
+	//Attributs
 	private Stagiaire stagiaire;
 	private int filsGauche;
 	private int filsDroit;
 
-	// CONSTRUCTEURS de la page Noeud
+	/**
+     * Constructors
+     * @constructor Noeud(Stagiaire stagiaire, int filsGauche, int filsDroit)
+     * Description: Constructeur de la classe Noeud avec des paramètres.
+     * @param stagiaire Le stagiaire du noeud.
+     * @param filsGauche L'index du fils gauche du noeud.
+     * @param filsDroit L'index du fils droit du noeud.
+     */
 	public Noeud(Stagiaire stagiaire, int filsGauche, int filsDroit) {
 		super();
 		this.stagiaire = stagiaire;
@@ -20,50 +38,99 @@ public class Noeud {
 		this.filsDroit = filsDroit;
 	}
 
+	/**
+     * @constructor Noeud()
+     * Description: Constructeur de la classe Noeud par défaut.
+     */
 	public Noeud() {
 		this.stagiaire = new Stagiaire();
 		this.filsGauche = -1;
 		this.filsDroit = -1;
 	}
 
-	// GETTERS ET SETTERS
+    /**
+     * Methods
+     * @method getRacine()
+     * Description: Obtient la racine du noeud.
+     * @return La racine du noeud.
+     */
 	public Noeud getRacine() {
 		return this;
 	}
 	
+	/**
+     * @method getStagiaire()
+     * Description: Obtient le stagiaire contenu dans le noeud.
+     * @return Le stagiaire du noeud.
+     */
 	public Stagiaire getStagiaire() {
 		return stagiaire;
 	}
 
+	/**
+     * @method setStagiaire(Stagiaire stagiaire)
+     * Description: Définit le stagiaire du noeud.
+     * @param stagiaire Le nouveau stagiaire.
+     */
 	public void setStagiaire(Stagiaire stagiaire) {
 		this.stagiaire = stagiaire;
 	}
 
+	 /**
+     * @method getFilsGauche()
+     * Description: Obtient l'index du fils gauche du noeud.
+     * @return L'index du fils gauche.
+     */
 	public int getFilsGauche() {
 		return filsGauche;
 	}
 
+	 /**
+     * @method setFilsGauche(int filsGauche)
+     * Description: Définit l'index du fils gauche du noeud.
+     * @param filsGauche Le nouvel index du fils gauche.
+     */
 	public void setFilsGauche(int filsGauche) {
 		this.filsGauche = filsGauche;
 	}
 
+	/**
+     * @method getFilsDroit()
+     * Description: Obtient l'index du fils droit du noeud.
+     * @return L'index du fils droit.
+     */
 	public int getFilsDroit() {
 		return filsDroit;
 	}
 
+	 /**
+     * @method setFilsDroit(int filsDroit)
+     * Description: Définit l'index du fils droit du noeud.
+     * @param filsDroit Le nouvel index du fils droit.
+     */
 	public void setFilsDroit(int filsDroit) {
 		this.filsDroit = filsDroit;
 	}
 	
 	//METHODES*************************************************************************
 	
-	// Méthodes toString pour retourner un Stagiaire
+	/**
+     * @method toString()
+     * Description: Retourne une représentation textuelle du noeud.
+     * @return La représentation textuelle du noeud.
+     */
 	@Override
 	public String toString() {
 		return "Stagiaire= " + stagiaire + ", filsGauche= " + filsGauche + ", filsDroit= " + filsDroit;
 	}
 
-	// Méthodes pour écrire un noeud
+	/**
+     * @method ecrireNoeud(Noeud stagiaire, RandomAccessFile raf)
+     * Description: Écrit un noeud dans le fichier binaire.
+     * @param stagiaire Le noeud à écrire.
+     * @param raf Le RandomAccessFile où écrire le noeud.
+     * @throws IOException
+     */
 	public void ecrireNoeud(Noeud stagiaire, RandomAccessFile raf) throws IOException {
 		raf.writeChars(stagiaire.getStagiaire().getNomLong().toUpperCase());
 		raf.writeChars(stagiaire.getStagiaire().getPrenomLong());
@@ -74,7 +141,13 @@ public class Noeud {
 		raf.writeInt(stagiaire.getFilsDroit()); // Indice du noeud droit
 	}
 
-	// Méthodes pour lire un noeud
+	/**
+     * @method lireNoeud(RandomAccessFile raf)
+     * Description: Lit un noeud depuis le fichier binaire.
+     * @param raf Le RandomAccessFile où lire le noeud.
+     * @return Le noeud lu.
+     * @throws IOException
+     */
 	public Noeud lireNoeud(RandomAccessFile raf) throws IOException {
 		
 		// Check si cest Noeud ou Void
@@ -118,7 +191,13 @@ public class Noeud {
 		return noeudLu;
 	}
 
-	// Méthode récursive pour ajouter un stagiaire
+	/**
+     * @method ajoutStagiaireRecursif(Noeud nouveauNoeud, RandomAccessFile raf)
+     * Description: Ajoute un stagiaire de manière récursive dans l'arbre.
+     * @param nouveauNoeud Le nouveau noeud à ajouter.
+     * @param raf Le RandomAccessFile utilisé.
+     * @throws IOException
+     */
 	public void ajoutStagiaireRecursif(Noeud nouveauNoeud, RandomAccessFile raf) throws IOException {
 		if (this.stagiaire.compareTo(nouveauNoeud.getStagiaire()) > 0) {
 

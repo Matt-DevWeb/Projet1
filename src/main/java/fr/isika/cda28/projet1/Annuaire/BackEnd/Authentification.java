@@ -10,6 +10,11 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class Authentification
+ * javadoc de la classe Authentification
+ */
+
 public class Authentification {
 	
 	// Attributs
@@ -17,7 +22,11 @@ public class Authentification {
 	private List<Utilisateurs> utilisateurs = new ArrayList<>();
 
 
-	// Constructeur de la page Authentification
+	/**
+     * Constructors
+     * @constructor Authentification()
+     * Description: Constructeur de la classe Authentification.
+     */
 	public Authentification() {
 		
 		try {
@@ -42,19 +51,29 @@ public class Authentification {
 	
 	//METHODES*************************************************************************
 	
-	// Méthode pour vérifier l'ID et le mot de passe
+	/**
+     * Methods
+     * @method authenticate(String userID, String password)
+     * Description: Authentifie un utilisateur en vérifiant son identifiant et son mot de passe.
+     * @param userID L'identifiant de l'utilisateur.
+     * @param password Le mot de passe de l'utilisateur.
+     * @return L'utilisateur authentifié s'il existe, sinon `null`.
+     */
 	public Utilisateurs authenticate(String userID, String password) {
 		for (Utilisateurs utilisateur : utilisateurs) {
 			if (utilisateur.getUserID().equals(userID) && utilisateur.getPassword().equals(password)) {
-				System.out.println("Connexion réussie");
 				return utilisateur;
 			}
 		}
-		System.out.println("Connexion échec");
 		return null;
 	}
 	
-	// Méthode pour supprimer un éditeur
+	 /**
+     * @method supprimerEditeur(String userID, Annuaire annuaire)
+     * Description: Supprime un éditeur de la liste des éditeurs.
+     * @param userID L'identifiant de l'éditeur à supprimer.
+     * @param annuaire L'annuaire utilisé.
+     */
 	public void supprimerEditeur (String userID, Annuaire annuaire) {
 		// on vide le fichier des editeurs pour le recréer
 		try {
@@ -68,14 +87,17 @@ public class Authentification {
 		for (Utilisateurs utilisateur : utilisateurs) {
 			if (utilisateur.getUserID().equals(userID) && utilisateur.isEditeur()) {
 				utilisateurs.remove(utilisateur) ;
-				System.out.println("Editeur Supprimé");
 				break;
 			}
 		}
 		miseAjourFichierEditeur(annuaire);
 	}
 
-	// Méthode pour mettre à jour le fichier éditeur
+	/**
+     * @method miseAjourFichierEditeur(Annuaire annuaire)
+     * Description: Met à jour le fichier des éditeurs.
+     * @param annuaire L'annuaire utilisé.
+     */
 	public void miseAjourFichierEditeur (Annuaire annuaire) {
 		// on cherche les editeurs restants et on les recris dans le fichier
 		for (Utilisateurs utilisateur : utilisateurs) {

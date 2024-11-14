@@ -5,19 +5,32 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Class GestionDesFichiers
+ * javadoc de la classe GestionDesFichiers
+ */
+
 public class GestionDesFichiers {
 
 	// Attributs
 	private Annuaire annuaire;
 
-	// Constructeur pour initialiser l'annuaire
+	/**
+     * Constructors
+     * @constructor GestionDesFichiers()
+     * Description: Constructeur de la classe GestionDesFichiers.
+     */
 	public GestionDesFichiers() {
 		this.annuaire = new Annuaire();
 	}
 
 	//METHODES*************************************************************************
 
-	// Méthode pour charger les stagiaires depuis un fichier texte
+	/**
+     * Methods
+     * @method chargerStagiairesDepuisFichier()
+     * Description: Charge les stagiaires depuis un fichier texte.
+     */
 	public void chargerStagiairesDepuisFichier() {
 		try {
 			// Ouverture du fichier texte contenant les informations des stagiaires
@@ -52,7 +65,11 @@ public class GestionDesFichiers {
 		}
 	}
 	
-	// Méthode pour vérifier si un fichier BIN existe avant de charger la liste
+	/**
+     * @method fichierBinaireRempli()
+     * Description: Vérifie si le fichier binaire des stagiaires est rempli.
+     * @return `true` si le fichier binaire est rempli, `false` sinon.
+     */
 	public boolean fichierBinaireRempli() {
 	    File fichierBinaire = new File("src/main/resources/mesFichiers/ListeStagiaires.bin");
 	    return fichierBinaire.exists() && fichierBinaire.length() > 0;

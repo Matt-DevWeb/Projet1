@@ -1,3 +1,7 @@
+/**
+ * Package fr.isika.cda28.projet1.Launcher
+ */
+
 package fr.isika.cda28.projet1.Launcher;
 
 import java.io.IOException;
@@ -9,12 +13,22 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+/**
+ * Class App
+ * javadoc de la classe App
+ */
+
 public class App extends Application {
 	
 	// Attributs
 	private Annuaire annuaire;
 	
-	
+	/**
+     * Methods
+     * @method init()
+     * Description: Méthode appelée pour initialiser l'application.
+     * @throws Exception
+     */
 	@Override
 	public void init() throws Exception {
 		GestionDesFichiers fichier = new GestionDesFichiers();
@@ -28,6 +42,12 @@ public class App extends Application {
 		super.init();
 	}
 
+	/**
+     * @method start(Stage stage)
+     * Description: Méthode appelée pour démarrer l'application.
+     * @param stage Le stage principal de l'application.
+     * @throws Exception
+     */
 	@Override
 	public void start(Stage stage) throws Exception {
 		PageAccueil root = new PageAccueil(annuaire);
@@ -49,7 +69,13 @@ public class App extends Application {
 		// On affiche notre stage
 		stage.show();
 	}
-
+	
+	/**
+     * @method main(String[] args)
+     * Description: Point d'entrée de l'application.
+     * @param args Les arguments de la ligne de commande.
+     * @throws IOException
+     */
 	public static void main(String[] args) throws IOException {
 		launch(args);
 	}
