@@ -1,7 +1,13 @@
 package fr.isika.cda28.projet1.Annuaire.BackEnd;
 
+/**
+ * La classe Stagiaire représente un stagiaire avec des attributs de base tels
+ * que le nom, prénom, département, cursus, et l'année de promotion. Elle
+ * implémente Comparable pour permettre la comparaison de stagiaires selon leurs
+ * attributs.
+ */
 public class Stagiaire implements Comparable<Stagiaire> {
-	
+
 	// Constantes pour la taille maximale des chaînes de caractères
 	public final static int TAILLE_MAX_NOM = 20;
 	public final static int TAILLE_MAX_PRENOM = 20;
@@ -19,16 +25,28 @@ public class Stagiaire implements Comparable<Stagiaire> {
 	String cursus;
 	int anneePromo;
 
-	// Constructeur par défaut
+	/**
+	 * Constructeur par défaut. Initialise les attributs de base avec des valeurs
+	 * par défaut.
+	 */
+
 	public Stagiaire() {
 		super();
 		nom = "";
-		prenom ="";
-		departement="";
-		cursus="";
+		prenom = "";
+		departement = "";
+		cursus = "";
 	}
 
-	// Constructeur avec paramètres
+	/**
+	 * Constructeur avec paramètres.
+	 * 
+	 * @param nom         le nom du stagiaire
+	 * @param prenom      le prénom du stagiaire
+	 * @param departement le département du stagiaire
+	 * @param cursus      le cursus du stagiaire
+	 * @param anneePromo  l'année de promotion du stagiaire
+	 */
 	public Stagiaire(String nom, String prenom, String departement, String cursus, int anneePromo) {
 		super();
 		this.nom = nom;
@@ -38,7 +56,13 @@ public class Stagiaire implements Comparable<Stagiaire> {
 		this.departement = departement;
 	}
 
-	// Getters et Setters pour accéder et modifier les attributs
+	// METHODES*************************************************************************
+
+	/**
+	 * Représentation en chaîne de caractères d'un Stagiaire.
+	 * 
+	 * @return une chaîne de caractères décrivant le stagiaire.
+	 */
 	public String getNom() {
 		return nom;
 	}
@@ -79,13 +103,19 @@ public class Stagiaire implements Comparable<Stagiaire> {
 		this.departement = departement;
 	}
 
-	//METHODES*************************************************************************
-	
-	// Méthode toString pour représenter un Stagiaire sous forme de chaîne de caractères
+	/**
+	 * Génère une chaîne de longueur fixe pour un attribut du stagiaire. Si la
+	 * chaîne est plus courte que la taille maximale, elle est complétée par des
+	 * espaces. Si elle est plus longue, elle est tronquée.
+	 * 
+	 * @param value  la valeur de l'attribut
+	 * @param length la longueur fixe désirée
+	 * @return une chaîne de longueur fixe
+	 */
 	@Override
 	public String toString() {
 		return "Nom= " + nom + ", prenom= " + prenom + ", cursus= " + cursus + ", anneePromo= " + anneePromo
-				+ ", departement= " + departement ;
+				+ ", departement= " + departement;
 	}
 
 	// Méthodes pour obtenir des chaînes de longueur fixe (pour le fichier binaire)
@@ -141,12 +171,20 @@ public class Stagiaire implements Comparable<Stagiaire> {
 		return cursusLong;
 	}
 
+	/**
+	 * Compare deux objets Stagiaire d'abord par nom, puis par prénom, et enfin par
+	 * cursus.
+	 * 
+	 * @param stagiaireAComparer le stagiaire à comparer
+	 * @return un entier négatif, zéro ou positif si ce stagiaire est respectivement
+	 *         inférieur, égal ou supérieur au stagiaire comparé
+	 */
 	@Override
 	public int compareTo(Stagiaire stagiaireAComparer) {
 		int i = this.nom.trim().compareTo(stagiaireAComparer.getNom().trim());
-		if (i == 0 ) {
+		if (i == 0) {
 			i = this.prenom.trim().compareTo(stagiaireAComparer.getPrenom().trim());
-			if (i == 0 ) {
+			if (i == 0) {
 				i = this.cursus.trim().compareTo(stagiaireAComparer.getCursus().trim());
 			}
 		}

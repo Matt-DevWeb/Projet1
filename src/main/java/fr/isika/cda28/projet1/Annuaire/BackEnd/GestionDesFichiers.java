@@ -6,8 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Class GestionDesFichiers
- * javadoc de la classe GestionDesFichiers
+ * La classe GestionDesFichiers gère le chargement des données de stagiaires
+ * depuis un fichier texte et vérifie si le fichier binaire contenant les
+ * stagiaires est déjà rempli.
  */
 
 public class GestionDesFichiers {
@@ -16,21 +17,23 @@ public class GestionDesFichiers {
 	private Annuaire annuaire;
 
 	/**
-     * Constructors
-     * @constructor GestionDesFichiers()
-     * Description: Constructeur de la classe GestionDesFichiers.
-     */
+	 * Constructors
+	 * 
+	 * @constructor GestionDesFichiers() Description: Constructeur de la classe
+	 *              GestionDesFichiers.
+	 */
 	public GestionDesFichiers() {
 		this.annuaire = new Annuaire();
 	}
 
-	//METHODES*************************************************************************
+	// METHODES*************************************************************************
 
 	/**
-     * Methods
-     * @method chargerStagiairesDepuisFichier()
-     * Description: Charge les stagiaires depuis un fichier texte.
-     */
+	 * Methods
+	 * 
+	 * @method chargerStagiairesDepuisFichier() Description: Charge les stagiaires
+	 *         depuis un fichier texte.
+	 */
 	public void chargerStagiairesDepuisFichier() {
 		try {
 			// Ouverture du fichier texte contenant les informations des stagiaires
@@ -39,7 +42,7 @@ public class GestionDesFichiers {
 
 			// Lire chaque ligne du fichier texte et créer les objets Stagiaire
 			while (br.ready()) {
-				
+
 				// Création d'un objet Stagiaire vide avec des valeurs par défaut
 				Stagiaire stagiaire = new Stagiaire();
 
@@ -52,7 +55,7 @@ public class GestionDesFichiers {
 
 				// Lire la ligne séparatrice "*" (et l'ignorer)
 				br.readLine();
-		
+
 				annuaire.ajouterStagiaire(new Noeud(stagiaire, -1, -1));
 			}
 
@@ -64,14 +67,14 @@ public class GestionDesFichiers {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-     * @method fichierBinaireRempli()
-     * Description: Vérifie si le fichier binaire des stagiaires est rempli.
-     * @return `true` si le fichier binaire est rempli, `false` sinon.
-     */
+	 * @method fichierBinaireRempli() Description: Vérifie si le fichier binaire des
+	 *         stagiaires est rempli.
+	 * @return `true` si le fichier binaire est rempli, `false` sinon.
+	 */
 	public boolean fichierBinaireRempli() {
-	    File fichierBinaire = new File("src/main/resources/mesFichiers/ListeStagiaires.bin");
-	    return fichierBinaire.exists() && fichierBinaire.length() > 0;
+		File fichierBinaire = new File("src/main/resources/mesFichiers/ListeStagiaires.bin");
+		return fichierBinaire.exists() && fichierBinaire.length() > 0;
 	}
 }
