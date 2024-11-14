@@ -224,8 +224,7 @@ public class Noeud {
 		// Suppression récursive du successeur dans le sous-arbre droit
 		noeudDroit.supprimerNoeud(noeudSuccesseur, raf, indexCourant);
 
-		// Affichage du successeur qui remplace la racine
-		System.out.println(this.noeudSuccesseur(raf) + " est le successeur de " + this);
+		
 	}
 
 	// Méthode pour supprimer un noeud

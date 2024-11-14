@@ -24,7 +24,7 @@ public class App extends Application {
 		} else {
 			annuaire.afficherListeOrdreAlphabetique();
 		}
-		System.out.println("le nombre de stagiaires est de " + annuaire.lireFichierObservable().size());
+		
 		super.init();
 	}
 

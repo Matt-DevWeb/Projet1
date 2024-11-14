@@ -585,10 +585,10 @@ public class PageVisiteurs extends BorderPane {
 				// Ajouter l'extension .pdf si nécessaire
 				fichier = new File(fichier.getAbsolutePath() + ".pdf");
 			}
-			System.out.println("Fichier sélectionné : " + fichier.getAbsolutePath());
+			
 			// Créer le PDF à l'emplacement sélectionné
 			annuaire.creerPDF(tableViewStagiaire, fichier.getAbsolutePath());
-			System.out.println("Le fichier PDF a été créé avec succès à : " + fichier.getAbsolutePath());
+			
 			try {
 				File pdfFile = new File(fichier.getPath());
 				if (pdfFile.exists()) {

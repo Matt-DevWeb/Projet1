@@ -83,9 +83,9 @@ public class Annuaire {
 			Noeud nouveauNoeud = new Noeud(stagiaireModifie, -1, -1); // On vient créer un nouveau noeud avec le
 
 			// stagiaire modifie
-			System.out.println("Noeud modifié: " + nouveauNoeud);
+			
 			ajouterStagiaire(nouveauNoeud);
-			System.out.println("Noeud ajouté: " + nouveauNoeud);
+			
 			supprimerStagiaire(noeudASupprimer);
 			return nouveauNoeud;
 		}
@@ -181,7 +181,7 @@ public class Annuaire {
 			// Récupération de la liste triée
 			List<Stagiaire> listeImpression = tableView.getItems();
 			if (listeImpression == null || listeImpression.isEmpty()) {
-				System.out.println("La Liste est vide ou null, ou il n'y aucun stagiaire à afficher");
+				
 				document.add(new Paragraph("Aucun stagiaire à afficher"));
 			} else {
 				// Remplissage de la table avec les informations des stagiaires
@@ -216,7 +216,7 @@ public class Annuaire {
 			writer.newLine();
 			writer.write("*");
 			writer.newLine();
-			System.out.println("Le contenu a été écrit dans le fichier avec succès.");
+			
 		} catch (IOException e) {
 			System.err.println("Une erreur s'est produite lors de l'écriture dans le fichier : " + e.getMessage());
 		}
